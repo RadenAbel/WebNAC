@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark nac-navbar fixed-top" id="nacNavbar">
     <div class="container">
         <a class="navbar-brand nac-brand" href="{{ route('home') }}">
-            <span class="nac-brand__mark">NAC</span>
+            <img src="{{ asset('img/Logo.png') }}" alt="Logo NAC" class="nac-brand__mark">
             <span class="nac-brand__text">Nugroho Aquatic Center</span>
         </a>
 

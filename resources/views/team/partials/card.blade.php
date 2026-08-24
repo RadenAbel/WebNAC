@@ -26,9 +26,6 @@
                 <span class="nac-team-card__badge">{{ $member->category }}</span>
             @endif
         </div>
-        <span class="nac-team-card__cta">
-            Lihat Profil <i class="fa-solid fa-arrow-right-long"></i>
-        </span>
     </div>
 
     <div class="nac-team-card__label">

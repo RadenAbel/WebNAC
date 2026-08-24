@@ -176,7 +176,7 @@
                 <div class="nac-facility-card">
                     <i class="bi bi-water"></i>
                     <h5>Kolam Standar Kompetisi</h5>
-                    <p>8 lintasan sepanjang 50 meter dengan sistem sirkulasi air dan pencahayaan bawah air.</p>
+                    <p>2 lintasan sepanjang 50 meter dengan sistem sirkulasi air dan pencahayaan bawah air.</p>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">

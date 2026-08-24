@@ -11,7 +11,7 @@
         <div class="row gy-4 nac-footer__cols">
             <div class="col-lg-4">
                 <a href="{{ route('home') }}" class="nac-brand nac-brand--footer">
-                    <span class="nac-brand__mark">NAC</span>
+                    <img src="{{ asset('img/Logo.png') }}" alt="Logo NAC" class="nac-brand__mark">
                     <span class="nac-brand__text">Nugroho Aquatic Center</span>
                 </a>
                 <p class="nac-footer__desc">
