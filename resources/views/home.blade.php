@@ -30,8 +30,8 @@
                     <div class="nac-hero-stats__item">
                         <i class="fa-solid fa-water"></i>
                         <div>
-                            <div class="nac-hero-stats__num">8</div>
-                            <div class="nac-hero-stats__label">Lintasan Kompetisi</div>
+                            <div class="nac-hero-stats__num">2</div>
+                            <div class="nac-hero-stats__label">Lintasan</div>
                         </div>
                     </div>
                     <div class="nac-hero-stats__item">
@@ -44,14 +44,14 @@
                     <div class="nac-hero-stats__item">
                         <i class="fa-solid fa-certificate"></i>
                         <div>
-                            <div class="nac-hero-stats__num">12+</div>
+                            <div class="nac-hero-stats__num">3</div>
                             <div class="nac-hero-stats__label">Pelatih Bersertifikat</div>
                         </div>
                     </div>
                     <div class="nac-hero-stats__item">
                         <i class="fa-solid fa-users"></i>
                         <div>
-                            <div class="nac-hero-stats__num">200+</div>
+                            <div class="nac-hero-stats__num">20+</div>
                             <div class="nac-hero-stats__label">Atlet Aktif Berlatih</div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                     <img src="https://picsum.photos/seed/nac-about/700/560" alt="Suasana latihan di Nugroho Aquatic Center" loading="lazy">
                     <div class="nac-about-photo__badge">
                         <span>Sejak</span>
-                        <strong>2010</strong>
+                        <strong>2025</strong>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                 <span class="nac-eyebrow">Tentang Kami</span>
                 <h2 class="nac-section__title">Lebih dari sekadar tempat berenang.</h2>
                 <p class="nac-lead">
-                    Sejak 2010, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang dari
+                    Sejak 2025, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang dari
                     tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru
                     mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan
                     yang sama seriusnya.
@@ -96,7 +96,7 @@
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
                     <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Senior, Swim Class A &amp; B</li>
-                    <li><i class="fa-solid fa-water"></i> Kolam standar kompetisi, 8 lintasan</li>
+                    <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
             </div>
         </div>
@@ -189,8 +189,8 @@
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="nac-facility-card">
                     <i class="bi bi-heart-pulse"></i>
-                    <h5>Ruang Fitness &amp; Recovery</h5>
-                    <p>Area latihan kekuatan dan pemulihan otot khusus untuk atlet renang.</p>
+                    <h5>Food &amp; Drink</h5>
+                    <p>Area bersantai untuk mengisi perut dan menghilangkan dahaga.</p>
                 </div>
             </div>
         </div>
@@ -222,7 +222,7 @@
                         <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
                         <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
                     </ul>
-                    <a href="#kontak" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
@@ -236,7 +236,7 @@
                         <li><i class="fa-solid fa-check"></i> Program persiapan kompetisi</li>
                         <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
                     </ul>
-                    <a href="#kontak" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
@@ -251,7 +251,7 @@
                         <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
                         <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
                     </ul>
-                    <a href="#kontak" class="btn nac-btn nac-btn--primary w-100">Daftar Sekarang</a>
+                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
@@ -265,7 +265,7 @@
                         <li><i class="fa-solid fa-check"></i> Pembinaan teknik lanjutan</li>
                         <li><i class="fa-solid fa-check"></i> Evaluasi rutin</li>
                     </ul>
-                    <a href="#kontak" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
         </div>

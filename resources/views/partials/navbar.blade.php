@@ -33,9 +33,6 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('team.*') ? 'active' : '' }}" href="{{ route('team.index') }}">Our Team</a>
                 </li>
-                <li class="nav-item ms-lg-2">
-                    <a class="btn nac-btn nac-btn--outline" href="{{ route('home') }}#kontak">Hubungi Kami</a>
-                </li>
             </ul>
         </div>
     </div>
