@@ -9,6 +9,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // PENTING: AOS menghitung titik pemicu (kapan elemen dianggap "masuk layar")
+    // saat DOMContentLoaded — padahal foto-foto (galeri, dsb) masih proses loading
+    // dan bikin tinggi halaman berubah setelahnya. Akibatnya, section yang posisinya
+    // di bawah foto (seperti Jadwal) jadi butuh scroll lebih jauh dari seharusnya
+    // sebelum animasinya "nyala" — terutama kentara di layar kecil.
+    // Fix: hitung ulang setelah SEMUA aset (termasuk gambar) selesai dimuat.
+    window.addEventListener('load', function () {
+        if (window.AOS) {
+            AOS.refreshHard();
+        }
+    });
+
+    // Jaga-jaga: hitung ulang juga saat ukuran layar berubah (mis. rotate HP,
+    // atau resize browser saat testing responsive di desktop).
+    var aosResizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(aosResizeTimer);
+        aosResizeTimer = setTimeout(function () {
+            if (window.AOS) AOS.refresh();
+        }, 200);
+    });
+
     // Navbar: tambah background lebih solid saat halaman discroll
     var navbar = document.getElementById('nacNavbar');
     if (navbar) {

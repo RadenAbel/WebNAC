@@ -9,7 +9,7 @@
 <section class="nac-hero">
     <div class="container">
         <div class="row align-items-center min-vh-100 py-5 g-5">
-            <div class="col-lg-7" data-aos="fade-up">
+            <div class="col-lg-6" data-aos="fade-up">
                 <span class="nac-eyebrow">Nugroho Aquatic Center</span>
                 <h1 class="nac-hero__title">
                     Setiap tarikan napas,<br>
@@ -25,34 +25,79 @@
                 </div>
             </div>
 
-            <div class="col-lg-5" data-aos="fade-left" data-aos-delay="150">
-                <div class="nac-hero-stats">
-                    <div class="nac-hero-stats__item">
-                        <i class="fa-solid fa-water"></i>
-                        <div>
-                            <div class="nac-hero-stats__num">2</div>
-                            <div class="nac-hero-stats__label">Lintasan</div>
+            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="150">
+                {{--
+                    Slider otomatis di hero: slide pertama = kartu statistik
+                    (lintasan, panjang kolam, pelatih, atlet), disusul slide
+                    foto-foto lain. Angka statistik & foto di bawah ini masih
+                    dummy — nanti tinggal diganti data dari database
+                    (mis. $stats->lanes, $stats->pool_length, $heroPhotos, dst).
+                --}}
+                <div class="nac-hero-slider">
+                    <div id="heroStatsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+                        <div class="carousel-inner">
+
+                            {{-- Slide 1: statistik --}}
+                            <div class="carousel-item active">
+                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--stats">
+                                    <div class="nac-hero-stats__item">
+                                        <i class="fa-solid fa-water"></i>
+                                        <div>
+                                            <div class="nac-hero-stats__num">2</div>
+                                            <div class="nac-hero-stats__label">Lintasan</div>
+                                        </div>
+                                    </div>
+                                    <div class="nac-hero-stats__item">
+                                        <i class="fa-solid fa-ruler-combined"></i>
+                                        <div>
+                                            <div class="nac-hero-stats__num">50<span>m</span></div>
+                                            <div class="nac-hero-stats__label">Panjang Kolam Utama</div>
+                                        </div>
+                                    </div>
+                                    <div class="nac-hero-stats__item">
+                                        <i class="fa-solid fa-certificate"></i>
+                                        <div>
+                                            <div class="nac-hero-stats__num">3</div>
+                                            <div class="nac-hero-stats__label">Pelatih Bersertifikat</div>
+                                        </div>
+                                    </div>
+                                    <div class="nac-hero-stats__item">
+                                        <i class="fa-solid fa-users"></i>
+                                        <div>
+                                            <div class="nac-hero-stats__num">20+</div>
+                                            <div class="nac-hero-stats__label">Atlet Aktif Berlatih</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Slide 2–4: foto-foto (dummy, ganti src dgn foto asli / data DB) --}}
+                            <div class="carousel-item">
+                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
+                                    <img src="https://picsum.photos/seed/nac-hero-1/700/560" alt="Suasana latihan pagi di kolam" loading="lazy">
+                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-water"></i> Latihan Pagi</span>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
+                                    <img src="https://picsum.photos/seed/nac-hero-2/700/560" alt="Sesi latihan teknik start" loading="lazy">
+                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-stopwatch"></i> Teknik Start</span>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
+                                    <img src="https://picsum.photos/seed/nac-hero-3/700/560" alt="Suasana kejuaraan renang" loading="lazy">
+                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-trophy"></i> Hari Kejuaraan</span>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="nac-hero-stats__item">
-                        <i class="fa-solid fa-ruler-combined"></i>
-                        <div>
-                            <div class="nac-hero-stats__num">50<span>m</span></div>
-                            <div class="nac-hero-stats__label">Panjang Kolam Utama</div>
-                        </div>
-                    </div>
-                    <div class="nac-hero-stats__item">
-                        <i class="fa-solid fa-certificate"></i>
-                        <div>
-                            <div class="nac-hero-stats__num">3</div>
-                            <div class="nac-hero-stats__label">Pelatih Bersertifikat</div>
-                        </div>
-                    </div>
-                    <div class="nac-hero-stats__item">
-                        <i class="fa-solid fa-users"></i>
-                        <div>
-                            <div class="nac-hero-stats__num">20+</div>
-                            <div class="nac-hero-stats__label">Atlet Aktif Berlatih</div>
+
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
                         </div>
                     </div>
                 </div>
@@ -281,43 +326,45 @@
 {{-- ============ JADWAL ============ --}}
 <section class="nac-section" id="jadwal">
     <div class="container">
-        <div class="nac-section__head" data-aos="fade-up">
+        <div class="nac-section__head nac-fade-in">
             <span class="nac-eyebrow">Jadwal Latihan</span>
             <h2 class="nac-section__title">Atur waktu latihanmu.</h2>
         </div>
 
-        <div class="table-responsive nac-schedule nac-schedule--light mt-4" data-aos="fade-up" data-aos-delay="100">
-            <table class="table mb-0">
-                <thead>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Hari</th>
-                        <th>Jam</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="nac-schedule__cat">Junior</span></td>
-                        <td>Selasa, Kamis</td>
-                        <td>15.00 – 16.30</td>
-                    </tr>
-                    <tr>
-                        <td><span class="nac-schedule__cat">Senior</span></td>
-                        <td>Senin, Rabu, Jumat</td>
-                        <td>16.00 – 18.00</td>
-                    </tr>
-                    <tr>
-                        <td><span class="nac-schedule__cat">Swim Class A</span></td>
-                        <td>Senin – Jumat</td>
-                        <td>06.00 – 08.00</td>
-                    </tr>
-                    <tr>
-                        <td><span class="nac-schedule__cat">Swim Class B</span></td>
-                        <td>Sabtu, Minggu</td>
-                        <td>07.00 – 09.00</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="nac-schedule nac-schedule--light mt-4 nac-fade-in nac-fade-in--delay">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Hari</th>
+                            <th>Jam</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="nac-schedule__cat">Junior</span></td>
+                            <td>Selasa, Kamis</td>
+                            <td>15.00 – 16.30</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nac-schedule__cat">Senior</span></td>
+                            <td>Senin, Rabu, Jumat</td>
+                            <td>16.00 – 18.00</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nac-schedule__cat">Swim Class A</span></td>
+                            <td>Senin – Jumat</td>
+                            <td>06.00 – 08.00</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nac-schedule__cat">Swim Class B</span></td>
+                            <td>Sabtu, Minggu</td>
+                            <td>07.00 – 09.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

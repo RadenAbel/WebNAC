@@ -1,9 +1,3 @@
-<div class="nac-divider nac-divider--dark" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-location-dot"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 <footer class="nac-footer" id="kontak">
     <div class="container">
 
@@ -12,7 +6,7 @@
             <div class="col-lg-4">
                 <a href="{{ route('home') }}" class="nac-brand nac-brand--footer">
                     <img src="{{ asset('img/Logo.png') }}" alt="Logo NAC" class="nac-brand__mark">
-                    <span class="nac-brand__text">Nugroho Aquatic Center</span>
+                    <span class="nac-brand__text_f">Nugroho Aquatic Club</span>
                 </a>
                 <p class="nac-footer__desc">
                     Kolam renang premium dengan pelatih bersertifikat, dirancang untuk atlet

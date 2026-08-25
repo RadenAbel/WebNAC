@@ -2,26 +2,26 @@
     $collection   = collect($members);
     $total        = $collection->count();
     $gridId       = 'fan-' . $fanId . '-grid';
-    $description  = $description ?? null; // ⚠️ opsional: lihat catatan di index.blade.php
+    $description  = $description ?? null;
+    $icon         = $icon ?? 'fa-users';
 
     // Hanya 3 kartu teratas yang "mengintip" di preview — sisanya disembunyikan
     // biar tetap rapi dan tidak melebar berlebihan.
     $preview      = $collection->take(3)->values();
-    $previewCount = $preview->count();
-    $center       = ($previewCount - 1) / 2;
-    $angleStep    = 10;  // derajat antar kartu
-    $xStep        = 34;  // px pergeseran antar kartu
 @endphp
 
 <div class="nac-fan-group" data-fan-group>
 
     <div class="nac-section__head nac-section__head--fan" data-aos="fade-up">
-        <div>
-            <span class="nac-eyebrow">{{ $eyebrow }}</span>
-            <h2 class="nac-section__title">{{ $title }}</h2>
-            @if($description)
-                <p class="nac-fan__desc">{{ $description }}</p>
-            @endif
+        <div class="nac-section__head-main">
+            <span class="nac-fan__icon"><i class="fa-solid {{ $icon }}"></i></span>
+            <div>
+                <span class="nac-eyebrow">{{ $eyebrow }}</span>
+                <h2 class="nac-section__title">{{ $title }}</h2>
+                @if($description)
+                    <p class="nac-fan__desc">{{ $description }}</p>
+                @endif
+            </div>
         </div>
 
         @if($total > 1)
@@ -57,14 +57,13 @@
                 <div class="nac-fan__stack">
                     @foreach($preview as $i => $member)
                         @php
-                            $offset = $i - $center;
-                            $rot    = round($offset * $angleStep, 1);
-                            $x      = round($offset * $xStep);
-                            $lift   = round(-abs($offset) * 8);
-                            $z      = 100 - (int) round(abs($offset) * 10);
+                            $y      = $i * -16;                   // px, tiap lapis "menumpuk" lurus ke atas (tanpa geser kiri/kanan)
+                            $scale  = round(1 - $i * 0.07, 2);    // lapis belakang sedikit mengecil
+                            $z      = 30 - $i * 10;                // lapis depan paling atas
+                            $bright = round(1 - $i * 0.15, 2);    // lapis belakang sedikit meredup
                         @endphp
                         <div class="nac-fan__stack-card"
-                             style="--rot: {{ $rot }}deg; --x: {{ $x }}px; --lift: {{ $lift }}px; --z: {{ $z }}; --d: {{ $i * 80 }}ms;">
+                             style="--y: {{ $y }}px; --scale: {{ $scale }}; --z: {{ $z }}; --bright: {{ $bright }}; --d: {{ $i * 100 }}ms;">
                             @include('team.partials.card', ['member' => $member])
                         </div>
                     @endforeach

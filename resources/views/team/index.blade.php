@@ -7,13 +7,21 @@
 
 <section class="nac-page-header">
     <div class="container text-center" data-aos="fade-up">
-        <span class="nac-eyebrow">Our Team</span>
+        <nav class="nac-breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ url('/') }}">Beranda</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span aria-current="page">Our Team</span>
+        </nav>
+
+        <span class="nac-page-header__icon"><i class="fa-solid fa-people-group"></i></span>
+
         <h1 class="nac-page-header__title">Di balik setiap catatan waktu terbaik.</h1>
         <p class="nac-page-header__desc">
             Gabungan pelatih berpengalaman dan atlet berdedikasi yang membentuk
             identitas Nugroho Aquatic Center.
         </p>
     </div>
+
     <svg class="nac-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
     </svg>
@@ -25,6 +33,7 @@
         @include('team.partials.fan', [
             'members'      => $coaches,
             'fanId'        => 'pelatih',
+            'icon'         => 'fa-user-graduate',
             'eyebrow'      => 'Pelatih',
             'title'        => 'Tim Pelatih',
             'description'  => 'Dipandu langsung oleh pelatih bersertifikat dengan jam terbang tinggi di dunia akuatik.',
@@ -43,11 +52,12 @@
 </div>
 
 {{-- ============ ATLET ============ --}}
-<section class="nac-section" id="atlet">
+<section class="nac-section nac-section--tint" id="atlet">
     <div class="container">
         @include('team.partials.fan', [
             'members'      => $athletes,
             'fanId'        => 'atlet',
+            'icon'         => 'fa-medal',
             'eyebrow'      => 'Atlet',
             'title'        => 'Tim Atlet',
             'description'  => 'Atlet berprestasi yang mengharumkan nama Nugroho Aquatic Center di berbagai kejuaraan.',
