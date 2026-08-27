@@ -335,11 +335,26 @@ a { text-decoration: none; }
 }
 
 /* Slide foto */
+.nac-hero-carousel-slide--photo {
+  position: relative;
+}
 .nac-hero-carousel-slide--photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.nac-hero-carousel-slide--photo.is-loaded img { opacity: 1; }
+.nac-hero-carousel-slide--photo:not(.is-loaded):not(.is-empty)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0.05) 30%, rgba(255, 255, 255, 0.14) 50%, rgba(255, 255, 255, 0.05) 70%);
+  background-size: 200% 100%;
+  animation: nac-shimmer 1.4s ease-in-out infinite;
 }
 .nac-hero-carousel-slide--photo::after {
   content: '';
@@ -538,10 +553,20 @@ a { text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
+.nac-gallery__item.is-loaded img { opacity: 1; }
 .nac-gallery__item:hover img {
   transform: scale(1.06);
+}
+.nac-gallery__item:not(.is-loaded):not(.is-empty)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, var(--nac-mist) 30%, #eef1f3 50%, var(--nac-mist) 70%);
+  background-size: 200% 100%;
+  animation: nac-shimmer 1.4s ease-in-out infinite;
 }
 .nac-gallery__item figcaption {
   position: absolute;
@@ -832,16 +857,55 @@ a { text-decoration: none; }
   outline-offset: 3px;
 }
 
-.nac-team-card__photo { position: absolute; inset: 0; }
+.nac-team-card__photo { position: absolute; inset: 0; background: var(--nac-mist); overflow: hidden; }
 .nac-team-card__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease, filter 0.4s ease;
+  opacity: 0;
+  transition: transform 0.5s ease, filter 0.4s ease, opacity 0.5s ease;
 }
+.nac-team-card__photo.is-loaded img { opacity: 1; }
 .nac-team-card:hover .nac-team-card__photo img {
   transform: scale(1.06);
   filter: brightness(0.55);
+}
+
+/* Skeleton shimmer — tampil selama foto masih dimuat (bukan saat memang tidak ada foto) */
+.nac-team-card__photo:not(.is-loaded):not(.is-empty)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, var(--nac-mist) 30%, #eef1f3 50%, var(--nac-mist) 70%);
+  background-size: 200% 100%;
+  animation: nac-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes nac-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Placeholder — dipakai saat member belum punya foto sama sekali */
+.nac-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(160deg, var(--nac-mist), #e4e9ec);
+  color: var(--nac-steel);
+  text-align: center;
+  padding: 1rem;
+}
+.nac-photo-placeholder i { font-size: 1.9rem; opacity: 0.45; }
+.nac-photo-placeholder span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
 }
 
 /* Efek kilau halus saat hover — sentuhan premium */
@@ -1634,14 +1698,36 @@ a { text-decoration: none; }
   margin: 0 auto;
   justify-self: center;
 }
-.nac-profile-card__photo img {
+.nac-profile-card__photo-frame {
+  position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  padding-bottom: 125%; /* rasio 4:5 — teknik "bulletproof", tidak bergantung pada aspect-ratio grid */
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  background: var(--nac-mist);
+}
+.nac-profile-card__photo-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: var(--nac-radius);
   display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
+.nac-profile-card__photo-frame.is-loaded img { opacity: 1; }
+.nac-profile-card__photo-frame:not(.is-loaded):not(.is-empty)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, var(--nac-mist) 30%, #eef1f3 50%, var(--nac-mist) 70%);
+  background-size: 200% 100%;
+  animation: nac-shimmer 1.4s ease-in-out infinite;
+}
+.nac-profile-card__photo-frame .nac-photo-placeholder i { font-size: 2.4rem; }
+.nac-profile-card__photo-frame .nac-photo-placeholder span { font-size: 0.75rem; }
 
 .nac-profile-card__medals {
   text-align: right;

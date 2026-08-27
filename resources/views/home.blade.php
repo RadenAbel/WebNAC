@@ -26,13 +26,29 @@
             </div>
 
             <div class="col-lg-6" data-aos="fade-left" data-aos-delay="150">
-                {{--
-                    Slider otomatis di hero: slide pertama = kartu statistik
-                    (lintasan, panjang kolam, pelatih, atlet), disusul slide
-                    foto-foto lain. Angka statistik & foto di bawah ini masih
-                    dummy — nanti tinggal diganti data dari database
-                    (mis. $stats->lanes, $stats->pool_length, $heroPhotos, dst).
-                --}}
+                @php
+                    // ============================================================
+                    // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy].
+                    // Begitu controller mengirim $heroStats & $heroPhotos asli
+                    // (mis. dari tabel pool_stats & hero_photos), blade ini
+                    // otomatis memakainya tanpa perlu diubah lagi.
+                    // ============================================================
+                    $heroStats = $heroStats ?? [
+                        ['icon' => 'fa-water',          'num' => '2',   'unit' => null, 'label' => 'Lintasan'],
+                        ['icon' => 'fa-ruler-combined',  'num' => '50',  'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
+                        ['icon' => 'fa-certificate',     'num' => '3',   'unit' => null, 'label' => 'Pelatih Bersertifikat'],
+                        ['icon' => 'fa-users',           'num' => '20+', 'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
+                    ];
+
+                    $heroPhotos = $heroPhotos ?? [
+                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-1/700/560', 'alt' => 'Suasana latihan pagi di kolam', 'icon' => 'fa-water',     'caption' => 'Latihan Pagi'],
+                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-2/700/560', 'alt' => 'Sesi latihan teknik start',      'icon' => 'fa-stopwatch', 'caption' => 'Teknik Start'],
+                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-3/700/560', 'alt' => 'Suasana kejuaraan renang',        'icon' => 'fa-trophy',    'caption' => 'Hari Kejuaraan'],
+                    ];
+
+                    $heroSlideCount = 1 + count($heroPhotos); // 1 slide statistik + N slide foto
+                @endphp
+
                 <div class="nac-hero-slider">
                     <div id="heroStatsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
                         <div class="carousel-inner">
@@ -40,64 +56,50 @@
                             {{-- Slide 1: statistik --}}
                             <div class="carousel-item active">
                                 <div class="nac-hero-carousel-slide nac-hero-carousel-slide--stats">
-                                    <div class="nac-hero-stats__item">
-                                        <i class="fa-solid fa-water"></i>
-                                        <div>
-                                            <div class="nac-hero-stats__num">2</div>
-                                            <div class="nac-hero-stats__label">Lintasan</div>
+                                    @foreach($heroStats as $stat)
+                                        <div class="nac-hero-stats__item">
+                                            <i class="fa-solid {{ $stat['icon'] }}"></i>
+                                            <div>
+                                                <div class="nac-hero-stats__num">{{ $stat['num'] }}@if(!empty($stat['unit']))<span>{{ $stat['unit'] }}</span>@endif</div>
+                                                <div class="nac-hero-stats__label">{{ $stat['label'] }}</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="nac-hero-stats__item">
-                                        <i class="fa-solid fa-ruler-combined"></i>
-                                        <div>
-                                            <div class="nac-hero-stats__num">50<span>m</span></div>
-                                            <div class="nac-hero-stats__label">Panjang Kolam Utama</div>
-                                        </div>
-                                    </div>
-                                    <div class="nac-hero-stats__item">
-                                        <i class="fa-solid fa-certificate"></i>
-                                        <div>
-                                            <div class="nac-hero-stats__num">3</div>
-                                            <div class="nac-hero-stats__label">Pelatih Bersertifikat</div>
-                                        </div>
-                                    </div>
-                                    <div class="nac-hero-stats__item">
-                                        <i class="fa-solid fa-users"></i>
-                                        <div>
-                                            <div class="nac-hero-stats__num">20+</div>
-                                            <div class="nac-hero-stats__label">Atlet Aktif Berlatih</div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
-                            {{-- Slide 2–4: foto-foto (dummy, ganti src dgn foto asli / data DB) --}}
-                            <div class="carousel-item">
-                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
-                                    <img src="https://picsum.photos/seed/nac-hero-1/700/560" alt="Suasana latihan pagi di kolam" loading="lazy">
-                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-water"></i> Latihan Pagi</span>
+                            {{-- Slide 2..N: foto --}}
+                            @foreach($heroPhotos as $photo)
+                                <div class="carousel-item">
+                                    <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo @if(empty($photo['photo_url'])) is-empty @endif">
+                                        @if(!empty($photo['photo_url']))
+                                            <img src="{{ $photo['photo_url'] }}"
+                                                 alt="{{ $photo['alt'] ?? '' }}"
+                                                 loading="lazy"
+                                                 onload="this.closest('.nac-hero-carousel-slide').classList.add('is-loaded')">
+                                        @else
+                                            <div class="nac-photo-placeholder">
+                                                <i class="fa-solid fa-image"></i>
+                                                <span>Foto belum tersedia</span>
+                                            </div>
+                                        @endif
+                                        @if(!empty($photo['caption']))
+                                            <span class="nac-hero-carousel-slide__caption">
+                                                <i class="fa-solid {{ $photo['icon'] ?? 'fa-circle' }}"></i> {{ $photo['caption'] }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
-                                    <img src="https://picsum.photos/seed/nac-hero-2/700/560" alt="Sesi latihan teknik start" loading="lazy">
-                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-stopwatch"></i> Teknik Start</span>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo">
-                                    <img src="https://picsum.photos/seed/nac-hero-3/700/560" alt="Suasana kejuaraan renang" loading="lazy">
-                                    <span class="nac-hero-carousel-slide__caption"><i class="fa-solid fa-trophy"></i> Hari Kejuaraan</span>
-                                </div>
-                            </div>
+                            @endforeach
 
                         </div>
 
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                            <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                            @for($i = 0; $i < $heroSlideCount; $i++)
+                                <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="{{ $i }}"
+                                        @if($i === 0) class="active" aria-current="true" @endif
+                                        aria-label="Slide {{ $i + 1 }}"></button>
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -172,32 +174,39 @@
             </div>
         </div>
 
-        {{-- Ganti src tiap gambar dengan foto asli kolam/atlet/pelatih Anda --}}
+        @php
+            // 🔧 DUMMY — ganti dengan data asli galeri dari controller (mis. $galleryItems).
+            $galleryItems = $galleryItems ?? [
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-1/640/800', 'alt' => 'Latihan di kolam utama',         'caption' => 'Latihan Pagi'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-2/640/800', 'alt' => 'Sesi latihan teknik start',       'caption' => 'Teknik Start'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-3/640/800', 'alt' => 'Suasana kejuaraan renang',        'caption' => 'Hari Kejuaraan'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-4/640/800', 'alt' => 'Pelatih membimbing atlet junior', 'caption' => 'Bimbingan Pelatih'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-5/640/800', 'alt' => 'Fasilitas kolam dari atas',       'caption' => 'Kolam Standar Kompetisi'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-6/640/800', 'alt' => 'Sesi latihan fisik di gym',       'caption' => 'Fitness & Recovery'],
+            ];
+        @endphp
+
         <div class="nac-gallery__track" data-gallery-track data-aos="fade-up" data-aos-delay="100">
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-1/640/800" alt="Latihan di kolam utama" loading="lazy">
-                <figcaption>Latihan Pagi</figcaption>
-            </figure>
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-2/640/800" alt="Sesi latihan teknik start" loading="lazy">
-                <figcaption>Teknik Start</figcaption>
-            </figure>
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-3/640/800" alt="Suasana kejuaraan renang" loading="lazy">
-                <figcaption>Hari Kejuaraan</figcaption>
-            </figure>
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-4/640/800" alt="Pelatih membimbing atlet junior" loading="lazy">
-                <figcaption>Bimbingan Pelatih</figcaption>
-            </figure>
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-5/640/800" alt="Fasilitas kolam dari atas" loading="lazy">
-                <figcaption>Kolam Standar Kompetisi</figcaption>
-            </figure>
-            <figure class="nac-gallery__item">
-                <img src="https://picsum.photos/seed/nac-pool-6/640/800" alt="Sesi latihan fisik di gym" loading="lazy">
-                <figcaption>Fitness &amp; Recovery</figcaption>
-            </figure>
+            @forelse($galleryItems as $item)
+                <figure class="nac-gallery__item @if(empty($item['photo_url'])) is-empty @endif">
+                    @if(!empty($item['photo_url']))
+                        <img src="{{ $item['photo_url'] }}"
+                             alt="{{ $item['alt'] ?? '' }}"
+                             loading="lazy"
+                             onload="this.closest('.nac-gallery__item').classList.add('is-loaded')">
+                    @else
+                        <div class="nac-photo-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto belum tersedia</span>
+                        </div>
+                    @endif
+                    @if(!empty($item['caption']))
+                        <figcaption>{{ $item['caption'] }}</figcaption>
+                    @endif
+                </figure>
+            @empty
+                <p class="text-center nac-muted">Galeri belum tersedia.</p>
+            @endforelse
         </div>
     </div>
 </section>

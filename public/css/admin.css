@@ -1,0 +1,242 @@
+:root {
+  --adm-ink: #0A0E14;
+  --adm-graphite: #141B23;
+  --adm-graphite-soft: #1C2530;
+  --adm-steel: #6B7A8A;
+  --adm-mist: #F4F6F8;
+  --adm-white: #FFFFFF;
+  --adm-aqua: #7FD8FF;
+  --adm-deep-aqua: #1E6FA8;
+  --adm-gradient: linear-gradient(135deg, #7FD8FF 0%, #1E6FA8 100%);
+  --adm-danger: #EF5350;
+  --adm-radius: 14px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: var(--adm-graphite);
+}
+
+/* ==========================================================================
+   LOGIN
+   ========================================================================== */
+.nac-admin-login-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at top, #0F2438 0%, var(--adm-ink) 60%);
+  padding: 1.5rem;
+}
+
+.nac-admin-login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--adm-white);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+}
+
+.nac-admin-login-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--adm-graphite);
+}
+.nac-admin-login-mark {
+  background: var(--adm-gradient);
+  color: var(--adm-ink);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+}
+
+.nac-admin-login-card h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+.nac-admin-login-card > p {
+  color: var(--adm-steel);
+  font-size: 0.88rem;
+  margin-bottom: 1.5rem;
+}
+
+.nac-admin-login-card .form-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--adm-graphite);
+}
+.nac-admin-login-card .form-control {
+  border-radius: 10px;
+  border: 1.5px solid #e3e8ec;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.92rem;
+}
+.nac-admin-login-card .form-control:focus {
+  border-color: var(--adm-deep-aqua);
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
+}
+
+.nac-admin-btn {
+  background: var(--adm-gradient);
+  color: var(--adm-ink);
+  font-weight: 800;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.nac-admin-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -10px rgba(30, 111, 168, 0.5);
+  color: var(--adm-ink);
+}
+
+.nac-admin-back-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--adm-steel);
+  text-decoration: none;
+}
+.nac-admin-back-link:hover { color: var(--adm-deep-aqua); }
+
+/* ==========================================================================
+   DASHBOARD SHELL
+   ========================================================================== */
+.nac-admin-body {
+  background: var(--adm-mist);
+}
+
+.nac-admin-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.nac-admin-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--adm-ink);
+  color: var(--adm-white);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.1rem;
+}
+.nac-admin-sidebar__brand {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.nac-admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
+}
+.nac-admin-nav a,
+.nac-admin-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.nac-admin-nav a:hover,
+.nac-admin-nav a.active {
+  background: rgba(127, 216, 255, 0.12);
+  color: var(--adm-aqua);
+}
+.nac-admin-nav__group {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 1rem 0.75rem 0.35rem;
+}
+.nac-admin-nav__item--disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+.nac-admin-nav__item--disabled small {
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+}
+
+.nac-admin-logout-form { margin-top: auto; }
+.nac-admin-logout-form button {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.nac-admin-logout-form button:hover {
+  background: rgba(239, 83, 80, 0.15);
+  border-color: var(--adm-danger);
+  color: #fff;
+}
+
+.nac-admin-main {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.nac-admin-topbar {
+  background: var(--adm-white);
+  border-bottom: 1px solid #e6eaed;
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.nac-admin-content {
+  padding: 2rem;
+}
+
+.nac-admin-stat-card {
+  background: var(--adm-white);
+  border: 1px solid #e6eaed;
+  border-radius: var(--adm-radius);
+  padding: 1.5rem;
+}
+.nac-admin-stat-card__label {
+  font-size: 0.78rem;
+  color: var(--adm-steel);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+.nac-admin-stat-card__num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--adm-ink);
+}
+
+@media (max-width: 767.98px) {
+  .nac-admin-shell { flex-direction: column; }
+  .nac-admin-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .nac-admin-nav { flex-direction: row; flex-wrap: wrap; }
+  .nac-admin-logout-form { margin-top: 0; margin-left: auto; width: auto; }
+}

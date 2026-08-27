@@ -9,8 +9,18 @@
 @endphp
 
 <a href="{{ $detailUrl }}" class="nac-team-card" aria-label="Lihat profil {{ $member->name }} ({{ $roleLabel }})">
-    <div class="nac-team-card__photo">
-        <img src="{{ $member->photo_url }}" alt="Foto {{ $member->name }}" loading="lazy">
+    <div class="nac-team-card__photo @if(empty($member->photo_url)) is-empty @endif">
+        @if(!empty($member->photo_url))
+            <img src="{{ $member->photo_url }}"
+                 alt="Foto {{ $member->name }}"
+                 loading="lazy"
+                 onload="this.parentElement.classList.add('is-loaded')">
+        @else
+            <div class="nac-photo-placeholder">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto belum tersedia</span>
+            </div>
+        @endif
     </div>
 
     <span class="nac-team-card__shine" aria-hidden="true"></span>

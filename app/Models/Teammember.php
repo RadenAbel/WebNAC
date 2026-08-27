@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TeamMember extends Model
 {
@@ -13,20 +14,29 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'photo',
+        'whatsapp',
+        'instagram_url',
+        'facebook_url',
+        'tiktok_url',
         'age',
         'role',
         'category',
+        'origin_city',
+        'years_experience',
+        'total_medals',
+        'total_achievements',
         'bio',
         'sort_order',
         'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'age'       => 'integer',
-        'sort_order' => 'integer',
-        'best_times'   => 'array',
-        'competitions' => 'array',
+        'is_active'          => 'boolean',
+        'age'                => 'integer',
+        'years_experience'   => 'integer',
+        'total_medals'       => 'integer',
+        'total_achievements' => 'integer',
+        'sort_order'         => 'integer',
     ];
 
     /**
@@ -37,6 +47,22 @@ class TeamMember extends Model
         return $this->photo
             ? asset('storage/' . $this->photo)
             : asset('images/default-avatar.jpg');
+    }
+
+    /**
+     * Rekor waktu terbaik milik anggota tim ini, terurut sesuai sort_order.
+     */
+    public function records(): HasMany
+    {
+        return $this->hasMany(TeamMemberRecord::class)->orderBy('sort_order');
+    }
+
+    /**
+     * Pencapaian & penghargaan milik anggota tim ini.
+     */
+    public function achievements(): HasMany
+    {
+        return $this->hasMany(TeamMemberAchievement::class)->orderBy('sort_order');
     }
 
     /**

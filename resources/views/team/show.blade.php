@@ -102,10 +102,20 @@
                 </div>
 
                 <div class="nac-profile-card__photo">
-                    <img src="{{ $member->photo_url ?? asset('assets/img/team/placeholder-athlete.jpg') }}"
-                         alt="Foto {{ $member->name }}"
-                         width="360" height="450"
-                         fetchpriority="high">
+                    <div class="nac-profile-card__photo-frame @if(empty($member->photo_url)) is-empty @endif">
+                        @if(!empty($member->photo_url))
+                            <img src="{{ $member->photo_url }}"
+                                 alt="Foto {{ $member->name }}"
+                                 width="360" height="450"
+                                 fetchpriority="high"
+                                 onload="this.parentElement.classList.add('is-loaded')">
+                        @else
+                            <div class="nac-photo-placeholder">
+                                <i class="fa-solid fa-image"></i>
+                                <span>Foto belum tersedia</span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="nac-profile-card__medals">

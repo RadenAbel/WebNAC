@@ -7,11 +7,11 @@
 
 <section class="nac-page-header">
     <div class="container text-center" data-aos="fade-up">
-        <nav class="nac-breadcrumb" aria-label="Breadcrumb">
+        <!-- <nav class="nac-breadcrumb" aria-label="Breadcrumb">
             <a href="{{ url('/') }}">Beranda</a>
             <i class="fa-solid fa-chevron-right"></i>
             <span aria-current="page">Our Team</span>
-        </nav>
+        </nav> -->
 
         <span class="nac-page-header__icon"><i class="fa-solid fa-people-group"></i></span>
 
