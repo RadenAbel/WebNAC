@@ -40,13 +40,14 @@ class TeamMember extends Model
     ];
 
     /**
-     * Accessor untuk URL foto lengkap (kalau disimpan di storage/public).
+     * Accessor untuk URL foto. SENGAJA return null (bukan gambar fallback)
+     * kalau belum ada foto — supaya tampilan (card & halaman profil) bisa
+     * menampilkan placeholder "No Image" yang lebih rapi, bukan gambar
+     * default generik atau broken image.
      */
-    public function getPhotoUrlAttribute(): string
+    public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo
-            ? asset('storage/' . $this->photo)
-            : asset('images/default-avatar.jpg');
+        return $this->photo ? asset('storage/' . $this->photo) : null;
     }
 
     /**
@@ -63,6 +64,91 @@ class TeamMember extends Model
     public function achievements(): HasMany
     {
         return $this->hasMany(TeamMemberAchievement::class)->orderBy('sort_order');
+    }
+
+    // ========================================================================
+    // ACCESSOR ALIAS
+    // ------------------------------------------------------------------------
+    // Halaman profil publik (team/show.blade.php) memakai beberapa nama field
+    // yang beda dari nama kolom aslinya di database. Accessor di bawah ini
+    // cuma "jembatan" penamaan — tidak menambah kolom baru, cuma alias.
+    // ========================================================================
+
+    public function getHometownAttribute(): ?string
+    {
+        return $this->origin_city;
+    }
+
+    public function getExperienceYearsAttribute(): ?int
+    {
+        return $this->years_experience;
+    }
+
+    /**
+     * Dipakai untuk tombol "Hubungi Saya" (link wa.me) di halaman profil.
+     */
+    public function getPhoneAttribute(): ?string
+    {
+        return $this->whatsapp;
+    }
+
+    /**
+     * Blade menyusun link Instagram dari @handle (bukan URL penuh), jadi
+     * di sini kita ekstrak handle-nya dari instagram_url yang disimpan admin.
+     */
+    public function getInstagramAttribute(): ?string
+    {
+        if (! $this->instagram_url) {
+            return null;
+        }
+
+        $path = trim((string) parse_url($this->instagram_url, PHP_URL_PATH), '/');
+
+        return $path ?: null;
+    }
+
+    /**
+     * Breakdown medali emas/perak/perunggu, dihitung dari relasi `records`
+     * (bukan dari kolom total_medals yang diisi manual admin) — supaya
+     * angkanya selalu akurat mengikuti rekor yang benar-benar diinput.
+     */
+    public function getMedalStatsAttribute(): array
+    {
+        $records = $this->relationLoaded('records') ? $this->records : $this->records()->get();
+
+        return [
+            'gold'   => $records->where('medal', 'Emas')->count(),
+            'silver' => $records->where('medal', 'Perak')->count(),
+            'bronze' => $records->where('medal', 'Perunggu')->count(),
+        ];
+    }
+
+    /**
+     * Bentuk array rekor waktu terbaik sesuai format yang dipakai
+     * team/show.blade.php (tabel Rekor Waktu Terbaik).
+     */
+    public function getPersonalBestsAttribute(): array
+    {
+        $records = $this->relationLoaded('records') ? $this->records : $this->records()->get();
+
+        $medalKeyMap = [
+            'Emas'     => 'gold',
+            'Perak'    => 'silver',
+            'Perunggu' => 'bronze',
+        ];
+
+        return $records->map(function ($record) use ($medalKeyMap) {
+            return [
+                'event'       => $record->event,
+                'time'        => $record->time,
+                'medal'       => $medalKeyMap[$record->medal] ?? null,
+                'pool_length' => $record->pool_length ? $record->pool_length . 'm' : null,
+                'age'         => $record->age_at_record,
+                'competition' => $record->competition,
+                'country'     => $record->country,
+                'date'        => $record->record_date ? $record->record_date->format('d/m/Y') : null,
+            ];
+        })->values()->all();
     }
 
     /**

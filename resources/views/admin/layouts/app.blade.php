@@ -14,43 +14,87 @@
 </head>
 <body class="nac-admin-body">
 
+    <div class="nac-admin-backdrop" id="sidebarBackdrop"></div>
+
     <div class="nac-admin-shell">
         <aside class="nac-admin-sidebar">
-            <div class="nac-admin-sidebar__brand">NAC Admin</div>
+            <div class="nac-admin-sidebar__brand">
+                <span class="nac-admin-sidebar__brand-mark">NAC</span>
+                <span class="nac-admin-sidebar__brand-text">
+                    Admin Panel
+                    <small>Nugroho Aquatic</small>
+                </span>
+            </div>
 
             <nav class="nac-admin-nav">
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <span><i class="bi bi-speedometer2 me-1"></i> Dashboard</span>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" title="Dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span class="nac-admin-nav__label">Dashboard</span>
                 </a>
 
                 <span class="nac-admin-nav__group">Konten Website</span>
 
-                <a href="{{ route('admin.sliders.index') }}" class="{{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
-                    <span><i class="bi bi-images me-1"></i> Slider</span>
+                <a href="{{ route('admin.sliders.index') }}" class="{{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}" title="Slider">
+                    <i class="bi bi-images"></i>
+                    <span class="nac-admin-nav__label">Slider</span>
                 </a>
-                <a href="{{ route('admin.galleries.index') }}" class="{{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
-                    <span><i class="bi bi-camera me-1"></i> Galeri</span>
+                <a href="{{ route('admin.galleries.index') }}" class="{{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}" title="Galeri">
+                    <i class="bi bi-camera"></i>
+                    <span class="nac-admin-nav__label">Galeri</span>
                 </a>
-                <a href="{{ route('admin.schedules.index') }}" class="{{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
-                    <span><i class="bi bi-calendar-week me-1"></i> Jadwal</span>
+                <a href="{{ route('admin.schedules.index') }}" class="{{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}" title="Jadwal">
+                    <i class="bi bi-calendar-week"></i>
+                    <span class="nac-admin-nav__label">Jadwal</span>
                 </a>
-                <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}">
-                    <span><i class="bi bi-people me-1"></i> Tim (Pelatih/Atlet)</span>
+                <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Acara">
+                    <i class="bi bi-calendar-event"></i>
+                    <span class="nac-admin-nav__label">Acara</span>
                 </a>
-                <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                    <span><i class="bi bi-gear me-1"></i> Pengaturan Situs</span>
+                <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}" title="Tim (Pelatih/Atlet)">
+                    <i class="bi bi-people"></i>
+                    <span class="nac-admin-nav__label">Tim (Pelatih/Atlet)</span>
+                </a>
+
+                <span class="nac-admin-nav__group">Pengaturan</span>
+
+                <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" title="Pengaturan Situs">
+                    <i class="bi bi-gear"></i>
+                    <span class="nac-admin-nav__label">Pengaturan Situs</span>
                 </a>
             </nav>
 
-            <form method="POST" action="{{ route('admin.logout') }}" class="nac-admin-logout-form">
-                @csrf
-                <button type="submit"><i class="bi bi-box-arrow-right me-1"></i> Keluar</button>
-            </form>
+            <div class="nac-admin-sidebar__footer">
+                <form method="POST" action="{{ route('admin.logout') }}" class="nac-admin-logout-form">
+                    @csrf
+                    <button type="submit" title="Keluar"><i class="bi bi-box-arrow-right"></i> <span>Keluar</span></button>
+                </form>
+            </div>
         </aside>
 
         <div class="nac-admin-main">
             <header class="nac-admin-topbar">
-                <span>Halo, {{ auth()->user()->name }}</span>
+                <div class="nac-admin-topbar__left">
+                    <button type="button" class="nac-admin-sidebar-toggle d-none d-lg-inline-flex" id="sidebarToggle" aria-label="Buka/tutup sidebar">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <button type="button" class="nac-admin-sidebar-toggle nac-admin-mobile-toggle" id="mobileSidebarToggle" aria-label="Buka menu">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <p class="nac-admin-topbar__title">@yield('admin_title', 'Dashboard')</p>
+                </div>
+
+                <div class="nac-admin-topbar__right">
+                    <a href="{{ route('home') }}" target="_blank" class="nac-admin-topbar__view-site">
+                        <i class="bi bi-box-arrow-up-right"></i> <span>Lihat Situs</span>
+                    </a>
+                    <div class="nac-admin-topbar__user">
+                        <span class="nac-admin-topbar__avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                        <div class="d-none d-sm-block">
+                            <div class="nac-admin-topbar__user-name">{{ auth()->user()->name }}</div>
+                            <div class="nac-admin-topbar__user-role">Administrator</div>
+                        </div>
+                    </div>
+                </div>
             </header>
 
             <div class="nac-admin-content">
@@ -59,5 +103,7 @@
         </div>
     </div>
 
+    <script src="{{ asset('js/admin.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

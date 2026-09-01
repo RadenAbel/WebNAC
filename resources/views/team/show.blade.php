@@ -164,7 +164,7 @@
 </section>
 
 {{-- ============ ISI TAB ============ --}}
-<section class="nac-section nac-section--tint">
+<section class="nac-section nac-section--tint nac-profile-tabsection">
     <div class="container">
         <div class="tab-content" id="profileTabContent">
 

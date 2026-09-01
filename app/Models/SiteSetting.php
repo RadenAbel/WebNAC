@@ -40,6 +40,21 @@ class SiteSetting extends Model
     }
 
     /**
+     * Bentuk link https://wa.me/... otomatis dari nomor WA yang diinput
+     * admin (boleh diketik pakai spasi/strip/+, di sini dibersihkan dulu).
+     */
+    public function getWhatsappUrlAttribute(): ?string
+    {
+        if (! $this->whatsapp) {
+            return null;
+        }
+
+        $digitsOnly = preg_replace('/\D/', '', $this->whatsapp);
+
+        return "https://wa.me/{$digitsOnly}";
+    }
+
+    /**
      * Ambil satu-satunya baris pengaturan situs. Kalau belum pernah diisi
      * sama sekali (fresh install, admin belum buka menu Pengaturan),
      * otomatis dibuatkan baris kosong dengan nilai default supaya blade

@@ -124,21 +124,19 @@
         <div class="row g-5 align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="nac-about-photo">
-                    <img src="https://picsum.photos/seed/nac-about/700/560" alt="Suasana latihan di Nugroho Aquatic Center" loading="lazy">
+                    <img src="{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-about/700/560' }}"
+                        alt="Suasana latihan di Nugroho Aquatic Center" loading="lazy">
                     <div class="nac-about-photo__badge">
                         <span>Sejak</span>
-                        <strong>2025</strong>
+                        <strong>{{ $setting->since_year ?? '2010' }}</strong>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <span class="nac-eyebrow">Tentang Kami</span>
-                <h2 class="nac-section__title">Lebih dari sekadar tempat berenang.</h2>
+                <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
                 <p class="nac-lead">
-                    Sejak 2025, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang dari
-                    tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru
-                    mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan
-                    yang sama seriusnya.
+                    {{ $setting->about_description ?? 'Sejak berdiri, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.' }}
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
@@ -228,21 +226,21 @@
         <div class="row g-4 mt-3">
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
                 <div class="nac-facility-card">
-                    <i class="bi bi-water"></i>
+                    <div class="nac-facility-card__icon"><i class="bi bi-water"></i></div>
                     <h5>Kolam Standar Kompetisi</h5>
                     <p>2 lintasan sepanjang 50 meter dengan sistem sirkulasi air dan pencahayaan bawah air.</p>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="nac-facility-card">
-                    <i class="bi bi-stopwatch"></i>
+                    <div class="nac-facility-card__icon"><i class="bi bi-stopwatch"></i></div>
                     <h5>Sistem Timing Elektronik</h5>
                     <p>Pencatatan waktu otomatis untuk latihan interval dan simulasi kejuaraan.</p>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="nac-facility-card">
-                    <i class="bi bi-heart-pulse"></i>
+                    <div class="nac-facility-card__icon"><i class="bi bi-heart-pulse"></i></div>
                     <h5>Food &amp; Drink</h5>
                     <p>Area bersantai untuk mengisi perut dan menghilangkan dahaga.</p>
                 </div>
@@ -338,11 +336,27 @@
         <div class="nac-section__head nac-fade-in">
             <span class="nac-eyebrow">Jadwal Latihan</span>
             <h2 class="nac-section__title">Atur waktu latihanmu.</h2>
+            <p class="nac-lead">Pilih kategori sesuai levelmu, lalu catat hari dan jamnya.</p>
         </div>
 
-        <div class="nac-schedule nac-schedule--light mt-4 nac-fade-in nac-fade-in--delay">
+        @php
+            // Pemetaan ikon per kategori — cocokkan dengan nama kategori yang
+            // kamu pakai di tabel schedules. Tidak ketemu? otomatis pakai fa-water.
+            $scheduleIcon = function (string $category): string {
+                $c = strtolower($category);
+                return match(true) {
+                    str_contains($c, 'junior')  => 'fa-child-reaching',
+                    str_contains($c, 'senior')  => 'fa-person-swimming',
+                    str_contains($c, 'class a') || str_contains($c, 'kelas a') => 'fa-medal',
+                    str_contains($c, 'class b') || str_contains($c, 'kelas b') => 'fa-stopwatch',
+                    default => 'fa-water',
+                };
+            };
+        @endphp
+
+        <div class="nac-schedule-table-wrap mt-4 nac-fade-in nac-fade-in--delay">
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="nac-schedule-table mb-0">
                     <thead>
                         <tr>
                             <th>Kategori</th>
@@ -351,26 +365,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><span class="nac-schedule__cat">Junior</span></td>
-                            <td>Selasa, Kamis</td>
-                            <td>15.00 – 16.30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="nac-schedule__cat">Senior</span></td>
-                            <td>Senin, Rabu, Jumat</td>
-                            <td>16.00 – 18.00</td>
-                        </tr>
-                        <tr>
-                            <td><span class="nac-schedule__cat">Swim Class A</span></td>
-                            <td>Senin – Jumat</td>
-                            <td>06.00 – 08.00</td>
-                        </tr>
-                        <tr>
-                            <td><span class="nac-schedule__cat">Swim Class B</span></td>
-                            <td>Sabtu, Minggu</td>
-                            <td>07.00 – 09.00</td>
-                        </tr>
+                        @forelse ($schedules as $schedule)
+                            @php
+                                // Pecah "Senin, Rabu, Jumat" jadi badge per hari. Format
+                                // rentang seperti "Senin - Jumat" sengaja tidak dipecah.
+                                $days = array_values(array_filter(array_map('trim', preg_split('/[,\/]+/', $schedule->days_label))));
+                            @endphp
+                            <tr>
+                                <td>
+                                    <span class="nac-schedule-table__cat">
+                                        <span class="nac-schedule-table__icon">
+                                            <i class="fa-solid {{ $scheduleIcon($schedule->category) }}"></i>
+                                        </span>
+                                        {{ $schedule->category }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="nac-schedule-table__days">
+                                        @foreach($days as $day)
+                                            <span class="nac-schedule-table__day">{{ $day }}</span>
+                                        @endforeach
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="nac-schedule-table__time">
+                                        <i class="fa-regular fa-clock"></i> {{ $schedule->time_label }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-secondary py-4">
+                                    Jadwal belum tersedia.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

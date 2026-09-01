@@ -5,8 +5,8 @@
 @section('admin_content')
 
     <div class="mb-4">
-        <a href="{{ route('admin.galleries.index') }}" class="text-secondary text-decoration-none" style="font-size:0.85rem;">
-            <i class="bi bi-arrow-left"></i> Kembali ke galeri
+        <a href="{{ route('admin.galleries.index') }}" class="nac-admin-back-btn">
+            <span class="nac-admin-back-btn__icon"><i class="bi bi-arrow-left"></i></span> Kembali ke galeri
         </a>
         <h1 class="h4 fw-bold mt-2 mb-1">Tambah Foto Galeri</h1>
     </div>

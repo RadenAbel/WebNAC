@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Admin\TeamMemberAchievementController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\TeamMemberRecordController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\JoinController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +30,19 @@ Route::get('/our-team', [TeamController::class, 'index'])
 
 Route::get('/our-team/{teamMember}', [TeamController::class, 'show'])
     ->name('team.show');
+
+Route::get('/acara', [EventController::class, 'index'])
+    ->name('event.index');
+
+Route::get('/acara/{event}', [EventController::class, 'show'])
+    ->name('event.show');
+
+// Halaman pendaftaran "Join Us" — form publik, submit-nya mengirim email
+// ke pengelola (lihat App\Mail\JoinRequestMail & App\Http\Controllers\JoinController).
+Route::get('/join', [JoinController::class, 'create'])->name('join.create');
+Route::post('/join', [JoinController::class, 'store'])
+    ->middleware('throttle:5,1') // cegah spam submit bertubi-tubi
+    ->name('join.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +96,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // CRUD Jadwal
     Route::resource('schedules', AdminScheduleController::class)->except(['show']);
+
+    // CRUD Acara
+    Route::resource('events', AdminEventController::class)->except(['show']);
 
     // Pengaturan Situs — singleton (cuma 1 baris data), jadi cuma butuh
     // edit & update, tidak ada index/create/destroy.

@@ -11,26 +11,37 @@ class TeamController extends Controller
      */
     public function index()
     {
-        // Ambil pelatih & atlit terpisah (untuk kebutuhan tampilan per section),
-        // tapi tetap dari satu tabel team_members.
         $coaches  = TeamMember::active()->pelatih()->get();
         $athletes = TeamMember::active()->atlet()->get();
 
         return view('team.index', compact('coaches', 'athletes'));
     }
-    
+
+    /**
+     * Halaman profil detail satu anggota tim.
+     */
     public function show(TeamMember $teamMember)
     {
-        // Anggota lain dengan role yang sama, untuk rekomendasi di halaman detail.
-        $related = TeamMember::where('role', $teamMember->role)
-            ->where('id', '!=', $teamMember->id)
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
- 
+        abort_unless($teamMember->is_active, 404);
+
+        // Load relasi sekali di awal — dipakai berulang kali oleh accessor
+        // medal_stats & personal_bests di model (menghindari N+1 query).
+        $teamMember->load(['records', 'achievements']);
+
+        // 'achievements' adalah nama RELASI di model (juga dipakai admin CRUD),
+        // tapi halaman profil publik ini butuh bentuknya sebagai array
+        // sederhana (title, year) — bukan objek Eloquent penuh. Di-override
+        // KHUSUS untuk kebutuhan tampilan; data asli di database tidak berubah.
+        $teamMember->setAttribute(
+            'achievements',
+            $teamMember->achievements->map(fn ($achievement) => [
+                'title' => $achievement->title,
+                'year'  => $achievement->year,
+            ])->values()->all()
+        );
+
         return view('team.show', [
-            'member'  => $teamMember,
-            'related' => $related,
+            'member' => $teamMember,
         ]);
     }
 }

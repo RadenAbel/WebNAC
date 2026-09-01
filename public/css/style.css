@@ -113,18 +113,24 @@ a { text-decoration: none; }
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 16px 36px -18px rgba(10, 14, 20, 0.3);
 }
+.nac-navbar .container-fluid {
+  display: flex;
+  align-items: center;
+}
 .nac-brand {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   color: var(--nac-ink);
+  min-width: 0; /* wajib supaya text-overflow:ellipsis di bawah bisa bekerja di flex item */
 }
 .nac-brand__mark {
     height: 40px; /* Sesuaikan tinggi logo sesuai kebutuhan */
     width: auto;
+    flex-shrink: 0;
     object-fit: contain;
     margin-right: 8px; /* Jarak antara logo dan teks */
-    border-radius: 20px;
+    border-radius: 50%; /* selalu bulat sempurna di ukuran berapa pun (bukan 20px tetap) */
 }
 
 .nac-brand__text {
@@ -161,7 +167,189 @@ a { text-decoration: none; }
    supaya tidak terlihat aneh (pill penuh hanya cocok untuk 1 baris) */
 @media (max-width: 991.98px) {
   .nac-navbar { border-radius: 26px; }
+  .nac-brand__text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 52vw;
+  }
 }
+
+@media (max-width: 420px) {
+  .nac-brand__text { font-size: 0.88rem; max-width: 42vw; }
+  .nac-brand__mark { height: 32px; }
+}
+
+/* ---------- Efek "dynamic island": mengecil jadi logo saja saat cursor
+   menjauh, melebar terbuka saat cursor mengarah ke navbar/logo. Khusus
+   desktop (≥992px) — di mobile, hamburger & menu tetap berfungsi normal
+   seperti biasa, tidak ikut mengecil. ---------- */
+@media (min-width: 992px) {
+  .nac-navbar {
+    width: 88px;
+    padding-left: 0;
+    padding-right: 0;
+    transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    overflow: hidden;
+  }
+  .nac-navbar:hover,
+  .nac-navbar:focus-within {
+    width: calc(100% - 2.5rem);
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 28px;
+  }
+  .nac-navbar:not(:hover):not(:focus-within) {
+    border-radius: 999px;
+  }
+  .nac-brand__mark {
+    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nac-navbar:not(:hover):not(:focus-within) .nac-brand__mark {
+    height: 60px;
+    margin-right: 0;
+    margin-left: 6px; /* koreksi halus — naikkan/turunkan angka ini kalau masih meleset */
+  }
+  .nac-navbar:not(:hover):not(:focus-within) .nac-brand {
+    gap: 0;
+  }
+  /* Bootstrap's px-3/px-lg-4 pakai !important, jadi override-nya juga harus
+     !important — kalau tidak, padding itu tetap "makan" ruang sempit 64px
+     tadi dan logo jadi ke-crop oleh overflow:hidden. */
+  .nac-navbar:not(:hover):not(:focus-within) .container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  /* Mengecil = cuma logo kamu yang terlihat, tanpa lingkaran putih di
+     baliknya (biar tidak dobel: bulatan navbar + bulatan logo). */
+  .nac-navbar:not(:hover):not(:focus-within) {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .nac-navbar .container-fluid {
+    justify-content: center;
+    transition: justify-content 0s 0.32s, padding 0s 0.32s;
+  }
+  .nac-navbar:hover .container-fluid,
+  .nac-navbar:focus-within .container-fluid {
+    justify-content: flex-start;
+    transition: justify-content 0s 0s, padding 0s 0s;
+  }
+
+  /* Teks nama & seluruh menu disembunyikan saat mengecil, dan baru pudar
+     muncul setelah pill-nya selesai melebar (delay), supaya tidak terlihat
+     "meledak" duluan sebelum ruangnya cukup. Lebarnya juga ikut dikempeskan
+     ke 0 (bukan cuma opacity) supaya logo benar-benar center sendirian,
+     tidak tergeser oleh ruang kosong bekas teks yang disembunyikan. */
+  .nac-brand__text {
+    opacity: 0;
+    max-width: 220px;
+    overflow: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.22s ease, max-width 0.22s ease;
+  }
+  .nac-navbar .navbar-collapse {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+    white-space: nowrap;
+  }
+  .nac-navbar:not(:hover):not(:focus-within) .navbar-collapse {
+    flex: 0 0 0;
+    width: 0;
+    max-width: 0;
+    overflow: hidden;
+  }
+  .nac-navbar:not(:hover):not(:focus-within) .nac-brand__text {
+    max-width: 0;
+  }
+  .nac-navbar:hover .nac-brand__text,
+  .nac-navbar:focus-within .nac-brand__text {
+    opacity: 1;
+    max-width: 220px;
+    pointer-events: auto;
+    transition: opacity 0.4s ease 0.32s, max-width 0.4s ease 0.18s;
+  }
+  .nac-navbar:hover .navbar-collapse,
+  .nac-navbar:focus-within .navbar-collapse {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.4s ease 0.32s;
+  }
+}
+
+/* ==========================================================================
+   JOIN US — halaman form pendaftaran
+   ========================================================================== */
+.nac-join-card {
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  box-shadow: 0 24px 48px -30px rgba(10, 14, 20, 0.25);
+  padding: 2.5rem;
+}
+@media (max-width: 575.98px) {
+  .nac-join-card { padding: 1.75rem 1.25rem; }
+}
+.nac-join-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--nac-ink);
+  margin-bottom: 0.5rem;
+}
+.nac-join-input {
+  width: 100%;
+  border: 1.5px solid #dfe4e8;
+  border-radius: 10px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--nac-graphite);
+  background: var(--nac-white);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.nac-join-input:focus {
+  outline: none;
+  border-color: var(--nac-deep-aqua);
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
+}
+.nac-join-input.is-invalid { border-color: #EF5350; }
+textarea.nac-join-input { resize: vertical; min-height: 110px; }
+.nac-join-error { font-size: 0.78rem; color: #EF5350; margin-top: 0.35rem; }
+
+.nac-join-submit {
+  width: 100%;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.nac-join-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+.nac-join-alert--success {
+  background: rgba(47, 168, 79, 0.1);
+  color: #1E7A38;
+}
+.nac-join-alert--success i { font-size: 1.1rem; }
 
 /* ==========================================================================
    HERO
@@ -446,23 +634,50 @@ a { text-decoration: none; }
    FACILITY CARDS
    ========================================================================== */
 .nac-facility-card {
+  position: relative;
   background: var(--nac-white);
   border: 1px solid #e9edf0;
   border-radius: var(--nac-radius);
   padding: 2rem 1.6rem;
   height: 100%;
+  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.nac-facility-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--nac-gradient-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
 }
 .nac-facility-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--nac-shadow);
   border-color: var(--nac-aqua-soft);
 }
-.nac-facility-card i {
-  font-size: 1.8rem;
+.nac-facility-card:hover::before { transform: scaleX(1); }
+
+.nac-facility-card__icon {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--nac-mist);
   color: var(--nac-deep-aqua);
-  margin-bottom: 1rem;
-  display: inline-block;
+  font-size: 1.5rem;
+  margin-bottom: 1.1rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.nac-facility-card:hover .nac-facility-card__icon {
+  background: var(--nac-gradient-accent);
+  color: var(--nac-ink);
 }
 .nac-facility-card h5 {
   font-weight: 700;
@@ -526,6 +741,7 @@ a { text-decoration: none; }
 
 .nac-gallery__track {
   display: flex;
+  justify-content: safe center;
   gap: 1.25rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -607,21 +823,6 @@ a { text-decoration: none; }
 }
 .nac-page-header .container { position: relative; z-index: 1; padding-bottom: 3.5rem; }
 .nac-page-header .nac-breadcrumb { justify-content: center; margin-bottom: 1.75rem; }
-.nac-page-header__icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--nac-aqua);
-  font-size: 1.4rem;
-}
 .nac-page-header__title {
   font-family: var(--nac-font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
@@ -805,11 +1006,14 @@ a { text-decoration: none; }
 /* ---------- Grid: tampil penuh & rapi saat dibuka ---------- */
 .nac-fan__grid {
   display: none;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   margin-top: 1rem;
 }
 .nac-fan__grid-item {
+  flex: 0 0 190px;
+  max-width: 190px;
   opacity: 0;
   transform: translateY(18px);
   animation: nac-fan-grid-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -823,12 +1027,13 @@ a { text-decoration: none; }
 .nac-fan-group.is-open .nac-fan__preview {
   display: none;
 }
-.nac-fan-group.is-open .nac-fan__grid { display: grid; }
+.nac-fan-group.is-open .nac-fan__grid { display: flex; }
 .nac-fan-group:not(.is-open) .nac-fan__grid { display: none; }
 
 @media (max-width: 575.98px) {
   .nac-fan__deck { padding: 1.75rem 2rem 1.5rem; }
-  .nac-fan__grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .nac-fan__grid { gap: 1rem; }
+  .nac-fan__grid-item { flex-basis: 150px; max-width: 150px; }
 }
 
 /* ==========================================================================
@@ -870,6 +1075,31 @@ a { text-decoration: none; }
   transform: scale(1.06);
   filter: brightness(0.55);
 }
+/* ==========================================================================
+   TAMBAHAN: Placeholder "No Image" di nac-team-card
+   Sisipkan blok ini di public/css/style.css, dekat rule .nac-team-card lain.
+   ========================================================================== */
+.nac-team-card__no-photo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--nac-mist, #F4F6F8);
+  color: var(--nac-steel, #566573);
+}
+.nac-team-card__no-photo i {
+  font-size: 1.6rem;
+  opacity: 0.6;
+}
+.nac-team-card__no-photo span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 
 /* Skeleton shimmer — tampil selama foto masih dimuat (bukan saat memang tidak ada foto) */
 .nac-team-card__photo:not(.is-loaded):not(.is-empty)::before {
@@ -880,6 +1110,8 @@ a { text-decoration: none; }
   background-size: 200% 100%;
   animation: nac-shimmer 1.4s ease-in-out infinite;
 }
+
+
 @keyframes nac-shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
@@ -1282,6 +1514,96 @@ a { text-decoration: none; }
   color: var(--nac-ink);
 }
 
+/* ---------- Jadwal: tabel modern (card putih membungkus tabel) ---------- */
+.nac-schedule-table-wrap {
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  box-shadow: 0 4px 16px -8px rgba(10, 14, 20, 0.1);
+  overflow: hidden;
+}
+.nac-schedule-table-wrap .table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nac-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+.nac-schedule-table thead th {
+  background: var(--nac-mist);
+  color: var(--nac-deep-aqua);
+  font-family: var(--nac-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid #e9edf0;
+  white-space: nowrap;
+}
+.nac-schedule-table tbody td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #eef1f3;
+  vertical-align: middle;
+  transition: background 0.2s ease;
+}
+.nac-schedule-table tbody tr:last-child td { border-bottom: none; }
+.nac-schedule-table tbody tr:nth-child(even) td { background: var(--nac-mist); }
+.nac-schedule-table tbody tr:hover td { background: #eef4f7; }
+
+.nac-schedule-table__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-weight: 700;
+  color: var(--nac-ink);
+  white-space: nowrap;
+}
+.nac-schedule-table__icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--nac-mist);
+  color: var(--nac-deep-aqua);
+  font-size: 0.9rem;
+}
+.nac-schedule-table__days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.nac-schedule-table__day {
+  font-family: var(--nac-font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--nac-graphite);
+  background: var(--nac-mist);
+  border: 1px solid #e9edf0;
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  white-space: nowrap;
+}
+.nac-schedule-table__time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--nac-graphite);
+  white-space: nowrap;
+}
+.nac-schedule-table__time i { color: var(--nac-deep-aqua); }
+
+@media (max-width: 575.98px) {
+  .nac-schedule-table thead th,
+  .nac-schedule-table tbody td { padding: 0.9rem 1rem; }
+}
+
 /* ==========================================================================
    FOOTER MAP (dipindahkan dari section Lokasi)
    ========================================================================== */
@@ -1620,6 +1942,12 @@ a { text-decoration: none; }
 .nac-profile-card-wrap .container {
   max-width: 1480px;
 }
+
+/* Samakan lebar section tab (Rekor/Prestasi/Profil) dengan kartu hero di
+   atasnya, supaya tepinya sejajar dan tidak terlihat lebih sempit. */
+.nac-profile-tabsection .container {
+  max-width: 1480px;
+}
 .nac-profile-card {
   position: relative;
   background: var(--nac-white);
@@ -1650,10 +1978,10 @@ a { text-decoration: none; }
 
 .nac-profile-card__top {
   display: grid;
-  grid-template-columns: 1.1fr 0.85fr 1fr;
+  grid-template-columns: 1fr 340px 1fr;
   align-items: center;
   gap: 2.5rem;
-  padding: 0.5rem 0 1.75rem 1.5rem;
+  padding: 0.5rem 0 1.75rem;
 }
 
 .nac-profile-card__info { min-width: 0; }
@@ -1951,4 +2279,177 @@ a { text-decoration: none; }
   .nac-profile-card { padding: 1.75rem 1.25rem 0; }
   .nac-profile-card__photo { max-width: 220px; }
   .nac-rekor-table-wrap { padding: 0.5rem 0.25rem 1rem; }
+}
+
+/* ==========================================================================
+   TAMBAHAN: Card Acara publik (mirip nac-team-card + tombol View Detail)
+   Sisipkan blok ini ke public/css/style.css, dekat rule .nac-team-card.
+   ========================================================================== */
+.nac-event-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  background: var(--nac-white);
+  box-shadow: 0 10px 30px -18px rgba(10,14,20,0.4);
+  height: 100%;
+}
+
+.nac-event-card__link {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  isolation: isolate;
+}
+.nac-event-card__photo {
+  position: absolute;
+  inset: 0;
+}
+.nac-event-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.4s ease;
+}
+.nac-event-card__link:hover .nac-event-card__photo img {
+  transform: scale(1.06);
+  filter: brightness(0.55);
+}
+.nac-event-card__no-photo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--nac-mist, #F4F6F8);
+  color: var(--nac-steel, #566573);
+}
+.nac-event-card__no-photo i { font-size: 1.6rem; opacity: 0.6; }
+.nac-event-card__no-photo span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Overlay gelap saat hover — sama seperti card atlet/pelatih */
+.nac-event-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  background: linear-gradient(0deg, rgba(10,14,20,0.92) 0%, rgba(10,14,20,0.5) 55%, transparent 100%);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.nac-event-card__link:hover .nac-event-card__overlay,
+.nac-event-card__link:focus-visible .nac-event-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+.nac-event-card__name {
+  color: var(--nac-white);
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+.nac-event-card__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--nac-font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--nac-aqua, #7FD8FF);
+}
+
+/* Footer kartu — selalu tampil, berisi judul singkat + tombol View Detail */
+.nac-event-card__footer {
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+.nac-event-card__footer--center {
+  justify-content: center;
+}
+.nac-event-card__footer-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.nac-event-card__footer-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--nac-ink, #0A0E14);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nac-event-card__footer-date {
+  font-size: 0.76rem;
+  color: var(--nac-steel, #566573);
+}
+.nac-event-card__detail-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--nac-deep-aqua, #1E6FA8);
+  border: 1.5px solid var(--nac-aqua-soft, #BEEBFF);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.nac-event-card__detail-btn:hover {
+  background: var(--nac-gradient-accent, linear-gradient(90deg, #7FD8FF, #1E6FA8));
+  color: var(--nac-ink, #0A0E14);
+  border-color: transparent;
+}
+
+/* ==========================================================================
+   HALAMAN DETAIL ACARA
+   ========================================================================== */
+.nac-event-detail-photo {
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  box-shadow: 0 20px 50px -20px rgba(10,14,20,0.35);
+}
+.nac-event-detail-photo img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+}
+.nac-event-detail-date {
+  font-family: var(--nac-font-mono, monospace);
+  font-size: 0.85rem;
+  color: var(--nac-deep-aqua, #1E6FA8);
+  margin: 0.75rem 0;
+}
+.nac-event-pdf-frame {
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  border: 1px solid #e5e9ec;
+  box-shadow: 0 10px 30px -18px rgba(10,14,20,0.25);
+}
+.nac-event-pdf-frame iframe {
+  width: 100%;
+  height: 640px;
+  border: 0;
+  display: block;
+}
+@media (max-width: 767.98px) {
+  .nac-event-pdf-frame iframe { height: 420px; }
 }

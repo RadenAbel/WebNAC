@@ -1,20 +1,41 @@
+/* ==========================================================================
+   NUGROHO AQUATIC CENTER — ADMIN DESIGN SYSTEM
+   ========================================================================== */
 :root {
-  --adm-ink: #0A0E14;
-  --adm-graphite: #141B23;
-  --adm-graphite-soft: #1C2530;
-  --adm-steel: #6B7A8A;
-  --adm-mist: #F4F6F8;
+  --adm-ink: #0B0F17;
+  --adm-ink-soft: #121826;
+  --adm-graphite: #1C2530;
+  --adm-steel: #64748B;
+  --adm-steel-light: #94A3B8;
+  --adm-border: #E5E9EF;
+  --adm-mist: #F5F7FA;
+  --adm-canvas: #F7F8FA;
   --adm-white: #FFFFFF;
+
   --adm-aqua: #7FD8FF;
+  --adm-aqua-soft: #E4F7FF;
   --adm-deep-aqua: #1E6FA8;
   --adm-gradient: linear-gradient(135deg, #7FD8FF 0%, #1E6FA8 100%);
-  --adm-danger: #EF5350;
-  --adm-radius: 14px;
+
+  --adm-success: #17A673;
+  --adm-success-soft: #E5F7EF;
+  --adm-danger: #E5484D;
+  --adm-danger-soft: #FDEBEC;
+  --adm-warning: #F5A524;
+
+  --adm-radius-sm: 8px;
+  --adm-radius: 12px;
+  --adm-radius-lg: 18px;
+
+  --adm-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --adm-shadow: 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+  --adm-shadow-lg: 0 24px 48px -20px rgba(15, 23, 42, 0.22);
 }
 
 body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   color: var(--adm-graphite);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ==========================================================================
@@ -25,94 +46,72 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(ellipse at top, #0F2438 0%, var(--adm-ink) 60%);
+  background:
+    radial-gradient(circle at 15% 15%, rgba(127, 216, 255, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(30, 111, 168, 0.18) 0%, transparent 50%),
+    var(--adm-ink);
   padding: 1.5rem;
 }
 
 .nac-admin-login-card {
   width: 100%;
-  max-width: 380px;
+  max-width: 400px;
   background: var(--adm-white);
-  border-radius: 20px;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+  border-radius: var(--adm-radius-lg);
+  padding: 2.75rem 2.25rem;
+  box-shadow: var(--adm-shadow-lg);
 }
 
 .nac-admin-login-brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 1.75rem;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--adm-graphite);
 }
 .nac-admin-login-mark {
   background: var(--adm-gradient);
   color: var(--adm-ink);
   font-family: 'Archivo Black', sans-serif;
-  font-size: 0.8rem;
-  padding: 0.35rem 0.55rem;
-  border-radius: 8px;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--adm-radius-sm);
 }
 
 .nac-admin-login-card h1 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
 }
 .nac-admin-login-card > p {
   color: var(--adm-steel);
   font-size: 0.88rem;
-  margin-bottom: 1.5rem;
-}
-
-.nac-admin-login-card .form-label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--adm-graphite);
-}
-.nac-admin-login-card .form-control {
-  border-radius: 10px;
-  border: 1.5px solid #e3e8ec;
-  padding: 0.6rem 0.85rem;
-  font-size: 0.92rem;
-}
-.nac-admin-login-card .form-control:focus {
-  border-color: var(--adm-deep-aqua);
-  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
-}
-
-.nac-admin-btn {
-  background: var(--adm-gradient);
-  color: var(--adm-ink);
-  font-weight: 800;
-  border: none;
-  border-radius: 10px;
-  padding: 0.7rem 1rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.nac-admin-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px -10px rgba(30, 111, 168, 0.5);
-  color: var(--adm-ink);
+  margin-bottom: 1.75rem;
 }
 
 .nac-admin-back-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   font-size: 0.82rem;
+  font-weight: 600;
   color: var(--adm-steel);
   text-decoration: none;
+  transition: color 0.15s ease;
 }
 .nac-admin-back-link:hover { color: var(--adm-deep-aqua); }
 
 /* ==========================================================================
-   DASHBOARD SHELL
+   DASHBOARD SHELL — SIDEBAR + TOPBAR
    ========================================================================== */
 .nac-admin-body {
-  background: var(--adm-mist);
+  background: var(--adm-canvas);
 }
 
 .nac-admin-shell {
@@ -121,122 +120,1138 @@ body {
 }
 
 .nac-admin-sidebar {
-  width: 250px;
+  width: 264px;
   flex-shrink: 0;
   background: var(--adm-ink);
   color: var(--adm-white);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 1.1rem;
+  padding: 1.5rem 1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
+
 .nac-admin-sidebar__brand {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.6rem 0;
   margin-bottom: 2rem;
-  padding: 0 0.5rem;
+}
+.nac-admin-sidebar__brand-mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--adm-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.72rem;
+  color: var(--adm-ink);
+}
+.nac-admin-sidebar__brand-text {
+  font-weight: 800;
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+.nac-admin-sidebar__brand-text small {
+  display: block;
+  font-weight: 500;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .nac-admin-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
   flex-grow: 1;
 }
+
 .nac-admin-nav a,
 .nac-admin-nav__item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.75);
+  justify-content: flex-start;
+  gap: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--adm-radius-sm);
+  color: rgba(255, 255, 255, 0.68);
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.87rem;
   font-weight: 600;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-.nac-admin-nav a:hover,
+.nac-admin-nav a i,
+.nac-admin-nav__item i {
+  width: 18px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.nac-admin-nav a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--adm-white);
+}
 .nac-admin-nav a.active {
   background: rgba(127, 216, 255, 0.12);
   color: var(--adm-aqua);
 }
+.nac-admin-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--adm-gradient);
+  border-radius: 0 3px 3px 0;
+}
+
 .nac-admin-nav__group {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.35);
-  padding: 1rem 0.75rem 0.35rem;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 1.1rem 0.75rem 0.4rem;
 }
 .nac-admin-nav__item--disabled {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.28);
   cursor: not-allowed;
 }
 .nac-admin-nav__item--disabled small {
-  font-size: 0.65rem;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.15rem 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.15rem 0.5rem;
   border-radius: 999px;
 }
 
-.nac-admin-logout-form { margin-top: auto; }
+.nac-admin-sidebar__footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
 .nac-admin-logout-form button {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: var(--adm-radius-sm);
+  padding: 0.6rem 0.75rem;
   font-size: 0.85rem;
   font-weight: 700;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 .nac-admin-logout-form button:hover {
-  background: rgba(239, 83, 80, 0.15);
-  border-color: var(--adm-danger);
-  color: #fff;
+  background: var(--adm-danger-soft);
+  border-color: transparent;
+  color: var(--adm-danger);
 }
 
 .nac-admin-main {
   flex-grow: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .nac-admin-topbar {
-  background: var(--adm-white);
-  border-bottom: 1px solid #e6eaed;
+  background: rgba(247, 248, 250, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--adm-border);
   padding: 1rem 2rem;
-  font-size: 0.9rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.nac-admin-topbar__title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--adm-ink);
+  margin: 0;
+}
+.nac-admin-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nac-admin-topbar__view-site {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
   font-weight: 700;
+  color: var(--adm-steel);
+  text-decoration: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--adm-border);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.nac-admin-topbar__view-site:hover {
+  border-color: var(--adm-deep-aqua);
+  color: var(--adm-deep-aqua);
+}
+.nac-admin-topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.nac-admin-topbar__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--adm-gradient);
+  color: var(--adm-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+.nac-admin-topbar__user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--adm-ink);
+  line-height: 1.1;
+}
+.nac-admin-topbar__user-role {
+  font-size: 0.72rem;
+  color: var(--adm-steel);
 }
 
 .nac-admin-content {
   padding: 2rem;
+  flex-grow: 1;
 }
 
+/* ==========================================================================
+   STAT CARDS (dashboard)
+   ========================================================================== */
 .nac-admin-stat-card {
   background: var(--adm-white);
-  border: 1px solid #e6eaed;
+  border: 1px solid var(--adm-border);
   border-radius: var(--adm-radius);
   padding: 1.5rem;
+  box-shadow: var(--adm-shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.nac-admin-stat-card:hover {
+  box-shadow: var(--adm-shadow);
+  transform: translateY(-2px);
 }
 .nac-admin-stat-card__label {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--adm-steel);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 .nac-admin-stat-card__num {
   font-family: 'Roboto Mono', monospace;
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: 600;
+  color: var(--adm-ink);
+  line-height: 1;
+}
+.nac-admin-stat-card__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--adm-radius-sm);
+  background: var(--adm-aqua-soft);
+  color: var(--adm-deep-aqua);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   PANEL / "CARD" (bg-white border rounded-3 dipakai konsisten di semua halaman)
+   ========================================================================== */
+.bg-white.border.rounded-3 {
+  border-color: var(--adm-border) !important;
+  border-radius: var(--adm-radius) !important;
+  box-shadow: var(--adm-shadow-sm);
+}
+
+/* ==========================================================================
+   PAGE HEADER (judul halaman + tombol aksi di kanan)
+   ========================================================================== */
+.nac-admin-content h1.h4 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
   color: var(--adm-ink);
 }
 
-@media (max-width: 767.98px) {
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.nac-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--adm-gradient);
+  color: var(--adm-ink);
+  font-weight: 700;
+  font-size: 0.87rem;
+  border: none;
+  border-radius: var(--adm-radius-sm);
+  padding: 0.6rem 1.1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.nac-admin-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -10px rgba(30, 111, 168, 0.5);
+  color: var(--adm-ink);
+}
+.nac-admin-btn:active { transform: translateY(0); }
+
+.nac-admin-content .btn-outline-secondary {
+  border-color: var(--adm-border);
+  color: var(--adm-steel);
+  font-weight: 600;
+  border-radius: var(--adm-radius-sm);
+}
+.nac-admin-content .btn-outline-secondary:hover {
+  background: var(--adm-mist);
+  border-color: var(--adm-steel-light);
+  color: var(--adm-ink);
+}
+.nac-admin-content .btn-outline-danger {
+  border-color: var(--adm-danger-soft);
+  color: var(--adm-danger);
+  font-weight: 600;
+  border-radius: var(--adm-radius-sm);
+}
+.nac-admin-content .btn-outline-danger:hover {
+  background: var(--adm-danger);
+  border-color: var(--adm-danger);
+  color: var(--adm-white);
+}
+.nac-admin-content .btn-dark {
+  background: var(--adm-ink);
+  border-color: var(--adm-ink);
+  font-weight: 700;
+  border-radius: var(--adm-radius-sm);
+}
+.nac-admin-content .btn-group .btn {
+  border-radius: var(--adm-radius-sm) !important;
+  margin-right: 0.35rem;
+}
+
+/* ==========================================================================
+   TABLES
+   ========================================================================== */
+.nac-admin-content .table {
+  margin-bottom: 0;
+}
+.nac-admin-content .table thead tr {
+  background: var(--adm-mist) !important;
+}
+.nac-admin-content .table thead th {
+  font-size: 0.72rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--adm-steel) !important;
+  font-weight: 700;
+  border-bottom: 1px solid var(--adm-border);
+  padding: 0.85rem 1.1rem;
+}
+.nac-admin-content .table tbody td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--adm-border);
+  font-size: 0.88rem;
+  vertical-align: middle;
+  color: var(--adm-graphite);
+}
+.nac-admin-content .table tbody tr:last-child td {
+  border-bottom: none;
+}
+.nac-admin-content .table tbody tr:hover {
+  background: var(--adm-mist);
+}
+.nac-admin-content .table img {
+  box-shadow: var(--adm-shadow-sm);
+}
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+.nac-admin-content .badge {
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0.4em 0.75em;
+  border-radius: 999px;
+}
+.nac-admin-content .badge.bg-success {
+  background: var(--adm-success-soft) !important;
+  color: var(--adm-success) !important;
+}
+.nac-admin-content .badge.bg-secondary {
+  background: var(--adm-mist) !important;
+  color: var(--adm-steel) !important;
+}
+.nac-admin-content .badge.bg-primary {
+  background: var(--adm-aqua-soft) !important;
+  color: var(--adm-deep-aqua) !important;
+}
+.nac-admin-content .badge.bg-info {
+  background: #FFF3D6 !important;
+  color: #9A6700 !important;
+}
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+.nac-admin-content .form-label {
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--adm-graphite);
+  margin-bottom: 0.4rem;
+}
+.nac-admin-content .form-control,
+.nac-admin-content .form-select,
+.nac-admin-content textarea.form-control {
+  border: 1.5px solid var(--adm-border);
+  border-radius: var(--adm-radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--adm-graphite);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.nac-admin-content .form-control:focus,
+.nac-admin-content .form-select:focus {
+  border-color: var(--adm-deep-aqua);
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
+}
+.nac-admin-content .form-control.form-control-sm,
+.nac-admin-content .form-select.form-select-sm {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.85rem;
+}
+.nac-admin-content .form-check-input:checked {
+  background-color: var(--adm-deep-aqua);
+  border-color: var(--adm-deep-aqua);
+}
+.nac-admin-content .form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
+}
+.nac-admin-content small.text-secondary {
+  color: var(--adm-steel-light) !important;
+}
+.nac-admin-content h2.h6 {
+  font-weight: 800;
+  color: var(--adm-ink);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--adm-border);
+}
+
+/* Kotak upload foto (border rounded-3 p-3 text-center) */
+.nac-admin-content .border.rounded-3.p-3.text-center {
+  border-style: dashed !important;
+  border-color: var(--adm-border) !important;
+  border-width: 1.5px !important;
+  background: var(--adm-mist) !important;
+  transition: border-color 0.15s ease;
+}
+.nac-admin-content .border.rounded-3.p-3.text-center:hover {
+  border-color: var(--adm-deep-aqua) !important;
+}
+
+/* ==========================================================================
+   ALERTS
+   ========================================================================== */
+.nac-admin-content .alert,
+.nac-admin-login-card .alert {
+  border: none;
+  border-radius: var(--adm-radius-sm);
+  font-weight: 600;
+}
+.alert-success { background: var(--adm-success-soft); color: var(--adm-success); }
+.alert-danger  { background: var(--adm-danger-soft); color: var(--adm-danger); }
+.alert-info    { background: var(--adm-aqua-soft); color: var(--adm-deep-aqua); }
+
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+.nac-admin-content .pagination .page-link {
+  border: 1px solid var(--adm-border);
+  color: var(--adm-graphite);
+  font-size: 0.85rem;
+  margin-right: 0.3rem;
+  border-radius: var(--adm-radius-sm);
+}
+.nac-admin-content .pagination .page-item.active .page-link {
+  background: var(--adm-ink);
+  border-color: var(--adm-ink);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 991.98px) {
   .nac-admin-shell { flex-direction: column; }
-  .nac-admin-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .nac-admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem;
+  }
+  .nac-admin-sidebar__brand { margin-bottom: 0; margin-right: auto; }
   .nac-admin-nav { flex-direction: row; flex-wrap: wrap; }
-  .nac-admin-logout-form { margin-top: 0; margin-left: auto; width: auto; }
+  .nac-admin-nav__group { display: none; }
+  .nac-admin-sidebar__footer { border-top: none; margin-top: 0; margin-left: auto; padding-top: 0; }
+  .nac-admin-topbar { padding: 0.85rem 1.25rem; }
+  .nac-admin-content { padding: 1.25rem; }
+}
+
+/* ==========================================================================
+   SIDEBAR COLLAPSIBLE
+   ========================================================================== */
+.nac-admin-sidebar {
+  transition: width 0.25s ease, padding 0.25s ease;
+}
+.nac-admin-nav a,
+.nac-admin-nav__item {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+body.nac-sidebar-collapsed .nac-admin-sidebar {
+  width: 84px;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+}
+body.nac-sidebar-collapsed .nac-admin-sidebar__brand {
+  justify-content: center;
+}
+body.nac-sidebar-collapsed .nac-admin-sidebar__brand-text,
+body.nac-sidebar-collapsed .nac-admin-nav__group,
+body.nac-sidebar-collapsed .nac-admin-nav__label,
+body.nac-sidebar-collapsed .nac-admin-nav__item--disabled small,
+body.nac-sidebar-collapsed .nac-admin-logout-form button span {
+  display: none;
+}
+body.nac-sidebar-collapsed .nac-admin-nav a,
+body.nac-sidebar-collapsed .nac-admin-nav__item,
+body.nac-sidebar-collapsed .nac-admin-logout-form button {
+  justify-content: center;
+}
+body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
+  left: -0.65rem;
+}
+
+.nac-admin-sidebar-toggle {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--adm-border);
+  background: var(--adm-white);
+  border-radius: var(--adm-radius-sm);
+  color: var(--adm-graphite);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.nac-admin-sidebar-toggle:hover {
+  background: var(--adm-mist);
+  border-color: var(--adm-steel-light);
+}
+.nac-admin-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   FORM SECTION CARD (dipakai di semua partial form: Tim, Slider, Galeri, Jadwal)
+   ========================================================================== */
+.nac-admin-form-section {
+  background: var(--adm-white);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--adm-shadow-sm);
+}
+.nac-admin-form-section__head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-bottom: 1.1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--adm-border);
+}
+.nac-admin-form-section__icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--adm-radius-sm);
+  background: var(--adm-aqua-soft);
+  color: var(--adm-deep-aqua);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+.nac-admin-form-section__title {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--adm-ink);
+  margin: 0;
+}
+.nac-admin-form-section__desc {
+  font-size: 0.78rem;
+  color: var(--adm-steel);
+  margin: 0.1rem 0 0;
+}
+
+/* ==========================================================================
+   DROPZONE FOTO (upload)
+   ========================================================================== */
+.nac-admin-dropzone {
+  position: relative;
+  border: 1.5px dashed var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: var(--adm-mist);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.nac-admin-dropzone:hover {
+  border-color: var(--adm-deep-aqua);
+}
+.nac-admin-dropzone__preview {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--adm-white);
+}
+.nac-admin-dropzone__overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem;
+  background: var(--adm-white);
+  border-top: 1px dashed var(--adm-border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--adm-deep-aqua);
+  cursor: pointer;
+}
+.nac-admin-dropzone__overlay i { font-size: 0.95rem; }
+.nac-admin-dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.nac-admin-dropzone__hint {
+  font-size: 0.74rem;
+  color: var(--adm-steel-light);
+  text-align: center;
+  padding: 0.5rem 0.75rem 0.85rem;
+}
+
+/* ==========================================================================
+   DAY PICKER (pill toggle untuk Jadwal — gantikan checkbox biasa)
+   ========================================================================== */
+.nac-day-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.nac-day-picker input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.nac-day-picker label {
+  padding: 0.5rem 1.1rem;
+  border: 1.5px solid var(--adm-border);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--adm-steel);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  margin: 0;
+}
+.nac-day-picker input[type="checkbox"]:checked + label {
+  background: var(--adm-gradient);
+  border-color: transparent;
+  color: var(--adm-ink);
+}
+.nac-day-picker input[type="checkbox"]:focus-visible + label {
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.35);
+}
+
+/* Badge hari kecil untuk tabel index Jadwal */
+.nac-day-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--adm-deep-aqua);
+  background: var(--adm-aqua-soft);
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  margin: 0.1rem 0.15rem 0.1rem 0;
+}
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
+.nac-admin-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+}
+.nac-admin-empty__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: var(--adm-mist);
+  color: var(--adm-steel-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+.nac-admin-empty__title {
+  font-weight: 800;
+  color: var(--adm-ink);
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+.nac-admin-empty__desc {
+  color: var(--adm-steel);
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   GRID CARD (dipakai Slider & Galeri index)
+   ========================================================================== */
+.nac-admin-grid-card {
+  background: var(--adm-white);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  overflow: hidden;
+  box-shadow: var(--adm-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.nac-admin-grid-card:hover {
+  box-shadow: var(--adm-shadow);
+  transform: translateY(-2px);
+}
+.nac-admin-grid-card__img {
+  width: 100%;
+  object-fit: cover;
+  background: var(--adm-mist);
+}
+.nac-admin-grid-card__body {
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex-grow: 1;
+}
+.nac-admin-grid-card__title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--adm-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nac-admin-grid-card__footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 991.98px) {
+  body.nac-sidebar-collapsed .nac-admin-sidebar { width: 100%; }
+  .nac-admin-sidebar-toggle { display: none; }
+}
+
+/* ==========================================================================
+   TIPOGRAFI HALAMAN (judul + deskripsi) — berlaku otomatis di semua halaman
+   tanpa perlu ubah tiap file, karena target lewat sibling selector.
+   ========================================================================== */
+.nac-admin-content h1.h4 {
+  font-weight: 800;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+  color: var(--adm-ink);
+  margin-bottom: 0.4rem;
+}
+.nac-admin-content h1.h4 + p {
+  color: var(--adm-steel) !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+/* Sapaan khusus dashboard ("Halo, ... ") */
+.nac-admin-greeting__title {
+  font-weight: 800;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+  color: var(--adm-ink);
+  margin-bottom: 0.3rem;
+}
+.nac-admin-greeting__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--adm-deep-aqua);
+  background: var(--adm-aqua-soft);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+/* ==========================================================================
+   BACK BUTTON — pengganti link "kembali" polos
+   ========================================================================== */
+.nac-admin-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--adm-steel);
+  text-decoration: none;
+  padding: 0.35rem 1rem 0.35rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--adm-border);
+  background: var(--adm-white);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.nac-admin-back-btn:hover {
+  border-color: var(--adm-deep-aqua);
+  color: var(--adm-deep-aqua);
+  background: var(--adm-aqua-soft);
+}
+.nac-admin-back-btn__icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--adm-mist);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: inherit;
+  transition: transform 0.15s ease;
+}
+.nac-admin-back-btn:hover .nac-admin-back-btn__icon {
+  background: var(--adm-white);
+  transform: translateX(-2px);
+}
+
+/* ==========================================================================
+   MOBILE DRAWER SIDEBAR
+   ========================================================================== */
+.nac-admin-mobile-toggle {
+  display: none;
+}
+.nac-admin-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 23, 0.55);
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+@media (max-width: 991.98px) {
+  .nac-admin-mobile-toggle {
+    display: inline-flex;
+  }
+  #sidebarToggle {
+    display: none;
+  }
+
+  .nac-admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    height: 100vh;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    padding: 1.5rem 1.1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1050;
+    box-shadow: var(--adm-shadow-lg);
+  }
+  .nac-admin-sidebar__brand {
+    justify-content: flex-start;
+    margin-bottom: 2rem;
+  }
+  .nac-admin-nav {
+    flex-direction: column;
+  }
+  .nac-admin-nav__group {
+    display: block;
+  }
+  .nac-admin-sidebar__footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    margin-left: 0;
+  }
+
+  body.nac-mobile-nav-open .nac-admin-sidebar {
+    transform: translateX(0);
+  }
+  body.nac-mobile-nav-open .nac-admin-backdrop {
+    display: block;
+    opacity: 1;
+  }
+  body.nac-mobile-nav-open {
+    overflow: hidden;
+  }
+
+  .nac-admin-topbar { padding: 0.85rem 1.1rem; }
+  .nac-admin-topbar__title { font-size: 0.9rem; }
+  .nac-admin-topbar__view-site span { display: none; }
+  .nac-admin-content { padding: 1.1rem; }
+}
+
+/* ==========================================================================
+   KARTU MEDALI (Statistik Kejuaraan di Dashboard)
+   ========================================================================== */
+.nac-medal-card--gold .nac-admin-stat-card__icon {
+  background: #FFF3D6;
+  color: #B8860B;
+}
+.nac-medal-card--gold .nac-admin-stat-card__num { color: #B8860B; }
+
+.nac-medal-card--silver .nac-admin-stat-card__icon {
+  background: #EEF1F4;
+  color: #6B7A8A;
+}
+.nac-medal-card--silver .nac-admin-stat-card__num { color: #6B7A8A; }
+
+.nac-medal-card--bronze .nac-admin-stat-card__icon {
+  background: #FBE7DA;
+  color: #B5651D;
+}
+.nac-medal-card--bronze .nac-admin-stat-card__num { color: #B5651D; }
+
+.nac-medal-card--total .nac-admin-stat-card__icon {
+  background: var(--adm-aqua-soft);
+  color: var(--adm-deep-aqua);
+}
+
+/* ==========================================================================
+   DAFTAR PRESTASI TERBARU
+   ========================================================================== */
+.nac-achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--adm-mist);
+}
+.nac-achievement-item:last-child { border-bottom: none; padding-bottom: 0; }
+.nac-achievement-item__icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #FFF3D6;
+  color: #B8860B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.nac-achievement-item__title {
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--adm-ink);
+  line-height: 1.3;
+}
+.nac-achievement-item__meta {
+  font-size: 0.76rem;
+  color: var(--adm-steel);
+}
+
+/* ==========================================================================
+   KARTU ANGGOTA TIM (khusus mobile, pengganti tabel di layar <768px)
+   ========================================================================== */
+.nac-admin-member-card {
+  background: var(--adm-white);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  padding: 1rem;
+  box-shadow: var(--adm-shadow-sm);
+}
+.nac-admin-member-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+.nac-admin-member-card__photo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--adm-border);
+}
+.nac-admin-member-card__photo--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--adm-mist);
+  color: var(--adm-steel-light);
+  font-weight: 800;
+  font-size: 1rem;
+}
+.nac-admin-member-card__name {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--adm-ink);
+}
+.nac-admin-member-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--adm-mist);
+}
+/* ==========================================================================
+   STACK PREVIEW (mobile) — Slider & Galeri, meniru efek "kipas" di halaman
+   publik Our Team: 3 kartu teratas mengintip bertumpuk, tap untuk buka semua
+   ========================================================================== */
+.nac-admin-stack-deck {
+  position: relative;
+  max-width: 260px;
+  margin: 0 auto 1.75rem;
+}
+.nac-admin-stack-deck__spacer {
+  padding-top: 62%; /* jaga tinggi kolom sesuai rasio kartu paling depan */
+}
+.nac-admin-stack-card {
+  position: absolute;
+  inset: 0;
+  transform: translateY(var(--y, 0)) scale(var(--scale, 1));
+  z-index: var(--z, 1);
+  filter: brightness(var(--bright, 1));
+  transition: transform 0.3s ease;
+}
+.nac-admin-stack-count {
+  position: absolute;
+  bottom: -0.65rem;
+  right: -0.4rem;
+  background: var(--adm-ink);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  z-index: 40;
+  box-shadow: var(--adm-shadow);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nac-admin-stack-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--adm-border);
+  background: var(--adm-white);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--adm-ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.nac-admin-stack-trigger:hover {
+  border-color: var(--adm-deep-aqua);
+  background: var(--adm-aqua-soft);
+}
+.nac-admin-stack-trigger i {
+  transition: transform 0.25s ease;
+}
+
+.nac-admin-stack-grid {
+  display: none;
+  margin-top: 1rem;
+}
+
+.nac-admin-stack-group.is-open .nac-admin-stack-deck-wrap { display: none; }
+.nac-admin-stack-group.is-open .nac-admin-stack-grid { display: block; }
+.nac-admin-stack-group.is-open .nac-admin-stack-trigger i { transform: rotate(90deg); }
+
+/* ---------- Prestasi Terbaru: reveal 2 item tersisa, pakai pola stack yang sama ---------- */
+.nac-admin-achv-extra {
+  display: none;
+}
+.nac-admin-stack-group.is-open .nac-admin-achv-extra {
+  display: block;
+}
+.nac-admin-achv-trigger {
+  margin-top: 0.5rem;
+  padding: 0.6rem;
+  font-size: 0.8rem;
+}
+.nac-admin-stack-group.is-open .nac-admin-achv-trigger i {
+  transform: rotate(180deg);
 }

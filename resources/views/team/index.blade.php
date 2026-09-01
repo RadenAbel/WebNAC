@@ -7,14 +7,6 @@
 
 <section class="nac-page-header">
     <div class="container text-center" data-aos="fade-up">
-        <!-- <nav class="nac-breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ url('/') }}">Beranda</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span aria-current="page">Our Team</span>
-        </nav> -->
-
-        <span class="nac-page-header__icon"><i class="fa-solid fa-people-group"></i></span>
-
         <h1 class="nac-page-header__title">Di balik setiap catatan waktu terbaik.</h1>
         <p class="nac-page-header__desc">
             Gabungan pelatih berpengalaman dan atlet berdedikasi yang membentuk
@@ -93,14 +85,12 @@
             }
 
             if (willOpen) {
-                // Bring the newly revealed grid comfortably into view.
                 window.setTimeout(function () {
                     grid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 80);
             }
         });
 
-        // Allow closing by pressing Escape while focus is inside the group.
         group.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && group.classList.contains('is-open')) {
                 trigger.click();
