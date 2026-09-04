@@ -137,52 +137,6 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="bg-white border rounded-3 p-4 mt-3 nac-admin-stack-group" data-stack-group>
-                <h2 class="h6 mb-3" style="border:none; padding:0; margin:0 0 1rem;">
-                    <i class="bi bi-award text-warning me-1"></i> Prestasi Terbaru
-                </h2>
-
-                @forelse ($recentAchievements->take(2) as $achievement)
-                    <div class="nac-achievement-item">
-                        <span class="nac-achievement-item__icon"><i class="bi bi-award-fill"></i></span>
-                        <div>
-                            <div class="nac-achievement-item__title">{{ $achievement->title }}</div>
-                            <div class="nac-achievement-item__meta">
-                                {{ $achievement->teamMember->name ?? '-' }}
-                                @if ($achievement->year) · {{ $achievement->year }} @endif
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-secondary mb-0" style="font-size:0.85rem;">Belum ada pencapaian yang diinput.</p>
-                @endforelse
-
-                @if ($recentAchievements->count() > 2)
-                    <div class="nac-admin-achv-extra">
-                        @foreach ($recentAchievements->slice(2) as $achievement)
-                            <div class="nac-achievement-item">
-                                <span class="nac-achievement-item__icon"><i class="bi bi-award-fill"></i></span>
-                                <div>
-                                    <div class="nac-achievement-item__title">{{ $achievement->title }}</div>
-                                    <div class="nac-achievement-item__meta">
-                                        {{ $achievement->teamMember->name ?? '-' }}
-                                        @if ($achievement->year) · {{ $achievement->year }} @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <button type="button" class="nac-admin-stack-trigger nac-admin-achv-trigger mt-1"
-                            data-stack-trigger
-                            data-label-closed="Lihat Selengkapnya"
-                            data-label-open="Tampilkan Lebih Sedikit">
-                        <span data-stack-trigger-text>Lihat Selengkapnya</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                @endif
-            </div>
         </div>
     </div>
 

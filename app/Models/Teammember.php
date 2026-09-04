@@ -19,8 +19,12 @@ class TeamMember extends Model
         'facebook_url',
         'tiktok_url',
         'age',
+        'birth_date',
+        'birth_place',
+        'join_date',
         'role',
         'category',
+        'swim_style',
         'origin_city',
         'years_experience',
         'total_medals',
@@ -33,6 +37,8 @@ class TeamMember extends Model
     protected $casts = [
         'is_active'          => 'boolean',
         'age'                => 'integer',
+        'birth_date'         => 'date',
+        'join_date'          => 'date',
         'years_experience'   => 'integer',
         'total_medals'       => 'integer',
         'total_achievements' => 'integer',
@@ -48,6 +54,32 @@ class TeamMember extends Model
     public function getPhotoUrlAttribute(): ?string
     {
         return $this->photo ? asset('storage/' . $this->photo) : null;
+    }
+
+    /**
+     * Umur DIHITUNG OTOMATIS dari birth_date setiap kali dipanggil — jadi
+     * selalu akurat mengikuti tanggal hari ini, tidak perlu di-update manual
+     * tiap tahun. Kalau birth_date belum diisi (data lama), tetap pakai
+     * angka yang tersimpan manual di kolom `age` sebagai fallback, supaya
+     * data lama tidak mendadak kosong.
+     */
+    public function getAgeAttribute($value): ?int
+    {
+        if ($this->birth_date) {
+            return $this->birth_date->age;
+        }
+
+        return $value;
+    }
+
+    public function getBirthDateLabelAttribute(): ?string
+    {
+        return $this->birth_date ? $this->birth_date->translatedFormat('d F Y') : null;
+    }
+
+    public function getJoinDateLabelAttribute(): ?string
+    {
+        return $this->join_date ? $this->join_date->translatedFormat('d F Y') : null;
     }
 
     /**
@@ -139,14 +171,15 @@ class TeamMember extends Model
 
         return $records->map(function ($record) use ($medalKeyMap) {
             return [
-                'event'       => $record->event,
-                'time'        => $record->time,
-                'medal'       => $medalKeyMap[$record->medal] ?? null,
-                'pool_length' => $record->pool_length ? $record->pool_length . 'm' : null,
-                'age'         => $record->age_at_record,
-                'competition' => $record->competition,
-                'country'     => $record->country,
-                'date'        => $record->record_date ? $record->record_date->format('d/m/Y') : null,
+                'event'        => $record->event,
+                'time'         => $record->time,
+                'medal'        => $medalKeyMap[$record->medal] ?? null,
+                'pool_length'  => $record->pool_length ? $record->pool_length . 'm' : null,
+                'age'          => $record->age_at_record,
+                'competition'  => $record->competition,
+                'country_code' => $record->country ? strtolower($record->country) : null,
+                'country'      => $record->country_name,
+                'date'         => $record->record_date ? $record->record_date->format('d/m/Y') : null,
             ];
         })->values()->all();
     }

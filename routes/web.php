@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Admin\TeamMemberAchievementController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\TeamMemberRecordController;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\HomeController;
@@ -24,6 +25,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
+
+Route::get('/tentang-kami', [AboutController::class, 'index'])
+    ->name('about.index');
 
 Route::get('/our-team', [TeamController::class, 'index'])
     ->name('team.index');

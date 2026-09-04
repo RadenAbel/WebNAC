@@ -1240,18 +1240,16 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
 .nac-admin-stack-group.is-open .nac-admin-stack-grid { display: block; }
 .nac-admin-stack-group.is-open .nac-admin-stack-trigger i { transform: rotate(90deg); }
 
-/* ---------- Prestasi Terbaru: reveal 2 item tersisa, pakai pola stack yang sama ---------- */
-.nac-admin-achv-extra {
-  display: none;
-}
-.nac-admin-stack-group.is-open .nac-admin-achv-extra {
-  display: block;
-}
-.nac-admin-achv-trigger {
-  margin-top: 0.5rem;
-  padding: 0.6rem;
-  font-size: 0.8rem;
-}
-.nac-admin-stack-group.is-open .nac-admin-achv-trigger i {
-  transform: rotate(180deg);
+/* ==========================================================================
+   IKON BENDERA (flag-icons) — dipakai di daftar Prestasi
+   ========================================================================== */
+.nac-flag-icon {
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
+  background-size: cover;
+  background-position: center;
+  vertical-align: middle;
 }

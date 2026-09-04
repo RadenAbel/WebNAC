@@ -35,8 +35,11 @@ class TeamController extends Controller
         $teamMember->setAttribute(
             'achievements',
             $teamMember->achievements->map(fn ($achievement) => [
-                'title' => $achievement->title,
-                'year'  => $achievement->year,
+                'title'        => $achievement->title,
+                'year'         => $achievement->year,
+                'description'  => $achievement->description,
+                'country_code' => $achievement->country ? strtolower($achievement->country) : null,
+                'country'      => $achievement->country_name,
             ])->values()->all()
         );
 

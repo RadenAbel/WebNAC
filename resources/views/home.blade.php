@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nugroho Aquatic Center — Kolam Renang Premium')
+@section('title', 'Nugroho Aquatic CLUB — Kolam Renang Premium')
 @section('meta_description', 'Fasilitas renang premium di Surabaya dengan pelatih bersertifikat untuk atlet junior hingga senior.')
 
 @section('content')
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row align-items-center min-vh-100 py-5 g-5">
             <div class="col-lg-6" data-aos="fade-up">
-                <span class="nac-eyebrow">Nugroho Aquatic Center</span>
+                <span class="nac-eyebrow">Nugroho Aquatic CLUB</span>
                 <h1 class="nac-hero__title">
                     Setiap tarikan napas,<br>
                     <span class="nac-text-gradient">setiap detik</span> berarti.
@@ -106,10 +106,6 @@
             </div>
         </div>
     </div>
-
-    <svg class="nac-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
-    </svg>
 </section>
 
 <div class="nac-divider" aria-hidden="true">
@@ -125,7 +121,7 @@
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="nac-about-photo">
                     <img src="{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-about/700/560' }}"
-                        alt="Suasana latihan di Nugroho Aquatic Center" loading="lazy">
+                        alt="Suasana latihan di Nugroho Aquatic Club" loading="lazy">
                     <div class="nac-about-photo__badge">
                         <span>Sejak</span>
                         <strong>{{ $setting->since_year ?? '2010' }}</strong>
@@ -136,13 +132,18 @@
                 <span class="nac-eyebrow">Tentang Kami</span>
                 <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
                 <p class="nac-lead">
-                    {{ $setting->about_description ?? 'Sejak berdiri, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.' }}
+                    {{ $setting->about_description ?? 'Sejak berdiri, Nugroho Aquatic Club menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.' }}
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
                     <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Senior, Swim Class A &amp; B</li>
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
+
+                {{-- 🔧 Ganti 'about.index' dengan nama route halaman detail "Tentang Kami" kamu --}}
+                <a href="{{ route('about.index') }}" class="nac-btn nac-btn--outline-dark mt-2">
+                    Selengkapnya Tentang Kami <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -160,7 +161,7 @@
         <div class="nac-gallery__head" data-aos="fade-up">
             <div>
                 <span class="nac-eyebrow">Galeri</span>
-                <h2 class="nac-section__title">Momen di Nugroho Aquatic Center</h2>
+                <h2 class="nac-section__title">Momen di Nugroho Aquatic Club</h2>
             </div>
             <div class="nac-gallery__nav">
                 <button type="button" class="nac-gallery__arrow" data-gallery-prev aria-label="Foto sebelumnya">
@@ -211,46 +212,6 @@
 
 <div class="nac-divider" aria-hidden="true">
     <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-person-swimming"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
-{{-- ============ FASILITAS ============ --}}
-<section class="nac-section" id="fasilitas">
-    <div class="container">
-        <div class="nac-section__head" data-aos="fade-up">
-            <span class="nac-eyebrow">Fasilitas</span>
-            <h2 class="nac-section__title">Dirancang untuk performa, bukan sekadar kolam.</h2>
-        </div>
-
-        <div class="row g-4 mt-3">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-water"></i></div>
-                    <h5>Kolam Standar Kompetisi</h5>
-                    <p>2 lintasan sepanjang 50 meter dengan sistem sirkulasi air dan pencahayaan bawah air.</p>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-stopwatch"></i></div>
-                    <h5>Sistem Timing Elektronik</h5>
-                    <p>Pencatatan waktu otomatis untuk latihan interval dan simulasi kejuaraan.</p>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-heart-pulse"></i></div>
-                    <h5>Food &amp; Drink</h5>
-                    <p>Area bersantai untuk mengisi perut dan menghilangkan dahaga.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
     <span class="nac-divider__icon"><i class="fa-solid fa-tags"></i></span>
     <span class="nac-divider__line"></span>
 </div>
@@ -266,9 +227,9 @@
         <div class="row g-4 mt-3">
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
                 <div class="nac-price-card">
-                    <h5>Junior</h5>
-                    <p class="nac-price-card__desc">Usia 6–12 tahun, pengenalan teknik dasar renang.</p>
-                    <div class="nac-price-card__price">Rp250<span>rb/bulan</span></div>
+                    <h5>Swim Class A</h5>
+                    <p class="nac-price-card__desc">Usia 6-12 tahun, pengenalan teknik dasar renang.</p>
+                    <div class="nac-price-card__price">Rp460<span>rb/bulan</span></div>
                     <ul class="nac-price-card__list">
                         <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
                         <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
@@ -280,13 +241,13 @@
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="75">
                 <div class="nac-price-card">
-                    <h5>Senior</h5>
-                    <p class="nac-price-card__desc">Usia 13–18 tahun, program menuju kompetisi.</p>
-                    <div class="nac-price-card__price">Rp350<span>rb/bulan</span></div>
+                    <h5>Swim Class B</h5>
+                    <p class="nac-price-card__desc">Usia 13-18 tahun, pernah mengikuti pelatihan renang.</p>
+                    <div class="nac-price-card__price">Rp540<span>rb/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 3x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Program persiapan kompetisi</li>
-                        <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
+                        <li><i class="fa-solid fa-check"></i> 2x-3x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> B1 untuk mengasah kemampuan renang lebih lanjut</li>
+                        <li><i class="fa-solid fa-check"></i> B2 untuk persiapan jika ingin masuk klub</li>
                     </ul>
                     <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
@@ -295,13 +256,13 @@
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="150">
                 <div class="nac-price-card nac-price-card--highlight">
                     <span class="nac-price-card__tag">Paling Diminati</span>
-                    <h5>Swim Class A</h5>
+                    <h5>Junior</h5>
                     <p class="nac-price-card__desc">Level lanjutan untuk mengejar performa kompetisi.</p>
-                    <div class="nac-price-card__price">Rp450<span>rb/bulan</span></div>
+                    <div class="nac-price-card__price">Rp600<span>rb/bulan</span></div>
                     <ul class="nac-price-card__list">
                         <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
                         <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
-                        <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
+                        <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
                     </ul>
                     <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
@@ -309,11 +270,11 @@
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="225">
                 <div class="nac-price-card">
-                    <h5>Swim Class B</h5>
+                    <h5>Senior</h5>
                     <p class="nac-price-card__desc">Level menengah, pembinaan teknik berkelanjutan.</p>
-                    <div class="nac-price-card__price">Rp400<span>rb/bulan</span></div>
+                    <div class="nac-price-card__price">Rp600<span>rb/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 4x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> 5x latihan per minggu</li>
                         <li><i class="fa-solid fa-check"></i> Pembinaan teknik lanjutan</li>
                         <li><i class="fa-solid fa-check"></i> Evaluasi rutin</li>
                     </ul>

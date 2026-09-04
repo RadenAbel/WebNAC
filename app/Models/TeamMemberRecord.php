@@ -34,4 +34,16 @@ class TeamMemberRecord extends Model
     {
         return $this->belongsTo(TeamMember::class);
     }
+
+    /**
+     * Nama negara lengkap dari kode ISO alpha-2, mis. "SG" -> "Singapura".
+     */
+    public function getCountryNameAttribute(): ?string
+    {
+        if (! $this->country) {
+            return null;
+        }
+
+        return config('countries.' . strtoupper($this->country), $this->country);
+    }
 }

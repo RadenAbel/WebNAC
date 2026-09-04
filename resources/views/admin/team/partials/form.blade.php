@@ -47,18 +47,48 @@
             </div>
 
             <div class="row g-3">
-                <div class="col-md-8">
+                <div class="col-12">
                     <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                         value="{{ old('name', $member->name) }}" required>
                     @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Umur</label>
-                    <input type="number" name="age" min="1" max="100" class="form-control @error('age') is-invalid @enderror"
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" id="birthDateInput"
+                        class="form-control @error('birth_date') is-invalid @enderror"
+                        value="{{ old('birth_date', $member->birth_date ? $member->birth_date->format('Y-m-d') : '') }}"
+                        data-birthdate-input="ageOutput" max="{{ now()->format('Y-m-d') }}">
+                    @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tempat Lahir</label>
+                    <input type="text" name="birth_place" class="form-control @error('birth_place') is-invalid @enderror"
+                        value="{{ old('birth_place', $member->birth_place) }}" placeholder="Surabaya">
+                    @error('birth_place') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Umur
+                        <i class="bi bi-info-circle text-secondary" title="Otomatis dihitung dari Tanggal Lahir, ikut bertambah tiap tahun"></i>
+                    </label>
+                    <input type="number" name="age" id="ageOutput" min="1" max="100" readonly
+                        class="form-control @error('age') is-invalid @enderror" style="background:var(--adm-mist, #F5F7FA);"
                         value="{{ old('age', $member->age) }}">
                     @error('age') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Otomatis terisi begitu Tanggal Lahir diisi.</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Bergabung</label>
+                    <input type="date" name="join_date"
+                        class="form-control @error('join_date') is-invalid @enderror"
+                        value="{{ old('join_date', $member->join_date ? $member->join_date->format('Y-m-d') : '') }}"
+                        max="{{ now()->format('Y-m-d') }}">
+                    @error('join_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
@@ -73,10 +103,32 @@
 
                 <div class="col-md-6">
                     <label class="form-label">Kategori</label>
-                    <input type="text" name="category" class="form-control @error('category') is-invalid @enderror"
-                        value="{{ old('category', $member->category) }}"
-                        placeholder="Junior / Senior / Swim Class A, dst.">
+                    <select name="category" class="form-select @error('category') is-invalid @enderror">
+                        <option value="">— Pilih Kategori —</option>
+                        <optgroup label="Atlet">
+                            <option value="Junior" {{ old('category', $member->category) === 'Junior' ? 'selected' : '' }}>Junior</option>
+                            <option value="Senior" {{ old('category', $member->category) === 'Senior' ? 'selected' : '' }}>Senior</option>
+                            <option value="Swim Class A" {{ old('category', $member->category) === 'Swim Class A' ? 'selected' : '' }}>Swim Class A</option>
+                            <option value="Swim Class B" {{ old('category', $member->category) === 'Swim Class B' ? 'selected' : '' }}>Swim Class B</option>
+                        </optgroup>
+                        <optgroup label="Pelatih">
+                            <option value="Head Coach" {{ old('category', $member->category) === 'Head Coach' ? 'selected' : '' }}>Head Coach</option>
+                            <option value="Assistant Coach" {{ old('category', $member->category) === 'Assistant Coach' ? 'selected' : '' }}>Assistant Coach</option>
+                            <option value="Fitness Coach" {{ old('category', $member->category) === 'Fitness Coach' ? 'selected' : '' }}>Fitness Coach</option>
+                        </optgroup>
+                    </select>
                     @error('category') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Gaya Spesialis</label>
+                    <select name="swim_style" class="form-select @error('swim_style') is-invalid @enderror">
+                        <option value="">— Pilih Gaya —</option>
+                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
+                            <option value="{{ $style }}" {{ old('swim_style', $member->swim_style) === $style ? 'selected' : '' }}>{{ $style }}</option>
+                        @endforeach
+                    </select>
+                    @error('swim_style') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">

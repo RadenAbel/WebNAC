@@ -35,11 +35,11 @@
 
     // Tabel "Rekor Waktu Terbaik"
     $personalBests = $member->personal_bests ?? [
-        ['event' => '50m Gaya Bebas',      'time' => '25.10',   'medal' => 'gold',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country' => 'IDN', 'date' => '12/08/2024'],
-        ['event' => '100m Gaya Bebas',     'time' => '54.32',   'medal' => null,     'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country' => 'IDN', 'date' => '12/08/2024'],
-        ['event' => '50m Gaya Punggung',   'time' => '27.85',   'medal' => 'silver', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country' => 'IDN', 'date' => '05/03/2023'],
-        ['event' => '100m Gaya Kupu-Kupu', 'time' => '59.40',   'medal' => 'bronze', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country' => 'IDN', 'date' => '05/03/2023'],
-        ['event' => '200m Gaya Ganti',     'time' => '2:12.67', 'medal' => null,     'pool_length' => '50m', 'age' => 15, 'competition' => 'Kejurda Jawa Timur 2022', 'country' => 'IDN', 'date' => '20/11/2022'],
+        ['event' => '50m Gaya Bebas',      'time' => '25.10',   'medal' => 'gold',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
+        ['event' => '100m Gaya Bebas',     'time' => '54.32',   'medal' => null,     'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
+        ['event' => '50m Gaya Punggung',   'time' => '27.85',   'medal' => 'silver', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
+        ['event' => '100m Gaya Kupu-Kupu', 'time' => '59.40',   'medal' => 'bronze', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
+        ['event' => '200m Gaya Ganti',     'time' => '2:12.67', 'medal' => null,     'pool_length' => '50m', 'age' => 15, 'competition' => 'Kejurda Jawa Timur 2022', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '20/11/2022'],
     ];
 
     $medalDotClass = [
@@ -49,8 +49,8 @@
     ];
 @endphp
 
-@section('title', $member->name . ' — ' . $roleLabel . ' Nugroho Aquatic Center')
-@section('meta_description', 'Profil ' . $roleLabel . ' ' . $member->name . ' di Nugroho Aquatic Center.')
+@section('title', $member->name . ' — ' . $roleLabel . ' Nugroho Aquatic Club')
+@section('meta_description', 'Profil ' . $roleLabel . ' ' . $member->name . ' di Nugroho Aquatic Club.')
 
 @section('content')
 
@@ -77,7 +77,7 @@
 
             <div class="nac-profile-card__top">
                 <div class="nac-profile-card__info">
-                    <span class="nac-eyebrow">{{ $roleLabel }} &middot; Nugroho Aquatic Center</span>
+                    <span class="nac-eyebrow">{{ $roleLabel }} &middot; Nugroho Aquatic Club</span>
                     <h1 class="nac-profile-card__name">
                         {{ $firstName }}
                         @if($lastName)
@@ -202,9 +202,13 @@
                                     <td>{{ $best['age'] }}</td>
                                     <td>{{ $best['competition'] }}</td>
                                     <td>
-                                        <span class="nac-country-badge">
-                                            <span class="nac-country-badge__flag">{{ $best['country'] }}</span>
-                                        </span>
+                                        @if(!empty($best['country_code']))
+                                            <span class="nac-country-badge" title="{{ $best['country'] }}">
+                                                <span class="fi fi-{{ $best['country_code'] }} nac-flag-icon"></span> {{ $best['country'] }}
+                                            </span>
+                                        @else
+                                            <span class="nac-rekor-table__dash">&ndash;</span>
+                                        @endif
                                     </td>
                                     <td>{{ $best['date'] }}</td>
                                 </tr>
@@ -221,25 +225,56 @@
 
                 @php
                     $achievements = (!empty($member->achievements) && count($member->achievements)) ? $member->achievements : [
-                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024'],
-                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023'],
-                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022'],
-                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022'],
+                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'description' => null, 'country_code' => null, 'country' => null],
                     ];
                 @endphp
 
-                <div class="row g-4">
-                    @foreach($achievements as $i => $achievement)
-                        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="{{ $i * 80 }}">
-                            <div class="nac-achievement-card nac-achievement-card--light">
-                                <i class="fa-solid fa-medal"></i>
-                                <h5>{{ is_array($achievement) ? ($achievement['title'] ?? '') : $achievement }}</h5>
-                                @if(is_array($achievement) && !empty($achievement['year']))
-                                    <span class="nac-achievement-card__year">{{ $achievement['year'] }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="nac-achievement-table-wrap" data-aos="fade-up">
+                    <table class="nac-achievement-table">
+                        <thead>
+                            <tr>
+                                <th style="width:56px;">No</th>
+                                <th>Prestasi &amp; Penghargaan</th>
+                                <th style="width:100px;">Tahun</th>
+                                <th style="width:130px;">Negara</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($achievements as $i => $achievement)
+                                @php
+                                    $title       = is_array($achievement) ? ($achievement['title'] ?? '') : $achievement;
+                                    $year        = is_array($achievement) ? ($achievement['year'] ?? null) : null;
+                                    $desc        = is_array($achievement) ? ($achievement['description'] ?? null) : null;
+                                    $countryCode = is_array($achievement) ? ($achievement['country_code'] ?? null) : null;
+                                    $countryName = is_array($achievement) ? ($achievement['country'] ?? null) : null;
+                                @endphp
+                                <tr>
+                                    <td class="nac-achievement-table__no">{{ $i + 1 }}</td>
+                                    <td>
+                                        <span class="nac-achievement-table__title">
+                                            <span class="nac-achievement-table__icon"><i class="fa-solid fa-medal"></i></span>
+                                            {{ $title }}
+                                        </span>
+                                    </td>
+                                    <td class="nac-achievement-table__year">{{ $year ?? '–' }}</td>
+                                    <td>
+                                        @if($countryCode)
+                                            <span class="nac-achievement-table__flag" title="{{ $countryName }}">
+                                                <span class="fi fi-{{ $countryCode }} nac-flag-icon"></span> {{ $countryName }}
+                                            </span>
+                                        @else
+                                            <span class="nac-rekor-table__dash">–</span>
+                                        @endif
+                                    </td>
+                                    <td class="nac-achievement-table__desc">{{ $desc ?: '–' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -249,7 +284,7 @@
                     <div class="col-lg-7" data-aos="fade-up">
                         <h2 class="nac-section__title mb-3">Mengenal {{ $member->name }}</h2>
                         <p class="nac-lead">
-                            {{ $member->bio ?? ($member->name . ' bergabung bersama Nugroho Aquatic Center dan aktif berlatih serta berkompetisi di berbagai ajang renang tingkat daerah maupun nasional. Profil lengkap akan diperbarui secara berkala.') }}
+                            {{ $member->bio ?? ($member->name . ' bergabung bersama Nugroho Aquatic Club dan aktif berlatih serta berkompetisi di berbagai ajang renang tingkat daerah maupun nasional. Profil lengkap akan diperbarui secara berkala.') }}
                         </p>
 
                         @if(!empty($member->tagline))

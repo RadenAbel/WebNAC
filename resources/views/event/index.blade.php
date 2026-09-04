@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Acara — Nugroho Aquatic Center')
-@section('meta_description', 'Kegiatan dan acara yang diselenggarakan Nugroho Aquatic Center, lengkap dengan laporan kegiatannya.')
+@section('title', 'Acara — Nugroho Aquatic Club')
+@section('meta_description', 'Kegiatan dan acara yang diselenggarakan Nugroho Aquatic Club, lengkap dengan laporan kegiatannya.')
 
 @section('content')
 
@@ -12,10 +12,6 @@
             Dokumentasi kegiatan dan hasil dari kegiatan yang pernah diikuti Nugroho Aquatic Club.
         </p>
     </div>
-
-    <svg class="nac-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
-    </svg>
 </section>
 
 <section class="nac-section">

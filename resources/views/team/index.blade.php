@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Our Team — Nugroho Aquatic Center')
-@section('meta_description', 'Kenali pelatih bersertifikat dan atlet berprestasi Nugroho Aquatic Center.')
+@section('title', 'Our Team — Nugroho Aquatic Club')
+@section('meta_description', 'Kenali pelatih bersertifikat dan atlet berprestasi Nugroho Aquatic Club.')
 
 @section('content')
 
@@ -10,13 +10,9 @@
         <h1 class="nac-page-header__title">Di balik setiap catatan waktu terbaik.</h1>
         <p class="nac-page-header__desc">
             Gabungan pelatih berpengalaman dan atlet berdedikasi yang membentuk
-            identitas Nugroho Aquatic Center.
+            identitas Nugroho Aquatic Club.
         </p>
     </div>
-
-    <svg class="nac-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
-    </svg>
 </section>
 
 {{-- ============ PELATIH ============ --}}
@@ -52,7 +48,7 @@
             'icon'         => 'fa-medal',
             'eyebrow'      => 'Atlet',
             'title'        => 'Tim Atlet',
-            'description'  => 'Atlet berprestasi yang mengharumkan nama Nugroho Aquatic Center di berbagai kejuaraan.',
+            'description'  => 'Atlet berprestasi yang mengharumkan nama Nugroho Aquatic Club di berbagai kejuaraan.',
             'emptyText'    => 'Data atlet belum tersedia.',
             'labelClosed'  => 'Lihat Semua Atlet',
             'labelOpen'    => 'Tutup Tim Atlet',

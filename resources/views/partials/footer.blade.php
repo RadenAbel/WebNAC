@@ -63,14 +63,14 @@
                         width="100%" height="120" style="border:0;"
                         allowfullscreen loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
-                        title="Lokasi {{ $setting->site_name ?? 'Nugroho Aquatic Center' }}">
+                        title="Lokasi {{ $setting->site_name ?? 'Nugroho Aquatic Club' }}">
                     </iframe>
                 </div>
             </div>
         </div>
 
         <div class="nac-footer__bottom">
-            <span>&copy; {{ date('Y') }} {{ $setting->site_name ?? 'Nugroho Aquatic Center' }}. Semua hak dilindungi.</span>
+            <span>&copy; {{ date('Y') }} {{ $setting->site_name ?? 'Nugroho Aquatic Club' }}. Semua hak dilindungi.</span>
         </div>
     </div>
 </footer>

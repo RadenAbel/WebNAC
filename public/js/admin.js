@@ -68,4 +68,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // ============ Umur otomatis dari Tanggal Lahir (form Tim) ============
+    document.querySelectorAll('[data-birthdate-input]').forEach(function (input) {
+        var ageOutput = document.getElementById(input.getAttribute('data-birthdate-input'));
+        if (!ageOutput) return;
+
+        function calcAge() {
+            if (!input.value) {
+                ageOutput.value = '';
+                return;
+            }
+            var birthDate = new Date(input.value);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            ageOutput.value = age >= 0 ? age : '';
+        }
+
+        input.addEventListener('change', calcAge);
+        // Langsung hitung begitu halaman dimuat, kalau tanggal lahir sudah
+        // terisi sebelumnya (mis. waktu buka halaman Edit).
+        calcAge();
+    });
 });

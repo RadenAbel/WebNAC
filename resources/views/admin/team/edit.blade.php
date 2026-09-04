@@ -48,7 +48,7 @@
                                 @if ($record->pool_length) Kolam {{ $record->pool_length }}m · @endif
                                 @if ($record->age_at_record) Usia {{ $record->age_at_record }} th · @endif
                                 @if ($record->competition) {{ $record->competition }} @endif
-                                @if ($record->country) ({{ $record->country }}) @endif
+                                @if ($record->country) (<span class="fi fi-{{ strtolower($record->country) }} nac-flag-icon" style="margin:0 2px;"></span> {{ $record->country_name }}) @endif
                                 @if ($record->record_date) · {{ $record->record_date->format('d M Y') }} @endif
                             </div>
                         </div>
@@ -112,7 +112,12 @@
                             <input type="text" name="competition" class="form-control form-control-sm" placeholder="Nama kompetisi">
                         </div>
                         <div class="col-6">
-                            <input type="text" name="country" class="form-control form-control-sm" placeholder="Negara">
+                            <select name="country" class="form-select form-select-sm">
+                                <option value="">Negara (opsional)</option>
+                                @foreach (config('countries') as $code => $name)
+                                    <option value="{{ $code }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-sm nac-admin-btn w-100 mt-1">
@@ -135,6 +140,7 @@
                     <div class="border rounded-3 p-3 mb-2 d-flex justify-content-between align-items-start" style="font-size:0.85rem;">
                         <div>
                             <div class="fw-bold">
+                                @if ($achievement->country) <span class="fi fi-{{ strtolower($achievement->country) }} nac-flag-icon" title="{{ $achievement->country_name }}" style="margin-right:0.3rem;"></span> @endif
                                 {{ $achievement->title }}
                                 @if ($achievement->year) <span class="text-secondary fw-normal">({{ $achievement->year }})</span> @endif
                             </div>
@@ -161,7 +167,7 @@
                     Tambah Pencapaian Baru
                 </p>
 
-                @if ($errors->hasAny(['title', 'year', 'description']) && old('_form') === 'achievement')
+                @if ($errors->hasAny(['title', 'year', 'country', 'description']) && old('_form') === 'achievement')
                     <div class="alert alert-danger py-2 px-3 mb-2" style="font-size:0.82rem;">
                         {{ $errors->first() }}
                     </div>
@@ -176,6 +182,14 @@
                         </div>
                         <div class="col-4">
                             <input type="text" name="year" class="form-control form-control-sm" placeholder="Tahun" maxlength="4">
+                        </div>
+                        <div class="col-12">
+                            <select name="country" class="form-select form-select-sm">
+                                <option value="">Negara (opsional)</option>
+                                @foreach (config('countries') as $code => $name)
+                                    <option value="{{ $code }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <textarea name="description" rows="2" class="form-control form-control-sm" placeholder="Deskripsi singkat (opsional)"></textarea>
