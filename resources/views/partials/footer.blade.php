@@ -52,7 +52,7 @@
                 </ul>
             </div>
 
-            <div class="col-lg-3 col-6" id="lokasi">
+            <div class="col-lg-3" id="lokasi">
                 <h6 class="nac-footer__title">Lokasi</h6>
                 <p class="nac-footer__map-desc">
                     {{ $setting->address ?? 'Jl. Aquatic Raya No. 1, Surabaya, Jawa Timur' }}

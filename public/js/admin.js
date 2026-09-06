@@ -94,4 +94,67 @@ document.addEventListener('DOMContentLoaded', function () {
         // terisi sebelumnya (mis. waktu buka halaman Edit).
         calcAge();
     });
+
+    // ============ Usia saat rekor dicetak — dari Tanggal Lahir member + Tanggal Rekor ============
+    function calcAgeBetween(birthDateStr, targetDateStr) {
+        if (!birthDateStr || !targetDateStr) return '';
+        var birth = new Date(birthDateStr);
+        var target = new Date(targetDateStr);
+        var age = target.getFullYear() - birth.getFullYear();
+        var m = target.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && target.getDate() < birth.getDate())) age--;
+        return age >= 0 ? age : '';
+    }
+
+    document.querySelectorAll('[data-record-date-input]').forEach(function (input) {
+        var birthDate = input.getAttribute('data-birthdate');
+        var ageTarget = document.getElementById(input.getAttribute('data-age-target'));
+        if (!ageTarget || !birthDate) return; // kalau member belum punya tanggal lahir, biarkan diisi manual
+
+        input.addEventListener('change', function () {
+            var calculated = calcAgeBetween(birthDate, input.value);
+            if (calculated !== '') ageTarget.value = calculated;
+        });
+    });
+
+    // ============ Dropdown Nomor Rekor + opsi "Lainnya (ketik manual)" ============
+    document.querySelectorAll('[data-event-select]').forEach(function (select) {
+        var customInput = document.getElementById(select.getAttribute('data-event-custom'));
+        if (!customInput) return;
+
+        function sync() {
+            if (select.value === '__custom__') {
+                select.removeAttribute('name');
+                customInput.classList.remove('d-none');
+                customInput.setAttribute('name', 'event');
+                customInput.setAttribute('required', 'required');
+            } else {
+                select.setAttribute('name', 'event');
+                customInput.classList.add('d-none');
+                customInput.removeAttribute('name');
+                customInput.removeAttribute('required');
+            }
+        }
+
+        select.addEventListener('change', sync);
+        sync(); // set state awal (penting buat mode edit yang sudah pre-filled)
+    });
+
+    // ============ Toggle tampilan Edit <-> Lihat untuk item Rekor & Pencapaian ============
+    document.querySelectorAll('[data-toggle-edit]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item = btn.closest('[data-item]');
+            if (!item) return;
+            item.querySelector('[data-view-mode]').classList.add('d-none');
+            item.querySelector('[data-edit-mode]').classList.remove('d-none');
+        });
+    });
+    document.querySelectorAll('[data-cancel-edit]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item = btn.closest('[data-item]');
+            if (!item) return;
+            item.querySelector('[data-edit-mode]').classList.add('d-none');
+            item.querySelector('[data-view-mode]').classList.remove('d-none');
+        });
+    });
 });

@@ -226,59 +226,59 @@
 
         <div class="row g-4 mt-3">
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
-                <div class="nac-price-card">
+                <div class="nac-price-card nac-price-card--highlight">
+                    <span class="nac-price-card__tag">Paling Diminati</span>
                     <h5>Swim Class A</h5>
-                    <p class="nac-price-card__desc">Usia 6-12 tahun, pengenalan teknik dasar renang.</p>
-                    <div class="nac-price-card__price">Rp460<span>rb/bulan</span></div>
+                    <p class="nac-price-card__desc">Level lanjutan untuk mengejar performa kompetisi.</p>
+                    <div class="nac-price-card__price">Rp460.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
-                        <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
+                        <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
+                        <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
+                        <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
                     </ul>
-                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="{{ route('join.create', ['category' => 'Swim School A1 - Pemula']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="75">
                 <div class="nac-price-card">
                     <h5>Swim Class B</h5>
-                    <p class="nac-price-card__desc">Usia 13-18 tahun, pernah mengikuti pelatihan renang.</p>
-                    <div class="nac-price-card__price">Rp540<span>rb/bulan</span></div>
+                    <p class="nac-price-card__desc">Level menengah, pembinaan teknik berkelanjutan.</p>
+                    <div class="nac-price-card__price">Rp540.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 2x-3x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> B1 untuk mengasah kemampuan renang lebih lanjut</li>
-                        <li><i class="fa-solid fa-check"></i> B2 untuk persiapan jika ingin masuk klub</li>
+                        <li><i class="fa-solid fa-check"></i> 4x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> Pembinaan teknik lanjutan</li>
+                        <li><i class="fa-solid fa-check"></i> Evaluasi rutin</li>
                     </ul>
-                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="{{ route('join.create', ['category' => 'Swim School B1 - Intermediate']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="150">
-                <div class="nac-price-card nac-price-card--highlight">
-                    <span class="nac-price-card__tag">Paling Diminati</span>
+                <div class="nac-price-card">
                     <h5>Junior</h5>
-                    <p class="nac-price-card__desc">Level lanjutan untuk mengejar performa kompetisi.</p>
-                    <div class="nac-price-card__price">Rp600<span>rb/bulan</span></div>
+                    <p class="nac-price-card__desc">Usia 6–12 tahun, pengenalan teknik dasar renang.</p>
+                    <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
-                        <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
-                        <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
+                        <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
+                        <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
                     </ul>
-                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="{{ route('join.create', ['category' => 'NAC Junior - Advanced']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="225">
                 <div class="nac-price-card">
                     <h5>Senior</h5>
-                    <p class="nac-price-card__desc">Level menengah, pembinaan teknik berkelanjutan.</p>
-                    <div class="nac-price-card__price">Rp600<span>rb/bulan</span></div>
+                    <p class="nac-price-card__desc">Usia 13–18 tahun, program menuju kompetisi.</p>
+                    <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 5x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Pembinaan teknik lanjutan</li>
-                        <li><i class="fa-solid fa-check"></i> Evaluasi rutin</li>
+                        <li><i class="fa-solid fa-check"></i> 3x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> Program persiapan kompetisi</li>
+                        <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
                     </ul>
-                    <a href="https://wa.me/6282252019243?text=Halo%2C%20saya%20ingin%20mendaftar" target="_blank" rel="noopener" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                    <a href="{{ route('join.create', ['category' => 'NAC Elite']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
         </div>
@@ -333,7 +333,7 @@
                                 $days = array_values(array_filter(array_map('trim', preg_split('/[,\/]+/', $schedule->days_label))));
                             @endphp
                             <tr>
-                                <td>
+                                <td data-label="Kategori">
                                     <span class="nac-schedule-table__cat">
                                         <span class="nac-schedule-table__icon">
                                             <i class="fa-solid {{ $scheduleIcon($schedule->category) }}"></i>
@@ -341,14 +341,14 @@
                                         {{ $schedule->category }}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="Hari">
                                     <div class="nac-schedule-table__days">
                                         @foreach($days as $day)
                                             <span class="nac-schedule-table__day">{{ $day }}</span>
                                         @endforeach
                                     </div>
                                 </td>
-                                <td>
+                                <td data-label="Jam">
                                     <span class="nac-schedule-table__time">
                                         <i class="fa-regular fa-clock"></i> {{ $schedule->time_label }}
                                     </span>

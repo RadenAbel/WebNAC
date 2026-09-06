@@ -18,6 +18,17 @@ class TeamMemberRecordController extends Controller
             ->with('status', 'Rekor waktu berhasil ditambahkan.');
     }
 
+    public function update(StoreTeamMemberRecordRequest $request, TeamMember $teamMember, TeamMemberRecord $record)
+    {
+        abort_unless($record->team_member_id === $teamMember->id, 404);
+
+        $record->update($request->validated());
+
+        return redirect()
+            ->route('admin.team.edit', $teamMember)
+            ->with('status', 'Rekor waktu berhasil diperbarui.');
+    }
+
     public function destroy(TeamMember $teamMember, TeamMemberRecord $record)
     {
         // Pastikan rekor ini benar milik anggota tim yang dimaksud

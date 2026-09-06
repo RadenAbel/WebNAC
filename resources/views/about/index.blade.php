@@ -8,8 +8,6 @@
 {{-- ============ HEADER HALAMAN ============ --}}
 <section class="nac-page-header">
     <div class="container text-center" data-aos="fade-up">
-        <span class="nac-page-header__icon"><i class="fa-solid fa-water"></i></span>
-        <span class="nac-eyebrow">Tentang Kami</span>
         <h1 class="nac-page-header__title">Lebih dari sekadar tempat berenang.</h1>
         <p class="nac-page-header__desc">
             Kenali lebih dekat profil, fasilitas, dan program latihan di Nugroho Aquatic Club.

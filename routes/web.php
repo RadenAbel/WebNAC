@@ -84,11 +84,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Nested: Rekor waktu terbaik & Pencapaian — dikelola dari halaman edit anggota tim
     Route::post('team/{teamMember}/records', [TeamMemberRecordController::class, 'store'])
         ->name('team.records.store');
+    Route::put('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'update'])
+        ->name('team.records.update');
     Route::delete('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'destroy'])
         ->name('team.records.destroy');
 
     Route::post('team/{teamMember}/achievements', [TeamMemberAchievementController::class, 'store'])
         ->name('team.achievements.store');
+    Route::put('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'update'])
+        ->name('team.achievements.update');
     Route::delete('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'destroy'])
         ->name('team.achievements.destroy');
 

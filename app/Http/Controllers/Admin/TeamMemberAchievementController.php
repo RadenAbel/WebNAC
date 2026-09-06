@@ -18,6 +18,17 @@ class TeamMemberAchievementController extends Controller
             ->with('status', 'Pencapaian berhasil ditambahkan.');
     }
 
+    public function update(StoreTeamMemberAchievementRequest $request, TeamMember $teamMember, TeamMemberAchievement $achievement)
+    {
+        abort_unless($achievement->team_member_id === $teamMember->id, 404);
+
+        $achievement->update($request->validated());
+
+        return redirect()
+            ->route('admin.team.edit', $teamMember)
+            ->with('status', 'Pencapaian berhasil diperbarui.');
+    }
+
     public function destroy(TeamMember $teamMember, TeamMemberAchievement $achievement)
     {
         abort_unless($achievement->team_member_id === $teamMember->id, 404);

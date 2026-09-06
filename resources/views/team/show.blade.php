@@ -57,7 +57,7 @@
 {{-- ============ TOPBAR (breadcrumb, tetap gelap sesuai brand) ============ --}}
 <section class="nac-profile-topbar">
     <div class="container">
-        <nav class="nac-breadcrumb" aria-label="Breadcrumb" data-aos="fade-right">
+        <!-- <nav class="nac-breadcrumb" aria-label="Breadcrumb" data-aos="fade-right">
             <a href="{{ url('/') }}">Beranda</a>
             <i class="fa-solid fa-chevron-right"></i>
             <a href="{{ $teamUrl }}">Our Team</a>
@@ -65,7 +65,7 @@
             <a href="{{ $sectionUrl }}">{{ $roleLabel }}</a>
             <i class="fa-solid fa-chevron-right"></i>
             <span aria-current="page">{{ $member->name }}</span>
-        </nav>
+        </nav> -->
     </div>
 </section>
 
@@ -93,7 +93,7 @@
                             </span>
                         </div>
                         <div class="nac-profile-card__tag">
-                            <span class="nac-profile-card__tag-label">Spesialisasi</span>
+                            <span class="nac-profile-card__tag-label">Kategori</span>
                             <span class="nac-profile-card__tag-value">
                                 <i class="fa-solid fa-water"></i> {{ $specialization }}
                             </span>
@@ -189,19 +189,19 @@
                         <tbody>
                             @foreach($personalBests as $best)
                                 <tr>
-                                    <td>{{ $best['event'] }}</td>
-                                    <td class="nac-rekor-table__time">{{ $best['time'] }}</td>
-                                    <td>
+                                    <td data-label="Nomor">{{ $best['event'] }}</td>
+                                    <td data-label="Waktu" class="nac-rekor-table__time">{{ $best['time'] }}</td>
+                                    <td data-label="Medali">
                                         @if(!empty($best['medal']))
                                             <span class="nac-medal-dot {{ $medalDotClass[$best['medal']] ?? '' }}" title="{{ ucfirst($best['medal']) }}"></span>
                                         @else
                                             <span class="nac-rekor-table__dash">&ndash;</span>
                                         @endif
                                     </td>
-                                    <td>{{ $best['pool_length'] }}</td>
-                                    <td>{{ $best['age'] }}</td>
-                                    <td>{{ $best['competition'] }}</td>
-                                    <td>
+                                    <td data-label="Panjang Kolam">{{ $best['pool_length'] }}</td>
+                                    <td data-label="Usia*">{{ $best['age'] }}</td>
+                                    <td data-label="Kompetisi">{{ $best['competition'] }}</td>
+                                    <td data-label="Negara">
                                         @if(!empty($best['country_code']))
                                             <span class="nac-country-badge" title="{{ $best['country'] }}">
                                                 <span class="fi fi-{{ $best['country_code'] }} nac-flag-icon"></span> {{ $best['country'] }}
@@ -210,7 +210,7 @@
                                             <span class="nac-rekor-table__dash">&ndash;</span>
                                         @endif
                                     </td>
-                                    <td>{{ $best['date'] }}</td>
+                                    <td data-label="Tanggal">{{ $best['date'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -253,15 +253,15 @@
                                     $countryName = is_array($achievement) ? ($achievement['country'] ?? null) : null;
                                 @endphp
                                 <tr>
-                                    <td class="nac-achievement-table__no">{{ $i + 1 }}</td>
-                                    <td>
+                                    <td data-label="No" class="nac-achievement-table__no">{{ $i + 1 }}</td>
+                                    <td data-label="Prestasi">
                                         <span class="nac-achievement-table__title">
                                             <span class="nac-achievement-table__icon"><i class="fa-solid fa-medal"></i></span>
                                             {{ $title }}
                                         </span>
                                     </td>
-                                    <td class="nac-achievement-table__year">{{ $year ?? '–' }}</td>
-                                    <td>
+                                    <td data-label="Tahun" class="nac-achievement-table__year">{{ $year ?? '–' }}</td>
+                                    <td data-label="Negara">
                                         @if($countryCode)
                                             <span class="nac-achievement-table__flag" title="{{ $countryName }}">
                                                 <span class="fi fi-{{ $countryCode }} nac-flag-icon"></span> {{ $countryName }}
@@ -270,7 +270,7 @@
                                             <span class="nac-rekor-table__dash">–</span>
                                         @endif
                                     </td>
-                                    <td class="nac-achievement-table__desc">{{ $desc ?: '–' }}</td>
+                                    <td data-label="Keterangan" class="nac-achievement-table__desc">{{ $desc ?: '–' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

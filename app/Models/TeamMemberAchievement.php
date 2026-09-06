@@ -14,18 +14,34 @@ class TeamMemberAchievement extends Model
         'team_member_id',
         'title',
         'year',
+        'event_date',
         'country',
+        'total_gold',
+        'total_silver',
+        'total_bronze',
         'description',
         'sort_order',
     ];
 
     protected $casts = [
-        'sort_order' => 'integer',
+        'event_date'   => 'date',
+        'total_gold'   => 'integer',
+        'total_silver' => 'integer',
+        'total_bronze' => 'integer',
+        'sort_order'   => 'integer',
     ];
 
     public function teamMember(): BelongsTo
     {
         return $this->belongsTo(TeamMember::class);
+    }
+
+    /**
+     * Tanggal pertandingan siap tampil, mis. "17 Agustus 2024".
+     */
+    public function getEventDateLabelAttribute(): ?string
+    {
+        return $this->event_date ? $this->event_date->translatedFormat('d F Y') : null;
     }
 
     /**

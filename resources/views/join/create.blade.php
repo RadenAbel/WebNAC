@@ -7,8 +7,6 @@
 
 <section class="nac-page-header">
     <div class="container text-center" data-aos="fade-up">
-        <span class="nac-page-header__icon"><i class="fa-solid fa-user-plus"></i></span>
-        <span class="nac-eyebrow">Join Us</span>
         <h1 class="nac-page-header__title">Mulai perjalanan renangmu bersama kami.</h1>
         <p class="nac-page-header__desc">
             Isi formulir pendaftaran di bawah ini — tim kami akan segera menghubungi Anda.
@@ -80,7 +78,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="nac-join-label">No. WhatsApp <span class="text-danger">*</span></label>
+                                        <label class="nac-join-label">No. WhatsApp Orang Tua/Murid <span class="text-danger">*</span></label>
                                         <input type="text" name="whatsapp" placeholder="08xxxxxxxxxx"
                                                class="nac-join-input @error('whatsapp') is-invalid @enderror" value="{{ old('whatsapp') }}" required>
                                         @error('whatsapp') <div class="nac-join-error">{{ $message }}</div> @enderror
@@ -90,12 +88,12 @@
                                         <label class="nac-join-label">Kategori yang Diminati <span class="text-danger">*</span></label>
                                         <select name="category" class="nac-join-input @error('category') is-invalid @enderror" required>
                                             <option value="">— Pilih Kategori —</option>
-                                            <option value="Swim School A1 - Pemula" {{ old('category') === 'Swim School A1 - Pemula' ? 'selected' : '' }}>Swim School A1 — Pemula</option>
-                                            <option value="Swim School A2 - Pemula" {{ old('category') === 'Swim School A2 - Pemula' ? 'selected' : '' }}>Swim School A2 — Pemula</option>
-                                            <option value="Swim School B1 - Intermediate" {{ old('category') === 'Swim School B1 - Intermediate' ? 'selected' : '' }}>Swim School B1 — Intermediate</option>
-                                            <option value="Swim School B2 - Intermediate" {{ old('category') === 'Swim School B2 - Intermediate' ? 'selected' : '' }}>Swim School B2 — Intermediate</option>
-                                            <option value="NAC Junior - Advanced" {{ old('category') === 'NAC Junior - Advanced' ? 'selected' : '' }}>NAC Junior — Advanced</option>
-                                            <option value="NAC Elite" {{ old('category') === 'NAC Elite' ? 'selected' : '' }}>NAC Elite</option>
+                                            <option value="Swim School A1 - Pemula" {{ old('category', request('category')) === 'Swim School A1 - Pemula' ? 'selected' : '' }}>Swim School A1 — Pemula</option>
+                                            <option value="Swim School A2 - Pemula" {{ old('category', request('category')) === 'Swim School A2 - Pemula' ? 'selected' : '' }}>Swim School A2 — Pemula</option>
+                                            <option value="Swim School B1 - Intermediate" {{ old('category', request('category')) === 'Swim School B1 - Intermediate' ? 'selected' : '' }}>Swim School B1 — Intermediate</option>
+                                            <option value="Swim School B2 - Intermediate" {{ old('category', request('category')) === 'Swim School B2 - Intermediate' ? 'selected' : '' }}>Swim School B2 — Intermediate</option>
+                                            <option value="NAC Junior - Advanced" {{ old('category', request('category')) === 'NAC Junior - Advanced' ? 'selected' : '' }}>NAC Junior — Advanced</option>
+                                            <option value="NAC Elite" {{ old('category', request('category')) === 'NAC Elite' ? 'selected' : '' }}>NAC Elite</option>
                                         </select>
                                         @error('category') <div class="nac-join-error">{{ $message }}</div> @enderror
                                     </div>
