@@ -23,7 +23,7 @@
                 <span class="nac-admin-sidebar__brand-mark">NAC</span>
                 <span class="nac-admin-sidebar__brand-text">
                     Admin Panel
-                    <small>Nugroho Aquatic</small>
+                    <small>Nugroho Aquatic Club</small>
                 </span>
             </div>
 
@@ -104,7 +104,35 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script>
+        // Konfirmasi hapus (SweetAlert2) — berlaku untuk semua form dengan class "nac-confirm-delete-form"
+        // di seluruh halaman admin, cukup didefinisikan sekali di layout ini.
+        document.addEventListener('submit', function (e) {
+            const form = e.target.closest('.nac-confirm-delete-form');
+            if (!form) return;
+
+            e.preventDefault();
+
+            Swal.fire({
+                title: form.dataset.confirmTitle || 'Yakin hapus data ini?',
+                text: form.dataset.confirmText || 'Data ini akan dihapus secara permanen dan tidak bisa dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

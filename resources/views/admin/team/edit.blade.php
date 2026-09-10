@@ -68,7 +68,9 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.records.destroy', [$member, $record]) }}" method="POST"
-                                    onsubmit="return confirm('Hapus rekor ini?');">
+                                    class="nac-confirm-delete-form"
+                                    data-confirm-title="Hapus rekor ini?"
+                                    data-confirm-text="Rekor {{ $record->event }} ({{ $record->time }}) akan dihapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus rekor">
@@ -260,10 +262,25 @@
                                     </div>
                                 @endif
                                 @if (($achievement->total_gold ?? 0) > 0 || ($achievement->total_silver ?? 0) > 0 || ($achievement->total_bronze ?? 0) > 0)
-                                    <div class="mt-1" style="font-size:0.78rem;">
-                                        @if ($achievement->total_gold > 0) <span class="me-2">🥇 {{ $achievement->total_gold }}</span> @endif
-                                        @if ($achievement->total_silver > 0) <span class="me-2">🥈 {{ $achievement->total_silver }}</span> @endif
-                                        @if ($achievement->total_bronze > 0) <span>🥉 {{ $achievement->total_bronze }}</span> @endif
+                                    <div class="mt-1 d-flex align-items-center" style="font-size:0.78rem;">
+                                        @if ($achievement->total_gold > 0)
+                                            <span class="me-2 d-inline-flex align-items-center">
+                                                <i class="bi bi-award-fill me-1" style="color:#FFD700;"></i>
+                                                {{ $achievement->total_gold }}
+                                            </span>
+                                        @endif
+                                        @if ($achievement->total_silver > 0)
+                                            <span class="me-2 d-inline-flex align-items-center">
+                                                <i class="bi bi-award-fill me-1" style="color:#C0C0C0;"></i>
+                                                {{ $achievement->total_silver }}
+                                            </span>
+                                        @endif
+                                        @if ($achievement->total_bronze > 0)
+                                            <span class="d-inline-flex align-items-center">
+                                                <i class="bi bi-award-fill me-1" style="color:#CD7F32;"></i>
+                                                {{ $achievement->total_bronze }}
+                                            </span>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -272,7 +289,9 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.achievements.destroy', [$member, $achievement]) }}" method="POST"
-                                    onsubmit="return confirm('Hapus pencapaian ini?');">
+                                    class="nac-confirm-delete-form"
+                                    data-confirm-title="Hapus pencapaian ini?"
+                                    data-confirm-text="{{ $achievement->title }} akan dihapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus pencapaian">
@@ -309,15 +328,15 @@
                                     </select>
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Emas</label>
                                     <input type="number" name="total_gold" class="form-control form-control-sm" min="0" value="{{ $achievement->total_gold ?? 0 }}">
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perak</label>
                                     <input type="number" name="total_silver" class="form-control form-control-sm" min="0" value="{{ $achievement->total_silver ?? 0 }}">
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perunggu</label>
                                     <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" value="{{ $achievement->total_bronze ?? 0 }}">
                                 </div>
                                 <div class="col-12">
@@ -372,15 +391,15 @@
                             </select>
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Emas</label>
                             <input type="number" name="total_gold" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perak</label>
                             <input type="number" name="total_silver" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perunggu</label>
                             <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-12">

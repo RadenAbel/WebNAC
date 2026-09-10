@@ -85,8 +85,9 @@
                                 <a href="{{ route('admin.team.edit', $member) }}" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
-                                <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin hapus {{ $member->name }}? Rekor & pencapaiannya juga akan ikut terhapus.');">
+                                <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                                    data-confirm-title="Hapus {{ $member->name }}?"
+                                    data-confirm-text="Rekor waktu & pencapaian {{ $member->name }} juga akan ikut terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -149,8 +150,9 @@
                             <a href="{{ route('admin.team.edit', $member) }}" class="btn btn-sm btn-outline-secondary flex-grow-1">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="flex-grow-1"
-                                onsubmit="return confirm('Yakin hapus {{ $member->name }}? Rekor & pencapaiannya juga akan ikut terhapus.');">
+                            <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="flex-grow-1 nac-confirm-delete-form"
+                                data-confirm-title="Hapus {{ $member->name }}?"
+                                data-confirm-text="Rekor waktu & pencapaian {{ $member->name }} juga akan ikut terhapus secara permanen.">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger w-100">

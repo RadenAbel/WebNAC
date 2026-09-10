@@ -22,8 +22,9 @@
                 <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline"
-                    onsubmit="return confirm('Yakin hapus acara ini?');">
+                <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                    data-confirm-title="Hapus acara ini?"
+                    data-confirm-text="{{ $event->title }} akan dihapus secara permanen.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>

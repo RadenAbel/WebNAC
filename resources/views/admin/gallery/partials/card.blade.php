@@ -13,8 +13,9 @@
                 <a href="{{ route('admin.galleries.edit', $gallery) }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="d-inline"
-                    onsubmit="return confirm('Yakin hapus foto ini?');">
+                <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                    data-confirm-title="Hapus foto ini?"
+                    data-confirm-text="{{ $gallery->caption ?? 'Foto ini' }} akan dihapus secara permanen dari galeri.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>

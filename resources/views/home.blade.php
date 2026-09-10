@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nugroho Aquatic CLUB — Kolam Renang Premium')
+@section('title', 'Nugroho Aquatic Club — Kolam Renang Premium')
 @section('meta_description', 'Fasilitas renang premium di Surabaya dengan pelatih bersertifikat untuk atlet junior hingga senior.')
 
 @section('content')
@@ -136,7 +136,7 @@
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
-                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Senior, Swim Class A &amp; B</li>
+                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Elite, Swim Class A &amp; B</li>
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
 
@@ -229,7 +229,7 @@
                 <div class="nac-price-card nac-price-card--highlight">
                     <span class="nac-price-card__tag">Paling Diminati</span>
                     <h5>Swim Class A</h5>
-                    <p class="nac-price-card__desc">Level lanjutan untuk mengejar performa kompetisi.</p>
+                    <p class="nac-price-card__desc">Level pemula yang baru ingin belajar renang.</p>
                     <div class="nac-price-card__price">Rp460.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
                         <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
@@ -257,7 +257,7 @@
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="150">
                 <div class="nac-price-card">
                     <h5>Junior</h5>
-                    <p class="nac-price-card__desc">Usia 6–12 tahun, pengenalan teknik dasar renang.</p>
+                    <p class="nac-price-card__desc">Pembinaan murid untuk menjadi atlet.</p>
                     <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
                         <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
@@ -270,8 +270,8 @@
 
             <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="225">
                 <div class="nac-price-card">
-                    <h5>Senior</h5>
-                    <p class="nac-price-card__desc">Usia 13–18 tahun, program menuju kompetisi.</p>
+                    <h5>Elite</h5>
+                    <p class="nac-price-card__desc">Calon atlet yang sudah siap untuk berkompetisi.</p>
                     <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
                         <li><i class="fa-solid fa-check"></i> 3x latihan per minggu</li>

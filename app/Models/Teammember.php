@@ -144,14 +144,29 @@ class TeamMember extends Model
      * (bukan dari kolom total_medals yang diisi manual admin) — supaya
      * angkanya selalu akurat mengikuti rekor yang benar-benar diinput.
      */
+    /**
+     * Breakdown medali emas/perak/perunggu — DIGABUNG dari 2 sumber:
+     * 1. Relasi `records` (tiap rekor waktu punya 1 medali)
+     * 2. Relasi `achievements` (tiap prestasi bisa punya beberapa medali
+     *    sekaligus, diisi manual admin lewat kolom total_gold/silver/bronze)
+     * Supaya "Total Prestasi & Medali" di atas profil selalu akurat
+     * mengikuti SEMUA data yang diinput admin, bukan cuma dari rekor waktu.
+     */
     public function getMedalStatsAttribute(): array
     {
-        $records = $this->relationLoaded('records') ? $this->records : $this->records()->get();
+        // PENTING: pakai getRelationValue(), BUKAN $this->achievements langsung.
+        // TeamController (publik) sengaja "menimpa" $member->achievements jadi
+        // array biasa (buat kebutuhan tampilan tabel) lewat setAttribute().
+        // Kalau di sini masih pakai $this->achievements, Eloquent akan baca
+        // hasil timpaan itu (array) alih-alih relasi aslinya (Collection),
+        // dan ->sum() di bawah bakal error karena dipanggil di atas array.
+        $records = $this->relationLoaded('records') ? $this->getRelationValue('records') : $this->records()->get();
+        $achievements = $this->relationLoaded('achievements') ? $this->getRelationValue('achievements') : $this->achievements()->get();
 
         return [
-            'gold'   => $records->where('medal', 'Emas')->count(),
-            'silver' => $records->where('medal', 'Perak')->count(),
-            'bronze' => $records->where('medal', 'Perunggu')->count(),
+            'gold'   => $records->where('medal', 'Emas')->count() + $achievements->sum('total_gold'),
+            'silver' => $records->where('medal', 'Perak')->count() + $achievements->sum('total_silver'),
+            'bronze' => $records->where('medal', 'Perunggu')->count() + $achievements->sum('total_bronze'),
         ];
     }
 
@@ -161,7 +176,7 @@ class TeamMember extends Model
      */
     public function getPersonalBestsAttribute(): array
     {
-        $records = $this->relationLoaded('records') ? $this->records : $this->records()->get();
+        $records = $this->relationLoaded('records') ? $this->getRelationValue('records') : $this->records()->get();
 
         $medalKeyMap = [
             'Emas'     => 'gold',

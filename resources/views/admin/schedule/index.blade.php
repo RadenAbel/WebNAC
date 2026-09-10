@@ -60,8 +60,9 @@
                                 <a href="{{ route('admin.schedules.edit', $schedule) }}" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
-                                <form action="{{ route('admin.schedules.destroy', $schedule) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin hapus jadwal ini?');">
+                                <form action="{{ route('admin.schedules.destroy', $schedule) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                                    data-confirm-title="Hapus jadwal ini?"
+                                    data-confirm-text="Jadwal {{ $schedule->category }} akan dihapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>

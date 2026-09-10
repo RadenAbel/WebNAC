@@ -89,7 +89,7 @@
                         <div class="nac-profile-card__tag">
                             <span class="nac-profile-card__tag-label">Asal</span>
                             <span class="nac-profile-card__tag-value">
-                                <span class="nac-country-badge__flag">ID</span> {{ $origin }}
+                                <span class="fi fi-id nac-flag-icon"></span> {{ $origin }}
                             </span>
                         </div>
                         <div class="nac-profile-card__tag">
@@ -225,10 +225,10 @@
 
                 @php
                     $achievements = (!empty($member->achievements) && count($member->achievements)) ? $member->achievements : [
-                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'description' => null, 'country_code' => null, 'country' => null],
+                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 1, 'silver' => 0, 'bronze' => 0],
+                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 0, 'silver' => 1, 'bronze' => 0],
+                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 0, 'silver' => 0, 'bronze' => 1],
+                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => null, 'country' => null, 'gold' => 0, 'silver' => 0, 'bronze' => 0],
                     ];
                 @endphp
 
@@ -238,7 +238,10 @@
                             <tr>
                                 <th style="width:56px;">No</th>
                                 <th>Prestasi &amp; Penghargaan</th>
-                                <th style="width:100px;">Tahun</th>
+                                <th style="width:110px;">Tanggal</th>
+                                <th style="width:64px;" class="text-center">Emas</th>
+                                <th style="width:64px;" class="text-center">Perak</th>
+                                <th style="width:72px;" class="text-center">Perunggu</th>
                                 <th style="width:130px;">Negara</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -248,9 +251,13 @@
                                 @php
                                     $title       = is_array($achievement) ? ($achievement['title'] ?? '') : $achievement;
                                     $year        = is_array($achievement) ? ($achievement['year'] ?? null) : null;
+                                    $eventDate   = is_array($achievement) ? ($achievement['event_date'] ?? null) : null;
                                     $desc        = is_array($achievement) ? ($achievement['description'] ?? null) : null;
                                     $countryCode = is_array($achievement) ? ($achievement['country_code'] ?? null) : null;
                                     $countryName = is_array($achievement) ? ($achievement['country'] ?? null) : null;
+                                    $gold        = is_array($achievement) ? ($achievement['gold'] ?? 0) : 0;
+                                    $silver      = is_array($achievement) ? ($achievement['silver'] ?? 0) : 0;
+                                    $bronze      = is_array($achievement) ? ($achievement['bronze'] ?? 0) : 0;
                                 @endphp
                                 <tr>
                                     <td data-label="No" class="nac-achievement-table__no">{{ $i + 1 }}</td>
@@ -260,7 +267,28 @@
                                             {{ $title }}
                                         </span>
                                     </td>
-                                    <td data-label="Tahun" class="nac-achievement-table__year">{{ $year ?? '–' }}</td>
+                                    <td data-label="Tanggal" class="nac-achievement-table__year">{{ $eventDate ?? $year ?? '–' }}</td>
+                                    <td data-label="Emas" class="text-center">
+                                        @if($gold)
+                                            {{ $gold }}
+                                        @else
+                                            <span class="nac-rekor-table__dash">–</span>
+                                        @endif
+                                    </td>
+                                    <td data-label="Perak" class="text-center">
+                                        @if($silver)
+                                            {{ $silver }}
+                                        @else
+                                            <span class="nac-rekor-table__dash">–</span>
+                                        @endif
+                                    </td>
+                                    <td data-label="Perunggu" class="text-center">
+                                        @if($bronze)
+                                            {{ $bronze }}
+                                        @else
+                                            <span class="nac-rekor-table__dash">–</span>
+                                        @endif
+                                    </td>
                                     <td data-label="Negara">
                                         @if($countryCode)
                                             <span class="nac-achievement-table__flag" title="{{ $countryName }}">
@@ -289,6 +317,40 @@
 
                         @if(!empty($member->tagline))
                             <p class="nac-profile-card__tagline">&ldquo;{{ $member->tagline }}&rdquo;</p>
+                        @endif
+
+                        @if($member->birth_place || $member->birth_date_label || $member->join_date_label || $member->swim_style)
+                            <div class="nac-profile-info-list" data-aos="fade-up" data-aos-delay="60">
+                                @if($member->birth_place || $member->birth_date_label)
+                                    <div class="nac-profile-info-item">
+                                        <i class="fa-solid fa-cake-candles"></i>
+                                        <div>
+                                            <span class="nac-profile-info-item__label">Tempat, Tanggal Lahir</span>
+                                            <span class="nac-profile-info-item__value">
+                                                {{ $member->birth_place ?? '-' }}{{ $member->birth_date_label ? ', ' . $member->birth_date_label : '' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if($member->join_date_label)
+                                    <div class="nac-profile-info-item">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                        <div>
+                                            <span class="nac-profile-info-item__label">Bergabung Sejak</span>
+                                            <span class="nac-profile-info-item__value">{{ $member->join_date_label }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if($member->swim_style)
+                                    <div class="nac-profile-info-item">
+                                        <i class="fa-solid fa-person-swimming"></i>
+                                        <div>
+                                            <span class="nac-profile-info-item__label">Gaya Spesialis</span>
+                                            <span class="nac-profile-info-item__value">{{ $member->swim_style }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                         @endif
                     </div>
 

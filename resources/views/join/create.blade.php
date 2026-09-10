@@ -31,7 +31,7 @@
                     <span class="nac-eyebrow">Formulir Pendaftaran</span>
                     <h3 class="nac-join-card__title">Data Calon Murid</h3>
 
-                    <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data" novalidate class="mt-4">
+                    <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data" novalidate class="mt-4" id="joinForm">
                         @csrf
                         <div class="row g-5">
 
@@ -99,8 +99,13 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <button type="submit" class="nac-btn nac-btn--primary nac-join-submit">
-                                            <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran
+                                        <button type="submit" class="nac-btn nac-btn--primary nac-join-submit" id="joinSubmitBtn">
+                                            <span class="nac-join-submit__label">
+                                                <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran
+                                            </span>
+                                            <span class="nac-join-submit__loading">
+                                                <span class="nac-spinner" aria-hidden="true"></span> Mengirim, mohon tunggu...
+                                            </span>
                                         </button>
                                     </div>
 

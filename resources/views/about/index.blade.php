@@ -37,7 +37,7 @@
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
-                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Senior, Swim Class A &amp; B</li>
+                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Elite, Swim Class A &amp; B</li>
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
             </div>

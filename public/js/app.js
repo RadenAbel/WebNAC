@@ -67,4 +67,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    // Form pendaftaran (Join Us): tampilkan status loading di tombol saat
+    // form dikirim, karena prosesnya (apalagi kalau ada upload foto) bisa
+    // makan waktu beberapa detik — biar user tahu form sedang diproses,
+    // bukan macet, dan tidak asal klik kirim berkali-kali.
+    var joinForm = document.getElementById('joinForm');
+    if (joinForm) {
+        joinForm.addEventListener('submit', function () {
+            var btn = document.getElementById('joinSubmitBtn');
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                btn.classList.add('is-loading');
+            }
+        });
+    }
 });

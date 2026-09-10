@@ -13,8 +13,9 @@
                 <a href="{{ route('admin.sliders.edit', $slider) }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST" class="d-inline"
-                    onsubmit="return confirm('Yakin hapus slider ini?');">
+                <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                    data-confirm-title="Hapus slider ini?"
+                    data-confirm-text="{{ $slider->title ?? 'Slider ini' }} akan dihapus secara permanen dan tidak bisa dikembalikan.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
