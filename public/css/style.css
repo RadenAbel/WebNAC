@@ -636,6 +636,65 @@ select.nac-join-input::-ms-expand {
     repeating-linear-gradient(180deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 34px);
   pointer-events: none;
 }
+
+/* ---------- Blob dekoratif organik (hero & section terang) ---------- */
+/* Bentuk "blob" dibuat dari div biasa + border-radius asimetris (bukan
+   gambar/SVG), jadi ringan dan gampang diubah warnanya lewat CSS var. */
+.nac-blob-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nac-blob-decor > .container { position: relative; z-index: 1; }
+.nac-blob {
+  position: absolute;
+  border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%;
+  opacity: var(--opacity, 0.35);
+}
+.nac-blob--hex {
+  border-radius: 16px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.nac-blob--float {
+  animation: nac-blob-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes nac-blob-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(10deg); }
+}
+.nac-blob--spin {
+  animation: nac-blob-spin 4s linear infinite;
+  will-change: transform;
+}
+@keyframes nac-blob-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nac-blob--float,
+  .nac-blob--spin { animation: none; }
+}
+@media (max-width: 575.98px) {
+  .nac-blob { transform: scale(0.65); }
+}
+
+/* Pola titik-titik halus — dipakai di section berlatar terang */
+.nac-dot-pattern {
+  position: relative;
+}
+.nac-dot-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(30, 111, 168, 0.14) 1.6px, transparent 1.6px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+.nac-dot-pattern > .container { position: relative; z-index: 1; }
 .nac-hero__title {
   font-family: var(--nac-font-display);
   font-size: clamp(2.2rem, 5vw, 3.6rem);
@@ -865,6 +924,8 @@ select.nac-join-input::-ms-expand {
   padding: 5rem 0;
   background: var(--nac-white);
 }
+.nac-section--decorated { position: relative; overflow: hidden; }
+.nac-section--decorated > .container { position: relative; z-index: 1; }
 .nac-section--dark {
   background: var(--nac-ink);
   color: var(--nac-white);
@@ -1095,6 +1156,21 @@ select.nac-join-input::-ms-expand {
 }
 .nac-page-header .container { position: relative; z-index: 1; }
 .nac-page-header .nac-breadcrumb { justify-content: center; margin-bottom: 1.75rem; }
+.nac-page-header__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--nac-aqua);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 .nac-page-header__title {
   font-family: var(--nac-font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
@@ -3270,4 +3346,378 @@ select.nac-join-input::-ms-expand {
 }
 @media (max-width: 575.98px) {
   .nac-about-classes-section .nac-join-info { padding: 0; }
+}
+
+/* ==========================================================================
+   HALAMAN KUTAI TIMUR (region/index.blade.php)
+   ========================================================================== */
+
+/* ---------- Fakta singkat ---------- */
+.nac-region-fact {
+  padding: 1.5rem 1rem;
+  border-radius: var(--nac-radius);
+  background: var(--nac-mist);
+  height: 100%;
+}
+.nac-region-fact__num {
+  display: block;
+  font-family: var(--nac-font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  color: var(--nac-ink);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+}
+.nac-region-fact__num--text { font-size: clamp(1.05rem, 1.8vw, 1.3rem); }
+.nac-region-fact__label {
+  display: block;
+  font-family: var(--nac-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nac-steel);
+}
+
+/* ---------- Kartu tempat wisata ---------- */
+.nac-region-spot {
+  position: relative;
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  padding: 1.75rem 1.5rem;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.nac-region-spot:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--nac-shadow);
+  border-color: var(--nac-aqua-soft);
+}
+.nac-region-spot__icon {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--nac-mist);
+  color: var(--nac-deep-aqua);
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+}
+.nac-region-spot__kec {
+  display: block;
+  font-family: var(--nac-font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nac-deep-aqua);
+  margin-bottom: 0.6rem;
+}
+.nac-region-spot__kec i { font-size: 0.65rem; margin-right: 0.2rem; }
+.nac-region-spot h5 {
+  font-weight: 800;
+  color: var(--nac-ink);
+  margin-bottom: 0.5rem;
+}
+.nac-region-spot p {
+  color: var(--nac-steel);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* ---------- Peta interaktif ---------- */
+.nac-region-map-wrap {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.nac-region-map {
+  position: relative;
+  flex: 1 1 560px;
+  min-width: 0;
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  padding: 1.5rem;
+  overflow: hidden;
+  touch-action: none; /* biar wheel/drag zoom tidak bentrok sama scroll halaman */
+}
+.nac-region-map.is-zoomed { cursor: grab; }
+.nac-region-map.is-panning { cursor: grabbing; }
+
+.nac-region-map__canvas {
+  transform-origin: 0 0;
+  transition: transform 0.15s ease-out;
+}
+.nac-region-map.is-panning .nac-region-map__canvas { transition: none; }
+
+.nac-region-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.nac-region-path {
+  fill: var(--nac-aqua-soft);
+  stroke: var(--nac-white);
+  stroke-width: 2;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), fill 0.25s ease;
+}
+.nac-region-path:hover,
+.nac-region-path:focus-visible {
+  fill: var(--nac-deep-aqua);
+  transform: scale(1.08);
+  outline: none;
+  filter: drop-shadow(0 6px 14px rgba(10, 14, 20, 0.3));
+  z-index: 10; /* naikkan ke atas tumpukan tanpa memindah elemen di DOM
+                  (browser modern sudah dukung z-index langsung pada SVG) */
+}
+
+/* ---------- Kontrol zoom peta ---------- */
+.nac-region-map__zoom {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.nac-region-map__zoom button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e9edf0;
+  border-radius: 9px;
+  background: var(--nac-white);
+  color: var(--nac-ink);
+  font-size: 0.85rem;
+  box-shadow: var(--nac-shadow);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nac-region-map__zoom button:hover { background: var(--nac-deep-aqua); color: var(--nac-white); }
+
+/* ---------- Card hover: nama + estimasi koordinat, pojok kanan-bawah peta ---------- */
+.nac-region-hover-card {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  max-width: 220px;
+  background: rgba(10, 14, 20, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--nac-white);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.nac-region-hover-card.is-visible { opacity: 1; transform: translateY(0); }
+.nac-region-hover-card strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+.nac-region-hover-card span {
+  display: block;
+  font-family: var(--nac-font-mono);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nac-region-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 5;
+}
+.nac-region-pin__dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--nac-ink);
+  border: 3px solid var(--nac-white);
+  box-shadow: 0 4px 10px -2px rgba(10, 14, 20, 0.5);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.nac-region-pin__dot::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(10, 14, 20, 0.18);
+  animation: nac-pin-pulse 2s ease-out infinite;
+}
+.nac-region-pin:hover .nac-region-pin__dot,
+.nac-region-pin:focus-visible .nac-region-pin__dot {
+  background: var(--nac-deep-aqua);
+  transform: scale(1.25);
+}
+@keyframes nac-pin-pulse {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ---------- Panel fakta di samping peta (statis) ---------- */
+.nac-region-facts {
+  flex: 1 1 260px;
+  min-width: 240px;
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  box-shadow: var(--nac-shadow);
+  padding: 1.75rem;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+}
+.nac-region-facts__item {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid #eef1f4;
+}
+.nac-region-facts__item:last-of-type { border-bottom: none; padding-bottom: 0; }
+.nac-region-facts__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--nac-steel);
+  margin: 0.25rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px dashed #e2e6ea;
+}
+.nac-region-facts__hint i { color: var(--nac-aqua-soft); margin-top: 0.15rem; }
+
+/* ---------- Card detail kecamatan (muncul di bawah peta saat diklik) ---------- */
+.nac-region-detail {
+  margin-top: 2rem;
+  background: var(--nac-white);
+  border: 1px solid #e9edf0;
+  border-radius: var(--nac-radius);
+  box-shadow: var(--nac-shadow);
+  padding: 2rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.nac-region-detail[hidden] { display: none; }
+.nac-region-detail.is-open { opacity: 1; transform: translateY(0); }
+
+.nac-region-detail__close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--nac-mist);
+  color: var(--nac-steel);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nac-region-detail__close:hover { background: var(--nac-aqua-soft); color: var(--nac-deep-aqua); }
+
+.nac-region-detail__tag {
+  display: inline-block;
+  font-family: var(--nac-font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--nac-deep-aqua);
+  background: var(--nac-mist);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.nac-region-detail__title {
+  font-weight: 800;
+  color: var(--nac-ink);
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  padding-right: 2.5rem;
+}
+.nac-region-detail__desc {
+  color: var(--nac-steel);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 52rem;
+  margin-bottom: 1.5rem;
+}
+
+.nac-region-detail__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+  justify-content: center;
+  gap: 1.25rem;
+}
+.nac-region-detail__photo {
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  border: 1px solid #e9edf0;
+  background: var(--nac-mist);
+}
+.nac-region-detail__photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+.nac-region-detail__photo-body { padding: 0.9rem 1.1rem 1.1rem; }
+.nac-region-detail__photo-body h6 {
+  font-weight: 700;
+  color: var(--nac-ink);
+  font-size: 0.92rem;
+  margin-bottom: 0.35rem;
+}
+.nac-region-detail__photo-body p {
+  color: var(--nac-steel);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.nac-region-detail__empty {
+  color: var(--nac-steel);
+  font-size: 0.9rem;
+  background: var(--nac-mist);
+  border-radius: var(--nac-radius);
+  padding: 1.25rem 1.5rem;
+  margin: 0;
+}
+
+@media (max-width: 767.98px) {
+  .nac-region-map-wrap { flex-direction: column; }
+  .nac-region-map { flex: 1 1 auto; width: 100%; }
+  .nac-region-facts { width: 100%; }
+}
+@media (max-width: 575.98px) {
+  .nac-region-detail { padding: 1.5rem; }
+  .nac-region-detail__title { padding-right: 2rem; font-size: 1.2rem; }
+  .nac-region-detail__gallery { grid-template-columns: 1fr; gap: 1rem; }
 }

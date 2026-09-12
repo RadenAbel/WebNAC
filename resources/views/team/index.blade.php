@@ -16,7 +16,7 @@
 </section>
 
 {{-- ============ PELATIH ============ --}}
-<section class="nac-section" id="pelatih">
+<section class="nac-section nac-section--decorated nac-dot-pattern" id="pelatih">
     <div class="container">
         @include('team.partials.fan', [
             'members'      => $coaches,
@@ -40,7 +40,7 @@
 </div>
 
 {{-- ============ ATLET ============ --}}
-<section class="nac-section nac-section--tint" id="atlet">
+<section class="nac-section" id="atlet">
     <div class="container">
         @include('team.partials.fan', [
             'members'      => $athletes,

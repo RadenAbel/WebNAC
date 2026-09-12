@@ -108,14 +108,8 @@
     </div>
 </section>
 
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-water"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 {{-- ============ TENTANG KAMI ============ --}}
-<section class="nac-section" id="tentang">
+<section class="nac-section nac-section--decorated nac-dot-pattern" id="tentang">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
@@ -217,7 +211,7 @@
 </div>
 
 {{-- ============ BIAYA PENDAFTARAN ============ --}}
-<section class="nac-section" id="biaya">
+<section class="nac-section nac-section--decorated nac-dot-pattern" id="biaya">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Biaya Pendaftaran</span>

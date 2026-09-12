@@ -28,9 +28,9 @@ class StoreTeamMemberRequest extends FormRequest
             'join_date'   => ['nullable', 'date', 'before_or_equal:today'],
 
             'whatsapp'       => ['nullable', 'string', 'max:20'],
-            'instagram_url'  => ['nullable', 'url', 'max:255'],
-            'facebook_url'   => ['nullable', 'url', 'max:255'],
-            'tiktok_url'     => ['nullable', 'url', 'max:255'],
+            'instagram_url'  => ['nullable', 'string', 'max:100'],
+            'facebook_url'   => ['nullable', 'string', 'max:100'],
+            'tiktok_url'     => ['nullable', 'string', 'max:100'],
 
             'origin_city'        => ['nullable', 'string', 'max:100'],
             'years_experience'   => ['nullable', 'integer', 'min:0', 'max:80'],
@@ -55,9 +55,9 @@ class StoreTeamMemberRequest extends FormRequest
             'photo.max'       => 'Ukuran foto maksimal 2MB.',
             'birth_date.before_or_equal' => 'Tanggal lahir tidak boleh di masa depan.',
             'join_date.before_or_equal'  => 'Tanggal bergabung tidak boleh di masa depan.',
-            'instagram_url.url' => 'Link Instagram harus berupa URL yang valid (mis. https://instagram.com/username).',
-            'facebook_url.url'  => 'Link Facebook harus berupa URL yang valid.',
-            'tiktok_url.url'    => 'Link TikTok harus berupa URL yang valid.',
+            'instagram_url.max' => 'Username Instagram maksimal 100 karakter.',
+            'facebook_url.max'  => 'Username Facebook maksimal 100 karakter.',
+            'tiktok_url.max'    => 'Username TikTok maksimal 100 karakter.',
         ];
     }
 }

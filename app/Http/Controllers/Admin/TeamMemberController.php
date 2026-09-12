@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTeamMemberRequest;
 use App\Http\Requests\Admin\UpdateTeamMemberRequest;
 use App\Models\TeamMember;
+use App\Support\SocialLinkHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,6 +42,9 @@ class TeamMemberController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['instagram_url'] = SocialLinkHelper::toFullUrl($data['instagram_url'] ?? null, 'instagram');
+        $data['facebook_url']  = SocialLinkHelper::toFullUrl($data['facebook_url'] ?? null, 'facebook');
+        $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
 
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('team', 'public');
@@ -67,6 +71,9 @@ class TeamMemberController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['instagram_url'] = SocialLinkHelper::toFullUrl($data['instagram_url'] ?? null, 'instagram');
+        $data['facebook_url']  = SocialLinkHelper::toFullUrl($data['facebook_url'] ?? null, 'facebook');
+        $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
 
         if ($request->hasFile('photo')) {
             // Hapus foto lama dari storage supaya tidak menumpuk file yatim

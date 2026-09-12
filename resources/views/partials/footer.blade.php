@@ -25,6 +25,9 @@
                     @if ($setting->whatsapp_url)
                         <a href="{{ $setting->whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     @endif
+                    @if ($setting->tiktok_url)
+                        <a href="{{ $setting->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                    @endif
                 </div>
             </div>
 

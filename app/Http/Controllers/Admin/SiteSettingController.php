@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSiteSettingRequest;
 use App\Models\SiteSetting;
+use App\Support\SocialLinkHelper;
 use Illuminate\Support\Facades\Storage;
 
 class SiteSettingController extends Controller
@@ -24,6 +25,10 @@ class SiteSettingController extends Controller
     {
         $setting = SiteSetting::current();
         $data = $request->validated();
+        $data['instagram_url'] = SocialLinkHelper::toFullUrl($data['instagram_url'] ?? null, 'instagram');
+        $data['facebook_url']  = SocialLinkHelper::toFullUrl($data['facebook_url'] ?? null, 'facebook');
+        $data['youtube_url']   = SocialLinkHelper::toFullUrl($data['youtube_url'] ?? null, 'youtube');
+        $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
 
         if ($request->hasFile('logo')) {
             if ($setting->logo) {

@@ -184,23 +184,35 @@
 
                 <div class="col-md-6">
                     <label class="form-label"><i class="bi bi-instagram text-danger me-1"></i>Instagram</label>
-                    <input type="url" name="instagram_url" class="form-control @error('instagram_url') is-invalid @enderror"
-                        value="{{ old('instagram_url', $member->instagram_url) }}" placeholder="https://instagram.com/username">
-                    @error('instagram_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <div class="input-group @error('instagram_url') is-invalid @enderror">
+                        <span class="input-group-text" style="font-size:0.8rem; color:var(--adm-steel, #64748B);">instagram.com/</span>
+                        <input type="text" name="instagram_url" class="form-control @error('instagram_url') is-invalid @enderror"
+                            value="{{ old('instagram_url', \App\Support\SocialLinkHelper::extractUsername($member->instagram_url)) }}"
+                            placeholder="username">
+                    </div>
+                    @error('instagram_url') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label"><i class="bi bi-facebook text-primary me-1"></i>Facebook</label>
-                    <input type="url" name="facebook_url" class="form-control @error('facebook_url') is-invalid @enderror"
-                        value="{{ old('facebook_url', $member->facebook_url) }}" placeholder="https://facebook.com/username">
-                    @error('facebook_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <div class="input-group @error('facebook_url') is-invalid @enderror">
+                        <span class="input-group-text" style="font-size:0.8rem; color:var(--adm-steel, #64748B);">facebook.com/</span>
+                        <input type="text" name="facebook_url" class="form-control @error('facebook_url') is-invalid @enderror"
+                            value="{{ old('facebook_url', \App\Support\SocialLinkHelper::extractUsername($member->facebook_url)) }}"
+                            placeholder="username">
+                    </div>
+                    @error('facebook_url') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label"><i class="bi bi-tiktok me-1"></i>TikTok</label>
-                    <input type="url" name="tiktok_url" class="form-control @error('tiktok_url') is-invalid @enderror"
-                        value="{{ old('tiktok_url', $member->tiktok_url) }}" placeholder="https://tiktok.com/@username">
-                    @error('tiktok_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <div class="input-group @error('tiktok_url') is-invalid @enderror">
+                        <span class="input-group-text" style="font-size:0.8rem; color:var(--adm-steel, #64748B);">tiktok.com/@</span>
+                        <input type="text" name="tiktok_url" class="form-control @error('tiktok_url') is-invalid @enderror"
+                            value="{{ old('tiktok_url', \App\Support\SocialLinkHelper::extractUsername($member->tiktok_url)) }}"
+                            placeholder="username">
+                    </div>
+                    @error('tiktok_url') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                 </div>
             </div>
         </div>

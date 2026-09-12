@@ -7,6 +7,12 @@
 
 {{-- ============ HEADER HALAMAN ============ --}}
 <section class="nac-page-header">
+    <div class="nac-blob-decor" aria-hidden="true">
+        <span class="nac-blob nac-blob--hex nac-blob--float" style="width:110px; height:110px; top:-8%; left:-3%; --opacity:.26; background:var(--nac-aqua); animation-duration:7s; animation-delay:0s;"></span>
+        <span class="nac-blob nac-blob--hex nac-blob--float" style="width:130px; height:130px; top:-9%; right:-4%; --opacity:.22; background:var(--nac-deep-aqua); animation-duration:8s; animation-delay:1.4s;"></span>
+        <span class="nac-blob nac-blob--hex nac-blob--float" style="width:90px; height:90px; bottom:-10%; left:8%; --opacity:.22; background:var(--nac-gold); animation-duration:6.5s; animation-delay:0.8s;"></span>
+        <span class="nac-blob nac-blob--hex nac-blob--float" style="width:80px; height:80px; bottom:-6%; right:14%; --opacity:.18; background:var(--nac-aqua-soft); animation-duration:7.5s; animation-delay:2.2s;"></span>
+    </div>
     <div class="container text-center" data-aos="fade-up">
         <h1 class="nac-page-header__title">Lebih dari sekadar tempat berenang.</h1>
         <p class="nac-page-header__desc">
@@ -16,7 +22,7 @@
 </section>
 
 {{-- ============ PROFIL KLUB ============ --}}
-<section class="nac-section" id="profil">
+<section class="nac-section nac-section--decorated nac-dot-pattern" id="profil">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
@@ -52,7 +58,7 @@
 </div>
 
 {{-- ============ FASILITAS ============ --}}
-<section class="nac-section nac-section--tint" id="fasilitas">
+<section class="nac-section" id="fasilitas">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Fasilitas</span>
@@ -92,7 +98,7 @@
 </div>
 
 {{-- ============ KELAS & CATATAN NAC SWIM SCHOOL (dipindah dari Join Us) ============ --}}
-<section class="nac-section nac-about-classes-section" id="kelas">
+<section class="nac-section nac-about-classes-section nac-section--decorated nac-dot-pattern" id="kelas">
     <div class="container">
         <div class="nac-join-info" data-aos="fade-up">
             <span class="nac-eyebrow">Kelas NAC Swim School</span>

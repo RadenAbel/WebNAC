@@ -379,19 +379,29 @@
                             </div>
                         </div>
 
-                        @if(!empty($member->phone) || !empty($member->instagram) || !empty($member->email))
+                        @if(!empty($member->whatsapp) || !empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
                             <div class="nac-profile-actions nac-profile-actions--light">
-                                @if(!empty($member->phone))
-                                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $member->phone) }}" target="_blank" rel="noopener" class="nac-btn nac-btn--primary">
+                                @if(!empty($member->whatsapp))
+                                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $member->whatsapp) }}" target="_blank" rel="noopener" class="nac-btn nac-btn--primary">
                                         <i class="fa-brands fa-whatsapp"></i> Hubungi Saya
                                     </a>
                                 @endif
 
-                                @if(!empty($member->instagram) || !empty($member->email))
+                                @if(!empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
                                     <div class="nac-profile-social nac-profile-social--light">
-                                        @if(!empty($member->instagram))
-                                            <a href="https://instagram.com/{{ ltrim($member->instagram, '@') }}" target="_blank" rel="noopener" aria-label="Instagram {{ $member->name }}">
+                                        @if(!empty($member->instagram_url))
+                                            <a href="{{ $member->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram {{ $member->name }}">
                                                 <i class="fa-brands fa-instagram"></i>
+                                            </a>
+                                        @endif
+                                        @if(!empty($member->facebook_url))
+                                            <a href="{{ $member->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook {{ $member->name }}">
+                                                <i class="fa-brands fa-facebook-f"></i>
+                                            </a>
+                                        @endif
+                                        @if(!empty($member->tiktok_url))
+                                            <a href="{{ $member->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok {{ $member->name }}">
+                                                <i class="fa-brands fa-tiktok"></i>
                                             </a>
                                         @endif
                                         @if(!empty($member->email))

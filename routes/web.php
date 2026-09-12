@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TeamMemberAchievementController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\TeamMemberRecordController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\HomeController;
@@ -37,6 +38,9 @@ Route::get('/our-team/{teamMember}', [TeamController::class, 'show'])
 
 Route::get('/acara', [EventController::class, 'index'])
     ->name('event.index');
+
+Route::get('/kutai-timur', [RegionController::class, 'index'])
+    ->name('region.index');
 
 Route::get('/acara/{event}', [EventController::class, 'show'])
     ->name('event.show');

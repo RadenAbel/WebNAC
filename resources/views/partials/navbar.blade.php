@@ -31,6 +31,9 @@
                     <a class="nav-link {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">Kegiatan</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('region.*') ? 'active' : '' }}" href="{{ route('region.index') }}">Wisata</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('team.*') ? 'active' : '' }}" href="{{ route('team.index') }}">Our Team</a>
                 </li>
             </ul>

@@ -25,10 +25,10 @@ class UpdateSiteSettingRequest extends FormRequest
             'email'    => ['nullable', 'email', 'max:150'],
 
             // Sosial media perusahaan
-            'instagram_url' => ['nullable', 'url', 'max:255'],
-            'facebook_url'  => ['nullable', 'url', 'max:255'],
-            'youtube_url'   => ['nullable', 'url', 'max:255'],
-            'tiktok_url'    => ['nullable', 'url', 'max:255'],
+            'instagram_url' => ['nullable', 'string', 'max:100'],
+            'facebook_url'  => ['nullable', 'string', 'max:100'],
+            'youtube_url'   => ['nullable', 'string', 'max:100'],
+            'tiktok_url'    => ['nullable', 'string', 'max:100'],
 
             // Lokasi & jam
             'address'                => ['nullable', 'string', 'max:255'],
@@ -51,10 +51,10 @@ class UpdateSiteSettingRequest extends FormRequest
             'logo.mimes'         => 'Format logo harus JPG, PNG, WEBP, atau SVG.',
             'logo.max'           => 'Ukuran logo maksimal 1MB.',
             'email.email'        => 'Format email tidak valid.',
-            'instagram_url.url'  => 'Link Instagram harus berupa URL yang valid.',
-            'facebook_url.url'   => 'Link Facebook harus berupa URL yang valid.',
-            'youtube_url.url'    => 'Link YouTube harus berupa URL yang valid.',
-            'tiktok_url.url'     => 'Link TikTok harus berupa URL yang valid.',
+            'instagram_url.max'  => 'Username Instagram maksimal 100 karakter.',
+            'facebook_url.max'   => 'Username Facebook maksimal 100 karakter.',
+            'youtube_url.max'    => 'Username YouTube maksimal 100 karakter.',
+            'tiktok_url.max'     => 'Username TikTok maksimal 100 karakter.',
             'map_embed_url.url'  => 'Link embed Google Maps harus berupa URL yang valid.',
             'about_photo.max'    => 'Ukuran foto About Us maksimal 3MB.',
         ];
