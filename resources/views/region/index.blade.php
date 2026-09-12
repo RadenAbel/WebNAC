@@ -87,7 +87,7 @@
     <div class="container">
         <div class="nac-section__head mx-auto text-center" data-aos="fade-up">
             <span class="nac-eyebrow">Peta Wilayah</span>
-            <h2 class="nac-section__title">18 kecamatan, satu Kutai Timur.</h2>
+            <h2 class="nac-section__title">Kabupaten, Kutai Timur.</h2>
         </div>
 
         <div class="nac-region-map-wrap mt-4" data-aos="fade-up" data-aos-delay="100">
