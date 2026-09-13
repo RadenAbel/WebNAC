@@ -689,8 +689,8 @@ select.nac-join-input::-ms-expand {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(30, 111, 168, 0.14) 1.6px, transparent 1.6px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(96, 168, 219, 0.11) 5px, transparent 4px);
+  background-size: 59px 59px;
   pointer-events: none;
   z-index: 0;
 }
