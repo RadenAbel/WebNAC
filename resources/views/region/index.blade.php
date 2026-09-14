@@ -76,14 +76,8 @@
     </div>
 </section>
 
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-draw-polygon"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 {{-- ============ PETA KECAMATAN INTERAKTIF ============ --}}
-<section class="nac-section" id="peta">
+<section class="nac-section nac-section--photo-bg" id="peta">
     <div class="container">
         <div class="nac-section__head mx-auto text-center" data-aos="fade-up">
             <span class="nac-eyebrow">Peta Wilayah</span>

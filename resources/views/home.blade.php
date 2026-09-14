@@ -143,48 +143,37 @@
     </div>
 </section>
 
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-image"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 {{-- ============ GALERI ============ --}}
 <section class="nac-section nac-gallery" id="galeri">
     <div class="container">
         <div class="nac-gallery__head" data-aos="fade-up">
-            <div>
-                <span class="nac-eyebrow">Galeri</span>
-                <h2 class="nac-section__title">Momen di Nugroho Aquatic Club</h2>
-            </div>
-            <div class="nac-gallery__nav">
-                <button type="button" class="nac-gallery__arrow" data-gallery-prev aria-label="Foto sebelumnya">
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                <button type="button" class="nac-gallery__arrow" data-gallery-next aria-label="Foto berikutnya">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
+            <span class="nac-eyebrow">Galeri</span>
+            <h2 class="nac-section__title">Momen di Nugroho Aquatic Club</h2>
         </div>
 
         @php
             // 🔧 DUMMY — ganti dengan data asli galeri dari controller (mis. $galleryItems).
             $galleryItems = $galleryItems ?? [
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-1/640/800', 'alt' => 'Latihan di kolam utama',         'caption' => 'Latihan Pagi'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-2/640/800', 'alt' => 'Sesi latihan teknik start',       'caption' => 'Teknik Start'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-3/640/800', 'alt' => 'Suasana kejuaraan renang',        'caption' => 'Hari Kejuaraan'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-4/640/800', 'alt' => 'Pelatih membimbing atlet junior', 'caption' => 'Bimbingan Pelatih'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-5/640/800', 'alt' => 'Fasilitas kolam dari atas',       'caption' => 'Kolam Standar Kompetisi'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-6/640/800', 'alt' => 'Sesi latihan fisik di gym',       'caption' => 'Fitness & Recovery'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-1/900/500', 'alt' => 'Latihan di kolam utama',         'caption' => 'Latihan Pagi'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-2/700/500', 'alt' => 'Sesi latihan teknik start',       'caption' => 'Teknik Start'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-3/700/500', 'alt' => 'Suasana kejuaraan renang',        'caption' => 'Hari Kejuaraan'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-4/700/500', 'alt' => 'Pelatih membimbing atlet junior', 'caption' => 'Bimbingan Pelatih'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-5/700/500', 'alt' => 'Fasilitas kolam dari atas',       'caption' => 'Kolam Standar Kompetisi'],
+                ['photo_url' => 'https://picsum.photos/seed/nac-pool-6/700/500', 'alt' => 'Sesi latihan fisik di gym',       'caption' => 'Fitness & Recovery'],
             ];
+
+            // Foto pertama tampil statis (besar, tidak ikut geser). Sisanya
+            // yang masuk slider kecil di sebelahnya.
+            $featuredItem = $galleryItems[0] ?? null;
+            $sliderItems  = array_slice($galleryItems, 1);
         @endphp
 
-        <div class="nac-gallery__track" data-gallery-track data-aos="fade-up" data-aos-delay="100">
-            @forelse($galleryItems as $item)
-                <figure class="nac-gallery__item @if(empty($item['photo_url'])) is-empty @endif">
-                    @if(!empty($item['photo_url']))
-                        <img src="{{ $item['photo_url'] }}"
-                             alt="{{ $item['alt'] ?? '' }}"
+        <div class="nac-gallery__layout" data-aos="fade-up" data-aos-delay="100">
+            @if($featuredItem)
+                <figure class="nac-gallery__item nac-gallery__item--featured @if(empty($featuredItem['photo_url'])) is-empty @endif">
+                    @if(!empty($featuredItem['photo_url']))
+                        <img src="{{ $featuredItem['photo_url'] }}"
+                             alt="{{ $featuredItem['alt'] ?? '' }}"
                              loading="lazy"
                              onload="this.closest('.nac-gallery__item').classList.add('is-loaded')">
                     @else
@@ -193,22 +182,48 @@
                             <span>Foto belum tersedia</span>
                         </div>
                     @endif
-                    @if(!empty($item['caption']))
-                        <figcaption>{{ $item['caption'] }}</figcaption>
+                    @if(!empty($featuredItem['caption']))
+                        <figcaption>{{ $featuredItem['caption'] }}</figcaption>
                     @endif
                 </figure>
-            @empty
-                <p class="text-center nac-muted">Galeri belum tersedia.</p>
-            @endforelse
+            @endif
+
+            <div class="nac-gallery__track-wrap">
+                <div class="nac-gallery__track" data-gallery-track>
+                    @forelse($sliderItems as $item)
+                        <figure class="nac-gallery__item @if(empty($item['photo_url'])) is-empty @endif">
+                            @if(!empty($item['photo_url']))
+                                <img src="{{ $item['photo_url'] }}"
+                                     alt="{{ $item['alt'] ?? '' }}"
+                                     loading="lazy"
+                                     onload="this.closest('.nac-gallery__item').classList.add('is-loaded')">
+                            @else
+                                <div class="nac-photo-placeholder">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span>Foto belum tersedia</span>
+                                </div>
+                            @endif
+                            @if(!empty($item['caption']))
+                                <figcaption>{{ $item['caption'] }}</figcaption>
+                            @endif
+                        </figure>
+                    @empty
+                        @if(!$featuredItem)
+                            <p class="text-center nac-muted">Galeri belum tersedia.</p>
+                        @endif
+                    @endforelse
+                </div>
+
+                <button type="button" class="nac-gallery__arrow nac-gallery__arrow--prev" data-gallery-prev aria-label="Foto sebelumnya">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="nac-gallery__arrow nac-gallery__arrow--next" data-gallery-next aria-label="Foto berikutnya">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
     </div>
 </section>
-
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-tags"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
 
 {{-- ============ BIAYA PENDAFTARAN ============ --}}
 <section class="nac-section nac-section--decorated nac-dot-pattern" id="biaya">
@@ -279,14 +294,8 @@
     </div>
 </section>
 
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-calendar-days"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 {{-- ============ JADWAL ============ --}}
-<section class="nac-section" id="jadwal">
+<section class="nac-section nac-section--photo-bg" id="jadwal">
     <div class="container">
         <div class="nac-section__head nac-fade-in">
             <span class="nac-eyebrow">Jadwal Latihan</span>

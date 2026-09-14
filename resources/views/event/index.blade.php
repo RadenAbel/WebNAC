@@ -14,7 +14,7 @@
     </div>
 </section>
 
-<section class="nac-section">
+<section class="nac-section nac-section--decorated nac-dot-pattern">
     <div class="container">
         @if ($events->isEmpty())
             <p class="text-center nac-muted">Belum ada kegiatan yang ditampilkan.</p>

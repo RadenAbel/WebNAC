@@ -717,56 +717,6 @@ select.nac-join-input::-ms-expand {
 }
 
 /* ==========================================================================
-   SECTION DIVIDER (pengganti lane divider — lebih modern & profesional)
-   ========================================================================== */
-.nac-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 2.5rem 0;
-  background: var(--nac-white);
-}
-.nac-divider__line {
-  flex: 1;
-  max-width: 22rem;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(30, 111, 168, 0.35));
-}
-.nac-divider__line:last-child {
-  background: linear-gradient(90deg, rgba(30, 111, 168, 0.35), transparent);
-}
-.nac-divider__icon {
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(30, 111, 168, 0.25);
-  background: var(--nac-mist);
-  color: var(--nac-deep-aqua);
-  font-size: 0.95rem;
-}
-
-/* Varian untuk dipakai di atas background gelap (mis. sebelum footer) */
-.nac-divider--dark {
-  background: var(--nac-ink);
-}
-.nac-divider--dark .nac-divider__line {
-  background: linear-gradient(90deg, transparent, rgba(127, 216, 255, 0.3));
-}
-.nac-divider--dark .nac-divider__line:last-child {
-  background: linear-gradient(90deg, rgba(127, 216, 255, 0.3), transparent);
-}
-.nac-divider--dark .nac-divider__icon {
-  border-color: rgba(127, 216, 255, 0.35);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--nac-aqua);
-}
-
-/* ==========================================================================
    HERO STATS CARD (glass, di kolom kanan hero)
    ========================================================================== */
 .nac-hero-stats {
@@ -1039,37 +989,54 @@ select.nac-join-input::-ms-expand {
    GALERI (slider kiri-kanan)
    ========================================================================== */
 .nac-gallery__head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.25rem;
   max-width: none;
 }
-.nac-gallery__nav {
-  display: flex;
-  gap: 0.6rem;
+
+/* Wrapper track supaya panah bisa jadi overlay di atas slider (posisinya
+   relatif terhadap ini, bukan terhadap seluruh section). */
+.nac-gallery__track-wrap {
+  position: relative;
+  flex: 1 1 0%;
+  min-width: 0;
 }
+
 .nac-gallery__arrow {
-  width: 46px;
-  height: 46px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 1.5px solid #dfe4e8;
-  background: var(--nac-white);
-  color: var(--nac-ink);
+  border: none;
+  background: rgba(10, 14, 20, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: var(--nac-white);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
+.nac-gallery__arrow--prev { left: 0.75rem; }
+.nac-gallery__arrow--next { right: 0.75rem; }
 .nac-gallery__arrow:hover {
-  background: var(--nac-gradient-accent);
-  border-color: transparent;
-  color: var(--nac-ink);
-  transform: translateY(-2px);
+  background: rgba(10, 14, 20, 0.7);
+  transform: translateY(-50%) scale(1.08);
 }
-.nac-gallery__arrow:active { transform: translateY(0); }
+.nac-gallery__arrow:active { transform: translateY(-50%) scale(0.96); }
+
+.nac-gallery__layout {
+  display: flex;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding-top: 2rem;
+}
+@media (max-width: 767.98px) {
+  .nac-gallery__layout { flex-direction: column; padding-top: 1.5rem; }
+}
 
 .nac-gallery__track {
   display: flex;
@@ -1078,24 +1045,34 @@ select.nac-join-input::-ms-expand {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 2rem 0 0.5rem;
+  width: 100%;
   margin: 0;
+  padding-bottom: 0.5rem;
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+@media (max-width: 767.98px) {
+  .nac-gallery__track { justify-content: flex-start; }
 }
 .nac-gallery__track::-webkit-scrollbar { display: none; }
 
 .nac-gallery__item {
   position: relative;
   flex: 0 0 auto;
-  width: 260px;
-  aspect-ratio: 4 / 5;
+  height: 220px;
+  width: auto;
+  aspect-ratio: 4 / 3;
   border-radius: var(--nac-radius);
   overflow: hidden;
   scroll-snap-align: start;
   margin: 0;
   background: var(--nac-mist);
   box-shadow: 0 6px 16px -12px rgba(10,14,20,0.2);
+}
+/* Item pertama dibikin memanjang (banner), sisanya ukuran normal — tetap
+   dalam satu track slider yang sama, cuma proporsinya beda. */
+.nac-gallery__item--featured {
+  aspect-ratio: 2 / 1;
 }
 .nac-gallery__item img {
   width: 100%;
@@ -1129,7 +1106,8 @@ select.nac-join-input::-ms-expand {
 }
 
 @media (min-width: 768px) {
-  .nac-gallery__item { width: 300px; }
+  .nac-gallery__item { height: 280px; }
+  .nac-gallery__item--featured { aspect-ratio: 2.4 / 1; }
 }
 
 /* ==========================================================================
@@ -1864,6 +1842,32 @@ select.nac-join-input::-ms-expand {
 }
 .nac-schedule--light .nac-schedule__cat {
   color: var(--nac-ink);
+}
+
+/* ==========================================================================
+   SECTION DENGAN BACKGROUND FOTO + EFEK PARALLAX
+   ========================================================================== */
+.nac-section--photo-bg {
+  position: relative;
+  color: var(--nac-white);
+  background-image:
+    linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)),
+    url('https://picsum.photos/seed/nac-pool-bg/1920/1080'); /* 🔧 GANTI dengan foto kolam asli NAC */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* ini kuncinya — bikin fotonya "diam" pas discroll */
+}
+/* iOS Safari tidak mendukung background-attachment:fixed dengan baik (sering
+   nge-lag/patah-patah) — otomatis fallback ke scroll biasa khusus di situ,
+   tetap aman & enak dilihat, cuma tanpa efek parallax-nya. */
+@supports (-webkit-touch-callout: none) {
+  .nac-section--photo-bg { background-attachment: scroll; }
+}
+.nac-section--photo-bg .nac-eyebrow { color: var(--nac-aqua); }
+.nac-section--photo-bg .nac-section__title { color: var(--nac-white); }
+.nac-section--photo-bg .nac-lead { color: rgba(255, 255, 255, 0.75); }
+.nac-section--photo-bg .nac-schedule-table-wrap {
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.55);
 }
 
 /* ---------- Jadwal: tabel modern (card putih membungkus tabel) ---------- */

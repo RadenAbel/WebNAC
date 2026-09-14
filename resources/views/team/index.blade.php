@@ -32,15 +32,8 @@
         ])
     </div>
 </section>
-
-<div class="nac-divider" aria-hidden="true">
-    <span class="nac-divider__line"></span>
-    <span class="nac-divider__icon"><i class="fa-solid fa-medal"></i></span>
-    <span class="nac-divider__line"></span>
-</div>
-
 {{-- ============ ATLET ============ --}}
-<section class="nac-section" id="atlet">
+<section class="nac-section nac-section--photo-bg" id="atlet">
     <div class="container">
         @include('team.partials.fan', [
             'members'      => $athletes,
