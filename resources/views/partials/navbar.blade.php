@@ -28,13 +28,25 @@
                     <a class="nav-link" href="{{ route('home') }}#jadwal">Jadwal</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">Kegiatan</a>
+                    <a class="nav-link {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">Hasil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('region.*') ? 'active' : '' }}" href="{{ route('region.index') }}">Wisata</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('team.*') ? 'active' : '' }}" href="{{ route('team.index') }}">Our Team</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nac-dropdown-toggle {{ request()->routeIs('team.*') ? 'active' : '' }}" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Our Team <i class="bi bi-chevron-down nac-dropdown-caret"></i>
+                    </a>
+                    <ul class="dropdown-menu nac-navbar__dropdown">
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('team.athletes') ? 'active' : '' }}" href="{{ route('team.athletes') }}">
+                                <i class="bi bi-award me-2"></i>Atlet
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('team.coaches') ? 'active' : '' }}" href="{{ route('team.coaches') }}">
+                                <i class="bi bi-person-badge me-2"></i>Pelatih
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
 

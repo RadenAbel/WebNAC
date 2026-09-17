@@ -6,7 +6,11 @@
 @section('content')
 
 {{-- ============ HEADER HALAMAN ============ --}}
-<section class="nac-page-header">
+{{-- Background pakai foto profil klub yang sama dengan yang diisi admin
+     (Pengaturan Situs > Tentang > Foto). Kalau admin belum upload apa-apa,
+     otomatis fallback ke foto placeholder. --}}
+<section class="nac-page-header nac-page-header--photo"
+    style="background-image: url('{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-swim-header/1600/700' }}');">
     <div class="container text-center" data-aos="fade-up">
         <h1 class="nac-page-header__title">Lebih dari sekadar tempat berenang.</h1>
         <p class="nac-page-header__desc">
@@ -20,16 +24,6 @@
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <div class="nac-about-photo">
-                    <img src="{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-about/700/560' }}"
-                        alt="Suasana latihan di Nugroho Aquatic Club" loading="lazy">
-                    <div class="nac-about-photo__badge">
-                        <span>Sejak</span>
-                        <strong>{{ $setting->since_year ?? '2010' }}</strong>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6" data-aos="fade-left">
                 <span class="nac-eyebrow">Profil Kami</span>
                 <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
                 <p class="nac-lead">
@@ -41,12 +35,155 @@
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
             </div>
+
+            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
+                @php
+                    // ============================================================
+                    // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy], sama
+                    // seperti section lain di halaman ini. Begitu controller kirim
+                    // $aboutStats asli (mis. dihitung dari TeamMember::atlet()->count(),
+                    // dst — datanya sudah ada semua di model, tinggal dihitung di
+                    // AboutController), blade ini otomatis pakai angka aslinya.
+                    // ============================================================
+                    $aboutStats = $aboutStats ?? [
+                        ['num' => 20, 'label' => 'Atlet Aktif', 'icon' => 'fa-person-swimming'],
+                        ['num' => 5,  'label' => 'Pelatih Bersertifikat', 'icon' => 'fa-user-graduate'],
+                        ['num' => 120, 'label' => 'Total Medali', 'icon' => 'fa-medal'],
+                    ];
+                @endphp
+                <div class="nac-about-stats">
+                    @foreach($aboutStats as $stat)
+                        <div class="nac-about-stats__item">
+                            <span class="nac-about-stats__icon"><i class="fa-solid {{ $stat['icon'] ?? 'fa-chart-simple' }}"></i></span>
+                            <span class="nac-about-stats__num" data-counter="{{ $stat['num'] }}">0</span>
+                            <span class="nac-about-stats__label">{{ $stat['label'] }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ============ KOLAM LATIHAN — EVERGLADE AQUATIC CENTER ============ --}}
+<section class="nac-section">
+    <div class="container">
+        <div class="nac-pool-highlight" data-aos="fade-up"
+            style="background-image: linear-gradient(90deg, rgba(10, 14, 20, 0.85) 0%, rgba(10, 14, 20, 0.6) 45%, rgba(10, 14, 20, 0.25) 100%), url('{{ $setting->pool_section_photo_url ?? 'https://picsum.photos/seed/nac-everglade-pool/1600/900' }}');">
+            <div class="nac-pool-highlight__content">
+                <h2 class="nac-pool-highlight__title">{{ $setting->pool_section_title ?? 'Berlatih di Everglade Aquatic Center' }}</h2>
+                <p class="nac-pool-highlight__desc">
+                    {{ $setting->pool_section_description ?? 'Nugroho Aquatic Club menjalankan seluruh program latihannya di Everglade Aquatic Center — fasilitas yang memiliki dua kolam renang untuk mendukung latihan dari tingkat pemula Swim School hingga persiapan atlet menuju kejuaraan. Detail ukuran dan kedalaman tiap kolam akan segera kami lengkapi.' }}
+                </p>
+            </div>
+            <span class="nac-pool-highlight__caption">Foto: Everglade Aquatic Center</span>
+        </div>
+    </div>
+</section>
+
+{{-- ============ TIM MANAJEMEN ============ --}}
+<section class="nac-section nac-mgmt-section" id="manajemen">
+    <div class="container">
+        <div class="nac-section__head" data-aos="fade-up">
+            <span class="nac-eyebrow">Tim Manajemen</span>
+            <h2 class="nac-section__title">Board of Commissioners</h2>
+        </div>
+
+        @php
+            // ============================================================
+            // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy], sama
+            // seperti section lain di halaman ini. Begitu controller kirim
+            // $managementTeam asli (mis. dari tabel management_members),
+            // blade ini otomatis pakai data itu tanpa perlu diubah lagi.
+            //
+            // 'full_bio_paragraphs' SENGAJA berupa ARRAY per paragraf (bukan 1 string
+            // panjang) — supaya gampang di-loop jadi beberapa <p> terpisah
+            // di dalam modal, format paragraf tetap rapi.
+            // ============================================================
+            $managementTeam = $managementTeam ?? [
+                [
+                    'name'      => 'Bambang Nugroho',
+                    'position'  => 'Ketua Umum & Pendiri',
+                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-1/500/620',
+                    'short_bio' => 'Bambang Nugroho mendirikan Nugroho Aquatic Club pada 2010 dengan visi mencetak atlet renang berkelas nasional dari Kutai Timur.',
+                    'full_bio_paragraphs' => [
+                        'Bambang Nugroho lahir di Surabaya, 12 Mei 1975. Ia mendirikan Nugroho Aquatic Club pada tahun 2010, berawal dari satu kolam latihan kecil dengan 15 murid, hingga kini berkembang menjadi salah satu klub renang terkemuka di Kutai Timur.',
+                        'Sebelum mendirikan NAC, Bambang merupakan mantan atlet renang nasional yang aktif berkompetisi di berbagai kejuaraan tingkat PON dan SEA Games pada era 1995-2003, dengan spesialisasi nomor gaya bebas dan gaya ganti.',
+                        'Di bawah kepemimpinannya, NAC telah melahirkan lebih dari 50 atlet yang berkompetisi di tingkat provinsi dan nasional, serta menjalin kerja sama dengan berbagai sekolah dan instansi olahraga daerah.',
+                    ],
+                ],
+                [
+                    'name'      => 'Siti Rahmawati',
+                    'position'  => 'Direktur Program Latihan',
+                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-2/500/620',
+                    'short_bio' => 'Siti mengepalai penyusunan kurikulum latihan NAC, dari kelas pemula Swim School hingga program atlet Elite.',
+                    'full_bio_paragraphs' => [
+                        'Siti Rahmawati bergabung dengan Nugroho Aquatic Club sejak 2013 sebagai pelatih kepala, sebelum dipercaya menjabat Direktur Program Latihan pada 2019. Ia memegang lisensi pelatih renang tingkat nasional dari PRSI.',
+                        'Siti bertanggung jawab merancang kurikulum bertingkat NAC — mulai dari Swim School A & B untuk pemula, hingga program intensif Junior dan Elite bagi calon atlet kompetisi.',
+                        'Ia juga aktif menjadi pembicara pada berbagai pelatihan pelatih renang tingkat daerah dan terlibat dalam penyusunan standar keselamatan kolam renang untuk klub-klub di Kutai Timur.',
+                    ],
+                ],
+                [
+                    'name'      => 'Andi Wijaya',
+                    'position'  => 'Manajer Operasional & Fasilitas',
+                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-3/500/620',
+                    'short_bio' => 'Andi memastikan fasilitas kolam, peralatan, dan operasional harian NAC berjalan sesuai standar kompetisi.',
+                    'full_bio_paragraphs' => [
+                        'Andi Wijaya menangani seluruh aspek operasional Nugroho Aquatic Club sejak 2016, termasuk perawatan kolam, sistem sirkulasi air, dan kelengkapan alat timing elektronik.',
+                        'Berlatar belakang teknik mesin, Andi memastikan setiap fasilitas NAC memenuhi standar keselamatan dan kompetisi yang berlaku, termasuk kalibrasi rutin sistem pencatatan waktu otomatis.',
+                        'Ia juga mengoordinasikan jadwal penggunaan kolam antara kelas Swim School, latihan atlet, dan acara/kejuaraan yang diselenggarakan di lokasi NAC.',
+                    ],
+                ],
+            ];
+        @endphp
+
+        <div class="nac-mgmt-list mt-4">
+            @foreach($managementTeam as $i => $member)
+                <div class="nac-mgmt-card" data-aos="fade-up" data-aos-delay="{{ $i * 80 }}">
+                    <div class="nac-mgmt-card__photo">
+                        <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}" loading="lazy">
+                    </div>
+                    <div class="nac-mgmt-card__body">
+                        <h3 class="nac-mgmt-card__name">{{ $member['name'] }}</h3>
+                        <span class="nac-mgmt-card__position">{{ $member['position'] }}</span>
+                        <p class="nac-mgmt-card__bio">{{ $member['short_bio'] }}</p>
+                        <button type="button" class="nac-mgmt-card__more" data-bs-toggle="modal" data-bs-target="#mgmtModal{{ $i }}">
+                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- ---------- Modal detail: foto diam, cuma teks yang di-scroll ---------- --}}
+                <div class="modal fade nac-mgmt-modal" id="mgmtModal{{ $i }}" tabindex="-1" aria-labelledby="mgmtModal{{ $i }}Label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <button type="button" class="nac-mgmt-modal__close" data-bs-dismiss="modal" aria-label="Tutup">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <div class="nac-mgmt-modal__body">
+                                <div class="nac-mgmt-modal__photo">
+                                    <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}">
+                                </div>
+                                <div class="nac-mgmt-modal__text">
+                                    <h3 id="mgmtModal{{ $i }}Label">{{ $member['name'] }}</h3>
+                                    <span class="nac-mgmt-modal__position">{{ $member['position'] }}</span>
+                                    <div class="nac-mgmt-modal__scroll">
+                                        @foreach($member['full_bio_paragraphs'] as $paragraph)
+                                            <p>{{ $paragraph }}</p>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>
 
 {{-- ============ FASILITAS ============ --}}
-<section class="nac-section " id="fasilitas">
+<section class="nac-section nac-section--decorated nac-dot-pattern" id="fasilitas">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Fasilitas</span>
@@ -80,7 +217,8 @@
 </section>
 
 {{-- ============ KELAS & CATATAN NAC SWIM SCHOOL (dipindah dari Join Us) ============ --}}
-<section class="nac-section nac-about-classes-section nac-section--decorated nac-dot-pattern" id="kelas">
+<section class="nac-section nac-about-classes-section nac-section--photo-bg" id="kelas"
+    style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)), url('{{ $setting->classes_section_photo_url ?? 'https://picsum.photos/seed/nac-classes-bg/1920/1080' }}');">
     <div class="container">
         <div class="nac-join-info" data-aos="fade-up">
             <span class="nac-eyebrow">Kelas NAC Swim School</span>

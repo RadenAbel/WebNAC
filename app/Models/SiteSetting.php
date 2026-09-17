@@ -27,6 +27,10 @@ class SiteSetting extends Model
         'about_title',
         'about_description',
         'about_photo',
+        'classes_section_photo',
+        'pool_section_photo',
+        'pool_section_title',
+        'pool_section_description',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -37,6 +41,16 @@ class SiteSetting extends Model
     public function getAboutPhotoUrlAttribute(): ?string
     {
         return $this->about_photo ? asset('storage/' . $this->about_photo) : null;
+    }
+
+    public function getClassesSectionPhotoUrlAttribute(): ?string
+    {
+        return $this->classes_section_photo ? asset('storage/' . $this->classes_section_photo) : null;
+    }
+
+    public function getPoolSectionPhotoUrlAttribute(): ?string
+    {
+        return $this->pool_section_photo ? asset('storage/' . $this->pool_section_photo) : null;
     }
 
     /**

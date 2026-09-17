@@ -40,6 +40,10 @@ class UpdateSiteSettingRequest extends FormRequest
             'about_title'       => ['nullable', 'string', 'max:150'],
             'about_description' => ['nullable', 'string', 'max:2000'],
             'about_photo'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'classes_section_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'pool_section_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'pool_section_title' => ['nullable', 'string', 'max:150'],
+            'pool_section_description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -57,6 +61,8 @@ class UpdateSiteSettingRequest extends FormRequest
             'tiktok_url.max'     => 'Username TikTok maksimal 100 karakter.',
             'map_embed_url.url'  => 'Link embed Google Maps harus berupa URL yang valid.',
             'about_photo.max'    => 'Ukuran foto About Us maksimal 3MB.',
+            'classes_section_photo.max' => 'Ukuran foto background section Kelas maksimal 3MB.',
+            'pool_section_photo.max' => 'Ukuran foto background section kolam maksimal 3MB.',
         ];
     }
 }

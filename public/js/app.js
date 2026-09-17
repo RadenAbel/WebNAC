@@ -82,4 +82,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Statistik dengan animasi hitung naik (mis. jumlah atlet, pelatih,
+    // total medali di halaman Tentang Kami) — angka mulai dari 0 dan naik
+    // ke angka aslinya begitu elemennya pertama kali kelihatan di layar.
+    // Cuma jalan sekali per elemen (tidak diulang tiap discroll bolak-balik).
+    var counterEls = document.querySelectorAll('[data-counter]');
+    if (counterEls.length && window.IntersectionObserver) {
+        var animateCounter = function (el) {
+            var target = parseInt(el.getAttribute('data-counter'), 10) || 0;
+            var duration = 1400; // ms
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic, melambat di akhir
+                el.textContent = Math.floor(eased * target);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    el.textContent = target; // pastikan angka akhirnya presisi, tidak kepotong pembulatan
+                }
+            }
+            window.requestAnimationFrame(step);
+        };
+
+        var counterObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting && !entry.target.dataset.counted) {
+                    entry.target.dataset.counted = 'true';
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        counterEls.forEach(function (el) { counterObserver.observe(el); });
+    }
 });

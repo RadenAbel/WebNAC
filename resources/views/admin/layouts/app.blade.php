@@ -55,6 +55,10 @@
                     <i class="bi bi-people"></i>
                     <span class="nac-admin-nav__label">Tim (Pelatih/Atlet)</span>
                 </a>
+                <a href="{{ route('admin.management.index') }}" class="{{ request()->routeIs('admin.management.*') ? 'active' : '' }}" title="Tim Manajemen">
+                    <i class="bi bi-person-badge"></i>
+                    <span class="nac-admin-nav__label">Tim Manajemen</span>
+                </a>
 
                 <span class="nac-admin-nav__group">Pengaturan</span>
 

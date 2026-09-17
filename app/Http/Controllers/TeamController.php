@@ -7,18 +7,28 @@ use App\Models\TeamMember;
 class TeamController extends Controller
 {
     /**
-     * Tampilkan halaman "Our Team" — gabungan pelatih & atlit.
+     * Halaman "Our Team" — Atlet saja.
      */
-    public function index()
+    public function athletes()
     {
-        $coaches  = TeamMember::active()->pelatih()->get();
         $athletes = TeamMember::active()->atlet()->get();
 
-        return view('team.index', compact('coaches', 'athletes'));
+        return view('team.athletes', compact('athletes'));
     }
 
     /**
-     * Halaman profil detail satu anggota tim.
+     * Halaman "Our Team" — Pelatih saja.
+     */
+    public function coaches()
+    {
+        $coaches = TeamMember::active()->pelatih()->get();
+
+        return view('team.coaches', compact('coaches'));
+    }
+
+    /**
+     * Halaman profil detail satu anggota tim (dipakai baik untuk atlet
+     * maupun pelatih — kontennya menyesuaikan lewat $member->role di view).
      */
     public function show(TeamMember $teamMember)
     {
@@ -26,7 +36,10 @@ class TeamController extends Controller
 
         // Load relasi sekali di awal — dipakai berulang kali oleh accessor
         // medal_stats & personal_bests di model (menghindari N+1 query).
-        $teamMember->load(['records', 'achievements']);
+        // 'licenses' cuma relevan buat pelatih, tapi tetap di-load di sini
+        // supaya kode-nya sama untuk kedua role (query-nya murah, cuma
+        // kosong kalau atlet).
+        $teamMember->load(['records', 'achievements', 'licenses']);
 
         // 'achievements' adalah nama RELASI di model (juga dipakai admin CRUD),
         // tapi halaman profil publik ini butuh bentuknya sebagai array

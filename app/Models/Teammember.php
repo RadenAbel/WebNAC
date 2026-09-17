@@ -98,6 +98,17 @@ class TeamMember extends Model
         return $this->hasMany(TeamMemberAchievement::class)->orderBy('sort_order');
     }
 
+    /**
+     * Lisensi/sertifikasi kepelatihan — cuma relevan buat role 'pelatih',
+     * tapi tetap relasi umum di sini (sama seperti records/achievements)
+     * supaya polanya konsisten. Halaman edit admin yang atur kapan
+     * ditampilkan (berdasarkan $member->role).
+     */
+    public function licenses(): HasMany
+    {
+        return $this->hasMany(TeamMemberLicense::class)->orderBy('sort_order');
+    }
+
     // ========================================================================
     // ACCESSOR ALIAS
     // ------------------------------------------------------------------------

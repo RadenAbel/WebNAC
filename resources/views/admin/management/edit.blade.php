@@ -1,0 +1,31 @@
+@extends('admin.layouts.app')
+
+@section('admin_title', 'Edit ' . $member->name)
+
+@section('admin_content')
+
+    <div class="mb-4">
+        <a href="{{ route('admin.management.index') }}" class="nac-admin-back-btn">
+            <span class="nac-admin-back-btn__icon"><i class="bi bi-arrow-left"></i></span> Kembali ke daftar
+        </a>
+        <h1 class="h4 fw-bold mt-2 mb-1">Edit: {{ $member->name }}</h1>
+    </div>
+
+    @if (session('status'))
+        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
+    @endif
+
+    <div class="bg-white border rounded-3 p-4">
+        <form action="{{ route('admin.management.update', $member) }}" method="POST" enctype="multipart/form-data">
+            @method('PUT')
+            @include('admin.management.partials.form')
+
+            <div class="mt-4 pt-3 border-top">
+                <button type="submit" class="btn nac-admin-btn">
+                    <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+
+@endsection

@@ -106,7 +106,7 @@
                         @if(!empty($member->photo_url))
                             <img src="{{ $member->photo_url }}"
                                  alt="Foto {{ $member->name }}"
-                                 width="360" height="450"
+                                 width="280" height="280"
                                  fetchpriority="high"
                                  onload="this.parentElement.classList.add('is-loaded')">
                         @else
@@ -119,42 +119,58 @@
                 </div>
 
                 <div class="nac-profile-card__medals">
-                    <span class="nac-medal-total-label">Total Prestasi &amp; Medali</span>
-                    <span class="nac-medal-total-num">{{ $medalTotal }}</span>
+                    @if($member->role === 'atlet')
+                        <span class="nac-medal-total-label">Total Prestasi &amp; Medali</span>
+                        <span class="nac-medal-total-num">{{ $medalTotal }}</span>
 
-                    <div class="nac-medal-bars">
-                        <div class="nac-medal-bar nac-medal-bar--gold">
-                            <span class="nac-medal-bar__count">{{ $medalStats['gold'] }}</span>
-                            <span class="nac-medal-bar__fill">
-                                <span style="height: {{ round(($medalStats['gold'] / $medalMax) * 100) }}%"></span>
-                            </span>
-                            <span class="nac-medal-bar__label">Emas</span>
+                        <div class="nac-medal-bars">
+                            <div class="nac-medal-bar nac-medal-bar--gold">
+                                <span class="nac-medal-bar__count">{{ $medalStats['gold'] }}</span>
+                                <span class="nac-medal-bar__fill">
+                                    <span style="height: {{ round(($medalStats['gold'] / $medalMax) * 100) }}%"></span>
+                                </span>
+                                <span class="nac-medal-bar__label">Emas</span>
+                            </div>
+                            <div class="nac-medal-bar nac-medal-bar--silver">
+                                <span class="nac-medal-bar__count">{{ $medalStats['silver'] }}</span>
+                                <span class="nac-medal-bar__fill">
+                                    <span style="height: {{ round(($medalStats['silver'] / $medalMax) * 100) }}%"></span>
+                                </span>
+                                <span class="nac-medal-bar__label">Perak</span>
+                            </div>
+                            <div class="nac-medal-bar nac-medal-bar--bronze">
+                                <span class="nac-medal-bar__count">{{ $medalStats['bronze'] }}</span>
+                                <span class="nac-medal-bar__fill">
+                                    <span style="height: {{ round(($medalStats['bronze'] / $medalMax) * 100) }}%"></span>
+                                </span>
+                                <span class="nac-medal-bar__label">Perunggu</span>
+                            </div>
                         </div>
-                        <div class="nac-medal-bar nac-medal-bar--silver">
-                            <span class="nac-medal-bar__count">{{ $medalStats['silver'] }}</span>
-                            <span class="nac-medal-bar__fill">
-                                <span style="height: {{ round(($medalStats['silver'] / $medalMax) * 100) }}%"></span>
-                            </span>
-                            <span class="nac-medal-bar__label">Perak</span>
+                    @else
+                        <span class="nac-medal-total-label">Total Lisensi</span>
+                        <span class="nac-medal-total-num">{{ $member->licenses->count() }}</span>
+
+                        <div class="nac-license-summary">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span>Sertifikasi Kepelatihan</span>
                         </div>
-                        <div class="nac-medal-bar nac-medal-bar--bronze">
-                            <span class="nac-medal-bar__count">{{ $medalStats['bronze'] }}</span>
-                            <span class="nac-medal-bar__fill">
-                                <span style="height: {{ round(($medalStats['bronze'] / $medalMax) * 100) }}%"></span>
-                            </span>
-                            <span class="nac-medal-bar__label">Perunggu</span>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
             <ul class="nav nac-profile-tabs" id="profileTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="tab-rekor-btn" data-bs-toggle="tab" data-bs-target="#tab-rekor" type="button" role="tab" aria-controls="tab-rekor" aria-selected="true">Rekor</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="tab-prestasi-btn" data-bs-toggle="tab" data-bs-target="#tab-prestasi" type="button" role="tab" aria-controls="tab-prestasi" aria-selected="false">Prestasi</button>
-                </li>
+                @if($member->role === 'atlet')
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab-rekor-btn" data-bs-toggle="tab" data-bs-target="#tab-rekor" type="button" role="tab" aria-controls="tab-rekor" aria-selected="true">Rekor</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-prestasi-btn" data-bs-toggle="tab" data-bs-target="#tab-prestasi" type="button" role="tab" aria-controls="tab-prestasi" aria-selected="false">Prestasi</button>
+                    </li>
+                @else
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab-lisensi-btn" data-bs-toggle="tab" data-bs-target="#tab-lisensi" type="button" role="tab" aria-controls="tab-lisensi" aria-selected="true">Lisensi</button>
+                    </li>
+                @endif
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="tab-profil-btn" data-bs-toggle="tab" data-bs-target="#tab-profil" type="button" role="tab" aria-controls="tab-profil" aria-selected="false">Profil</button>
                 </li>
@@ -168,6 +184,7 @@
     <div class="container">
         <div class="tab-content" id="profileTabContent">
 
+            @if($member->role === 'atlet')
             {{-- ---------- TAB: REKOR WAKTU TERBAIK ---------- --}}
             <div class="tab-pane fade show active" id="tab-rekor" role="tabpanel" aria-labelledby="tab-rekor-btn">
                 <h2 class="nac-section__title mb-4" data-aos="fade-up">Rekor Waktu Terbaik</h2>
@@ -305,6 +322,63 @@
                     </table>
                 </div>
             </div>
+            @endif
+
+            @if($member->role === 'pelatih')
+            {{-- ---------- TAB: LISENSI & SERTIFIKASI ---------- --}}
+            <div class="tab-pane fade show active" id="tab-lisensi" role="tabpanel" aria-labelledby="tab-lisensi-btn">
+                <h2 class="nac-section__title mb-4" data-aos="fade-up">Lisensi &amp; Sertifikasi</h2>
+
+                @if($member->licenses->count())
+                    <div class="nac-achievement-table-wrap" data-aos="fade-up">
+                        <table class="nac-achievement-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:56px;">No</th>
+                                    <th>Nama Lisensi</th>
+                                    <th>Lembaga</th>
+                                    <th>Nomor</th>
+                                    <th style="width:110px;">Terbit</th>
+                                    <th style="width:120px;">Berlaku Sampai</th>
+                                    <th style="width:90px;">Sertifikat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($member->licenses as $i => $license)
+                                    <tr>
+                                        <td data-label="No" class="nac-achievement-table__no">{{ $i + 1 }}</td>
+                                        <td data-label="Nama Lisensi">
+                                            <span class="nac-achievement-table__title">
+                                                <span class="nac-achievement-table__icon"><i class="fa-solid fa-certificate"></i></span>
+                                                {{ $license->title }}
+                                                @if($license->is_expired)
+                                                    <span class="badge bg-danger ms-1" style="font-size:0.62rem; vertical-align:middle;">Kedaluwarsa</span>
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td data-label="Lembaga">{{ $license->issuer ?? '–' }}</td>
+                                        <td data-label="Nomor">{{ $license->license_number ?? '–' }}</td>
+                                        <td data-label="Terbit" class="nac-achievement-table__year">{{ $license->issued_date_label ?? '–' }}</td>
+                                        <td data-label="Berlaku Sampai" class="nac-achievement-table__year">{{ $license->expiry_date_label ?? '–' }}</td>
+                                        <td data-label="Sertifikat">
+                                            @if($license->certificate_url)
+                                                <a href="{{ $license->certificate_url }}" target="_blank" rel="noopener" title="Lihat sertifikat">
+                                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                                </a>
+                                            @else
+                                                <span class="nac-rekor-table__dash">–</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="nac-muted text-center py-5">Belum ada lisensi yang diinput untuk pelatih ini.</p>
+                @endif
+            </div>
+            @endif
 
             {{-- ---------- TAB: PROFIL ---------- --}}
             <div class="tab-pane fade" id="tab-profil" role="tabpanel" aria-labelledby="tab-profil-btn">
@@ -364,7 +438,7 @@
                                 </div>
                             </div>
                             <div class="nac-profile-stats__item">
-                                <i class="fa-solid fa-medal"></i>
+                                <i class="fa-solid {{ $member->role === 'pelatih' ? 'fa-certificate' : 'fa-medal' }}"></i>
                                 <div>
                                     <span class="nac-profile-stats__num nac-profile-stats__num--text">{{ $specialization }}</span>
                                     <span class="nac-profile-stats__label">Kategori</span>

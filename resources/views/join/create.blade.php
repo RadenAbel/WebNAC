@@ -88,12 +88,9 @@
                                         <label class="nac-join-label">Kategori yang Diminati <span class="text-danger">*</span></label>
                                         <select name="category" class="nac-join-input @error('category') is-invalid @enderror" required>
                                             <option value="">— Pilih Kategori —</option>
-                                            <option value="Swim School A1 - Pemula" {{ old('category', request('category')) === 'Swim School A1 - Pemula' ? 'selected' : '' }}>Swim School A1 — Pemula</option>
-                                            <option value="Swim School A2 - Pemula" {{ old('category', request('category')) === 'Swim School A2 - Pemula' ? 'selected' : '' }}>Swim School A2 — Pemula</option>
-                                            <option value="Swim School B1 - Intermediate" {{ old('category', request('category')) === 'Swim School B1 - Intermediate' ? 'selected' : '' }}>Swim School B1 — Intermediate</option>
-                                            <option value="Swim School B2 - Intermediate" {{ old('category', request('category')) === 'Swim School B2 - Intermediate' ? 'selected' : '' }}>Swim School B2 — Intermediate</option>
-                                            <option value="NAC Junior - Advanced" {{ old('category', request('category')) === 'NAC Junior - Advanced' ? 'selected' : '' }}>NAC Junior — Advanced</option>
-                                            <option value="NAC Elite" {{ old('category', request('category')) === 'NAC Elite' ? 'selected' : '' }}>NAC Elite</option>
+                                            <option value="Swim School A1 - Pemula" {{ old('category', request('category')) === 'Swim School A1 - Pemula' ? 'selected' : '' }}>Novato</option>
+                                            <option value="Swim School B1 - Intermediate" {{ old('category', request('category')) === 'Swim School B1 - Intermediate' ? 'selected' : '' }}>Avance</option>
+                                            <option value="NAC Elite" {{ old('category', request('category')) === 'NAC Elite' ? 'selected' : '' }}>Campeo'n</option>
                                         </select>
                                         @error('category') <div class="nac-join-error">{{ $message }}</div> @enderror
                                     </div>

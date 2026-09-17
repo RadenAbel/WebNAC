@@ -224,6 +224,84 @@
             </div>
         </div>
 
+        {{-- ============ FOTO BACKGROUND — SECTION KELAS (halaman Tentang Kami) ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Foto Background — Section "Kelas NAC Swim School"</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di halaman Tentang Kami, sebagai foto latar gelap di belakang tulisan
+                "Kelas Apa Aja Sih yang Ada di Nugroho Swim School?".
+            </p>
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->classes_section_photo ? $setting->classes_section_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto background section Kelas"
+                            id="classesSectionPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="classes_section_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('classes_section_photo') is-invalid @enderror"
+                            onchange="document.getElementById('classesSectionPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('classes_section_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                        <p class="text-secondary mt-2 mb-0" style="font-size:0.78rem;">
+                            Disarankan foto yang cukup gelap/kontras, karena tulisan di atasnya berwarna putih.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ============ FOTO BACKGROUND — SECTION EVERGLADE AQUATIC CENTER ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Foto Background — Section "Everglade Aquatic Center"</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di halaman Tentang Kami, sebagai foto latar section yang menjelaskan
+                kolam Everglade Aquatic Center tempat NAC berlatih.
+            </p>
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->pool_section_photo ? $setting->pool_section_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto background section kolam"
+                            id="poolSectionPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="pool_section_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('pool_section_photo') is-invalid @enderror"
+                            onchange="document.getElementById('poolSectionPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('pool_section_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                        <p class="text-secondary mt-2 mb-0" style="font-size:0.78rem;">
+                            Disarankan foto asli kolam Everglade Aquatic Center (kalau sudah ada dokumentasinya).
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Judul</label>
+                        <input type="text" name="pool_section_title" class="form-control @error('pool_section_title') is-invalid @enderror"
+                            value="{{ old('pool_section_title', $setting->pool_section_title) }}"
+                            placeholder="Berlatih di Everglade Aquatic Center">
+                        @error('pool_section_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                    <div>
+                        <label class="form-label fw-bold">Deskripsi</label>
+                        <textarea name="pool_section_description" rows="5"
+                            class="form-control @error('pool_section_description') is-invalid @enderror"
+                            placeholder="Nugroho Aquatic Club menjalankan seluruh program latihannya di Everglade Aquatic Center...">{{ old('pool_section_description', $setting->pool_section_description) }}</textarea>
+                        @error('pool_section_description') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn nac-admin-btn">
             <i class="bi bi-check-lg me-1"></i> Simpan Semua Pengaturan
         </button>

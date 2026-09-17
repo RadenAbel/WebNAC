@@ -6,14 +6,53 @@
 @section('content')
 
 {{-- ============ HERO ============ --}}
-<section class="nac-hero">
-    <div class="container">
+<section class="nac-hero nac-hero--photo">
+    @php
+        // ============================================================
+        // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy].
+        // Begitu controller mengirim $heroStats & $heroPhotos asli
+        // (dari tabel schedules-stats & tabel sliders), blade ini
+        // otomatis memakainya tanpa perlu diubah lagi.
+        // ============================================================
+        $heroStats = $heroStats ?? [
+            ['icon' => 'fa-water',          'num' => '2',   'unit' => null, 'label' => 'Lintasan'],
+            ['icon' => 'fa-ruler-combined',  'num' => '50',  'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
+            ['icon' => 'fa-certificate',     'num' => '3',   'unit' => null, 'label' => 'Pelatih Bersertifikat'],
+            ['icon' => 'fa-users',           'num' => '20+', 'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
+        ];
+
+        $heroPhotos = $heroPhotos ?? [
+            ['photo_url' => 'https://picsum.photos/seed/nac-hero-1/1600/1000', 'alt' => 'Suasana latihan pagi di kolam'],
+            ['photo_url' => 'https://picsum.photos/seed/nac-hero-2/1600/1000', 'alt' => 'Sesi latihan teknik start'],
+            ['photo_url' => 'https://picsum.photos/seed/nac-hero-3/1600/1000', 'alt' => 'Suasana kejuaraan renang'],
+        ];
+    @endphp
+
+    {{-- Background: foto dari Slider (admin), bergantian otomatis kalau lebih dari 1.
+         Kalau belum ada foto sama sekali, otomatis fallback ke gradasi biru lama
+         (lihat var(--nac-gradient-hero) di .nac-hero, tidak pernah tampil kosong). --}}
+    @if(count($heroPhotos))
+        <div id="heroBgCarousel" class="carousel slide nac-hero__bg" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-inner h-100">
+                @foreach($heroPhotos as $i => $photo)
+                    <div class="carousel-item h-100 {{ $i === 0 ? 'active' : '' }}">
+                        <img src="{{ $photo['photo_url'] }}" alt="{{ $photo['alt'] ?? '' }}" class="nac-hero__bg-img" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        {{-- Lapisan hitam transparan di atas foto — biar teks putih tetap kebaca
+             di atas foto apa pun, terlepas terang/gelapnya foto itu sendiri. --}}
+        <div class="nac-hero__overlay"></div>
+    @endif
+
+    <div class="container position-relative">
         <div class="row align-items-center min-vh-100 py-5 g-5">
-            <div class="col-lg-6" data-aos="fade-up">
+            <div class="col-lg-7" data-aos="fade-up">
                 <span class="nac-eyebrow">Nugroho Aquatic CLUB</span>
                 <h1 class="nac-hero__title">
                     Setiap tarikan napas,<br>
-                    <span class="nac-text-gradient">setiap detik</span> berarti.
+                    setiap detik berarti.
                 </h1>
                 <p class="nac-hero__subtitle">
                     Kolam renang standar kompetisi dengan pelatih bersertifikat nasional.
@@ -25,83 +64,19 @@
                 </div>
             </div>
 
-            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="150">
-                @php
-                    // ============================================================
-                    // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy].
-                    // Begitu controller mengirim $heroStats & $heroPhotos asli
-                    // (mis. dari tabel pool_stats & hero_photos), blade ini
-                    // otomatis memakainya tanpa perlu diubah lagi.
-                    // ============================================================
-                    $heroStats = $heroStats ?? [
-                        ['icon' => 'fa-water',          'num' => '2',   'unit' => null, 'label' => 'Lintasan'],
-                        ['icon' => 'fa-ruler-combined',  'num' => '50',  'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
-                        ['icon' => 'fa-certificate',     'num' => '3',   'unit' => null, 'label' => 'Pelatih Bersertifikat'],
-                        ['icon' => 'fa-users',           'num' => '20+', 'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
-                    ];
-
-                    $heroPhotos = $heroPhotos ?? [
-                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-1/700/560', 'alt' => 'Suasana latihan pagi di kolam', 'icon' => 'fa-water',     'caption' => 'Latihan Pagi'],
-                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-2/700/560', 'alt' => 'Sesi latihan teknik start',      'icon' => 'fa-stopwatch', 'caption' => 'Teknik Start'],
-                        ['photo_url' => 'https://picsum.photos/seed/nac-hero-3/700/560', 'alt' => 'Suasana kejuaraan renang',        'icon' => 'fa-trophy',    'caption' => 'Hari Kejuaraan'],
-                    ];
-
-                    $heroSlideCount = 1 + count($heroPhotos); // 1 slide statistik + N slide foto
-                @endphp
-
-                <div class="nac-hero-slider">
-                    <div id="heroStatsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
-                        <div class="carousel-inner">
-
-                            {{-- Slide 1: statistik --}}
-                            <div class="carousel-item active">
-                                <div class="nac-hero-carousel-slide nac-hero-carousel-slide--stats">
-                                    @foreach($heroStats as $stat)
-                                        <div class="nac-hero-stats__item">
-                                            <i class="fa-solid {{ $stat['icon'] }}"></i>
-                                            <div>
-                                                <div class="nac-hero-stats__num">{{ $stat['num'] }}@if(!empty($stat['unit']))<span>{{ $stat['unit'] }}</span>@endif</div>
-                                                <div class="nac-hero-stats__label">{{ $stat['label'] }}</div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
+            {{-- Statistik — dipindah ke kolom kanan (grid 2x2), bukan lagi
+                 strip horizontal di bawah teks kiri. --}}
+            <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+                <div class="nac-hero-stats-strip nac-hero-stats-strip--grid">
+                    @foreach($heroStats as $stat)
+                        <div class="nac-hero-stats-strip__item">
+                            <i class="fa-solid {{ $stat['icon'] }}"></i>
+                            <div>
+                                <div class="nac-hero-stats-strip__num">{{ $stat['num'] }}@if(!empty($stat['unit']))<span>{{ $stat['unit'] }}</span>@endif</div>
+                                <div class="nac-hero-stats-strip__label">{{ $stat['label'] }}</div>
                             </div>
-
-                            {{-- Slide 2..N: foto --}}
-                            @foreach($heroPhotos as $photo)
-                                <div class="carousel-item">
-                                    <div class="nac-hero-carousel-slide nac-hero-carousel-slide--photo @if(empty($photo['photo_url'])) is-empty @endif">
-                                        @if(!empty($photo['photo_url']))
-                                            <img src="{{ $photo['photo_url'] }}"
-                                                 alt="{{ $photo['alt'] ?? '' }}"
-                                                 loading="lazy"
-                                                 onload="this.closest('.nac-hero-carousel-slide').classList.add('is-loaded')">
-                                        @else
-                                            <div class="nac-photo-placeholder">
-                                                <i class="fa-solid fa-image"></i>
-                                                <span>Foto belum tersedia</span>
-                                            </div>
-                                        @endif
-                                        @if(!empty($photo['caption']))
-                                            <span class="nac-hero-carousel-slide__caption">
-                                                <i class="fa-solid {{ $photo['icon'] ?? 'fa-circle' }}"></i> {{ $photo['caption'] }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-
                         </div>
-
-                        <div class="carousel-indicators">
-                            @for($i = 0; $i < $heroSlideCount; $i++)
-                                <button type="button" data-bs-target="#heroStatsCarousel" data-bs-slide-to="{{ $i }}"
-                                        @if($i === 0) class="active" aria-current="true" @endif
-                                        aria-label="Slide {{ $i + 1 }}"></button>
-                            @endfor
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -111,18 +86,17 @@
 {{-- ============ TENTANG KAMI ============ --}}
 <section class="nac-section nac-section--decorated nac-dot-pattern" id="tentang">
     <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6" data-aos="fade-right">
-                <div class="nac-about-photo">
-                    <img src="{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-about/700/560' }}"
-                        alt="Suasana latihan di Nugroho Aquatic Club" loading="lazy">
-                    <div class="nac-about-photo__badge">
-                        <span>Sejak</span>
-                        <strong>{{ $setting->since_year ?? '2010' }}</strong>
-                    </div>
+        <div class="nac-about-overlap" data-aos="fade-up">
+            <div class="nac-about-overlap__photo">
+                <img src="{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-about/900/700' }}"
+                    alt="Suasana latihan di Nugroho Aquatic Club" loading="lazy">
+                <div class="nac-about-photo__badge nac-about-overlap__badge">
+                    <span>Sejak</span>
+                    <strong>{{ $setting->since_year ?? '2010' }}</strong>
                 </div>
             </div>
-            <div class="col-lg-6" data-aos="fade-left">
+
+            <div class="nac-about-overlap__card">
                 <span class="nac-eyebrow">Tentang Kami</span>
                 <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
                 <p class="nac-lead">
@@ -233,25 +207,25 @@
             <h2 class="nac-section__title">Pilih program sesuai levelmu.</h2>
         </div>
 
-        <div class="row g-4 mt-3">
-            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+        <div class="row g-4 mt-3 justify-content-center">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
                 <div class="nac-price-card nac-price-card--highlight">
                     <span class="nac-price-card__tag">Paling Diminati</span>
-                    <h5>Swim Class A</h5>
+                    <h5>Novato</h5>
                     <p class="nac-price-card__desc">Level pemula yang baru ingin belajar renang.</p>
                     <div class="nac-price-card__price">Rp460.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
-                        <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
-                        <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
+                        <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
+                        <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
+                        <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
                     </ul>
                     <a href="{{ route('join.create', ['category' => 'Swim School A1 - Pemula']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="75">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="75">
                 <div class="nac-price-card">
-                    <h5>Swim Class B</h5>
+                    <h5>Avance</h5>
                     <p class="nac-price-card__desc">Level menengah, pembinaan teknik berkelanjutan.</p>
                     <div class="nac-price-card__price">Rp540.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
@@ -263,29 +237,15 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="150">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
                 <div class="nac-price-card">
-                    <h5>Junior</h5>
-                    <p class="nac-price-card__desc">Pembinaan murid untuk menjadi atlet.</p>
-                    <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
-                    <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
-                        <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
-                    </ul>
-                    <a href="{{ route('join.create', ['category' => 'NAC Junior - Advanced']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="225">
-                <div class="nac-price-card">
-                    <h5>Elite</h5>
+                    <h5>Campeón</h5>
                     <p class="nac-price-card__desc">Calon atlet yang sudah siap untuk berkompetisi.</p>
                     <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
                     <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 3x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Program persiapan kompetisi</li>
-                        <li><i class="fa-solid fa-check"></i> Evaluasi performa bulanan</li>
+                        <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
+                        <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
+                        <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
                     </ul>
                     <a href="{{ route('join.create', ['category' => 'NAC Elite']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
                 </div>
@@ -295,7 +255,7 @@
 </section>
 
 {{-- ============ JADWAL ============ --}}
-<section class="nac-section nac-section--photo-bg" id="jadwal">
+<section class="nac-section nac-section--photo-bg" id="jadwal" style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)), url('{{ $setting->classes_section_photo_url ?? 'https://picsum.photos/seed/nac-classes-bg/1920/1080' }}');">
     <div class="container">
         <div class="nac-section__head nac-fade-in">
             <span class="nac-eyebrow">Jadwal Latihan</span>

@@ -4,14 +4,15 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\ManagementMemberController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Admin\TeamMemberAchievementController;
+use App\Http\Controllers\Admin\TeamMemberLicenseController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\TeamMemberRecordController;
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\RegionController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\HomeController;
@@ -30,17 +31,22 @@ Route::get('/', [HomeController::class, 'index'])
 Route::get('/tentang-kami', [AboutController::class, 'index'])
     ->name('about.index');
 
-Route::get('/our-team', [TeamController::class, 'index'])
+// 'team.index' dipertahankan sebagai redirect ke Atlet — supaya link/bookmark
+// lama yang mengarah ke /our-team tidak jadi 404.
+Route::redirect('/our-team', '/our-team/atlet', 301)
     ->name('team.index');
+
+Route::get('/our-team/atlet', [TeamController::class, 'athletes'])
+    ->name('team.athletes');
+
+Route::get('/our-team/pelatih', [TeamController::class, 'coaches'])
+    ->name('team.coaches');
 
 Route::get('/our-team/{teamMember}', [TeamController::class, 'show'])
     ->name('team.show');
 
 Route::get('/acara', [EventController::class, 'index'])
     ->name('event.index');
-
-Route::get('/kutai-timur', [RegionController::class, 'index'])
-    ->name('region.index');
 
 Route::get('/acara/{event}', [EventController::class, 'show'])
     ->name('event.show');
@@ -100,11 +106,22 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::delete('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'destroy'])
         ->name('team.achievements.destroy');
 
+    // Nested: Lisensi — khusus role 'pelatih', dikelola dari halaman edit anggota tim
+    Route::post('team/{teamMember}/licenses', [TeamMemberLicenseController::class, 'store'])
+        ->name('team.licenses.store');
+    Route::put('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'update'])
+        ->name('team.licenses.update');
+    Route::delete('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'destroy'])
+        ->name('team.licenses.destroy');
+
     // CRUD Slider
     Route::resource('sliders', AdminSliderController::class)->except(['show']);
 
     // CRUD Galeri
     Route::resource('galleries', AdminGalleryController::class)->except(['show']);
+
+    // CRUD Tim Manajemen (halaman Tentang Kami)
+    Route::resource('management', ManagementMemberController::class)->except(['show']);
 
     // CRUD Jadwal
     Route::resource('schedules', AdminScheduleController::class)->except(['show']);

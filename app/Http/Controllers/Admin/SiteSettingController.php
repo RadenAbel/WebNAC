@@ -44,6 +44,20 @@ class SiteSettingController extends Controller
             $data['about_photo'] = $request->file('about_photo')->store('settings', 'public');
         }
 
+        if ($request->hasFile('classes_section_photo')) {
+            if ($setting->classes_section_photo) {
+                Storage::disk('public')->delete($setting->classes_section_photo);
+            }
+            $data['classes_section_photo'] = $request->file('classes_section_photo')->store('settings', 'public');
+        }
+
+        if ($request->hasFile('pool_section_photo')) {
+            if ($setting->pool_section_photo) {
+                Storage::disk('public')->delete($setting->pool_section_photo);
+            }
+            $data['pool_section_photo'] = $request->file('pool_section_photo')->store('settings', 'public');
+        }
+
         $setting->update($data);
 
         return redirect()

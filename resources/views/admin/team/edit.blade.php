@@ -31,6 +31,7 @@
         </form>
     </div>
 
+    @if ($member->role === 'atlet')
     <div class="row g-4">
         {{-- ============ REKOR WAKTU TERBAIK ============ --}}
         <div class="col-lg-6">
@@ -68,9 +69,7 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.records.destroy', [$member, $record]) }}" method="POST"
-                                    class="nac-confirm-delete-form"
-                                    data-confirm-title="Hapus rekor ini?"
-                                    data-confirm-text="Rekor {{ $record->event }} ({{ $record->time }}) akan dihapus secara permanen.">
+                                    onsubmit="return confirm('Hapus rekor ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus rekor">
@@ -262,25 +261,10 @@
                                     </div>
                                 @endif
                                 @if (($achievement->total_gold ?? 0) > 0 || ($achievement->total_silver ?? 0) > 0 || ($achievement->total_bronze ?? 0) > 0)
-                                    <div class="mt-1 d-flex align-items-center" style="font-size:0.78rem;">
-                                        @if ($achievement->total_gold > 0)
-                                            <span class="me-2 d-inline-flex align-items-center">
-                                                <i class="bi bi-award-fill me-1" style="color:#FFD700;"></i>
-                                                {{ $achievement->total_gold }}
-                                            </span>
-                                        @endif
-                                        @if ($achievement->total_silver > 0)
-                                            <span class="me-2 d-inline-flex align-items-center">
-                                                <i class="bi bi-award-fill me-1" style="color:#C0C0C0;"></i>
-                                                {{ $achievement->total_silver }}
-                                            </span>
-                                        @endif
-                                        @if ($achievement->total_bronze > 0)
-                                            <span class="d-inline-flex align-items-center">
-                                                <i class="bi bi-award-fill me-1" style="color:#CD7F32;"></i>
-                                                {{ $achievement->total_bronze }}
-                                            </span>
-                                        @endif
+                                    <div class="mt-1" style="font-size:0.78rem;">
+                                        @if ($achievement->total_gold > 0) <span class="me-2">🥇 {{ $achievement->total_gold }}</span> @endif
+                                        @if ($achievement->total_silver > 0) <span class="me-2">🥈 {{ $achievement->total_silver }}</span> @endif
+                                        @if ($achievement->total_bronze > 0) <span>🥉 {{ $achievement->total_bronze }}</span> @endif
                                     </div>
                                 @endif
                             </div>
@@ -289,9 +273,7 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.achievements.destroy', [$member, $achievement]) }}" method="POST"
-                                    class="nac-confirm-delete-form"
-                                    data-confirm-title="Hapus pencapaian ini?"
-                                    data-confirm-text="{{ $achievement->title }} akan dihapus secara permanen.">
+                                    onsubmit="return confirm('Hapus pencapaian ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus pencapaian">
@@ -328,15 +310,15 @@
                                     </select>
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Emas</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
                                     <input type="number" name="total_gold" class="form-control form-control-sm" min="0" value="{{ $achievement->total_gold ?? 0 }}">
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perak</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
                                     <input type="number" name="total_silver" class="form-control form-control-sm" min="0" value="{{ $achievement->total_silver ?? 0 }}">
                                 </div>
                                 <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perunggu</label>
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
                                     <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" value="{{ $achievement->total_bronze ?? 0 }}">
                                 </div>
                                 <div class="col-12">
@@ -391,15 +373,15 @@
                             </select>
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Emas</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
                             <input type="number" name="total_gold" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perak</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
                             <input type="number" name="total_silver" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Perunggu</label>
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
                             <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-12">
@@ -415,5 +397,143 @@
             </div>
         </div>
     </div>
+    @endif
+
+    @if ($member->role === 'pelatih')
+    <div class="row g-4">
+        {{-- ============ LISENSI KEPELATIHAN ============ --}}
+        <div class="col-12">
+            <div class="bg-white border rounded-3 p-4">
+                <h2 class="h6 fw-bold mb-3">
+                    <i class="bi bi-patch-check me-1"></i> Lisensi &amp; Sertifikasi
+                </h2>
+
+                @forelse ($member->licenses as $license)
+                    <div class="border rounded-3 p-3 mb-2" data-item style="font-size:0.85rem;">
+
+                        {{-- ---------- MODE LIHAT ---------- --}}
+                        <div class="d-flex justify-content-between align-items-start" data-view-mode>
+                            <div>
+                                <div class="fw-bold">
+                                    {{ $license->title }}
+                                    @if ($license->is_expired)
+                                        <span class="badge bg-danger ms-1" style="font-size:0.68rem;">Kedaluwarsa</span>
+                                    @endif
+                                </div>
+                                <div class="text-secondary">
+                                    @if ($license->issuer) {{ $license->issuer }} · @endif
+                                    @if ($license->license_number) No. {{ $license->license_number }} · @endif
+                                    @if ($license->issued_date_label) Terbit {{ $license->issued_date_label }} @endif
+                                    @if ($license->expiry_date_label) · Berlaku s.d. {{ $license->expiry_date_label }} @endif
+                                </div>
+                                @if ($license->certificate_url)
+                                    <a href="{{ $license->certificate_url }}" target="_blank" class="d-inline-block mt-1" style="font-size:0.8rem;">
+                                        <i class="bi bi-file-earmark-check me-1"></i>Lihat Sertifikat
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="d-flex gap-1 flex-shrink-0">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle-edit title="Edit lisensi">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('admin.team.licenses.destroy', [$member, $license]) }}" method="POST"
+                                    onsubmit="return confirm('Hapus lisensi ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus lisensi">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {{-- ---------- MODE EDIT ---------- --}}
+                        <form action="{{ route('admin.team.licenses.update', [$member, $license]) }}" method="POST"
+                            enctype="multipart/form-data" class="d-none mt-1" data-edit-mode>
+                            @csrf
+                            @method('PUT')
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <input type="text" name="title" class="form-control form-control-sm" value="{{ $license->title }}" placeholder="Nama lisensi" required>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" name="issuer" class="form-control form-control-sm" value="{{ $license->issuer }}" placeholder="Lembaga penerbit">
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" name="license_number" class="form-control form-control-sm" value="{{ $license->license_number }}" placeholder="Nomor lisensi">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Tanggal Terbit</label>
+                                    <input type="date" name="issued_date" class="form-control form-control-sm" value="{{ $license->issued_date?->format('Y-m-d') }}">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Berlaku Sampai</label>
+                                    <input type="date" name="expiry_date" class="form-control form-control-sm" value="{{ $license->expiry_date?->format('Y-m-d') }}">
+                                </div>
+                                <div class="col-12">
+                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Ganti Sertifikat (kosongkan kalau tidak ganti)</label>
+                                    <input type="file" name="certificate_file" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                                <div class="col-12 d-flex gap-2 mt-1">
+                                    <button type="submit" class="btn btn-sm nac-admin-btn flex-grow-1">
+                                        <i class="bi bi-check-lg"></i> Simpan
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-cancel-edit>Batal</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                @empty
+                    <p class="text-secondary" style="font-size:0.85rem;">Belum ada lisensi yang diinput.</p>
+                @endforelse
+
+                <hr>
+
+                <p class="fw-bold mb-2" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:.04em;">
+                    Tambah Lisensi Baru
+                </p>
+
+                @if ($errors->hasAny(['title', 'issuer', 'license_number', 'issued_date', 'expiry_date', 'certificate_file']) && old('_form') === 'license')
+                    <div class="alert alert-danger py-2 px-3 mb-2" style="font-size:0.82rem;">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <form action="{{ route('admin.team.licenses.store', $member) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="_form" value="license">
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <input type="text" name="title" class="form-control form-control-sm" placeholder="Nama lisensi, mis. Pelatih Renang Level 1" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="issuer" class="form-control form-control-sm" placeholder="Lembaga penerbit, mis. PRSI">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="license_number" class="form-control form-control-sm" placeholder="Nomor lisensi">
+                        </div>
+                        <div class="col-6">
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Tanggal Terbit</label>
+                            <input type="date" name="issued_date" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-6">
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Berlaku Sampai</label>
+                            <input type="date" name="expiry_date" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-12">
+                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">Upload Sertifikat (PDF/JPG/PNG, opsional)</label>
+                            <input type="file" name="certificate_file" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-sm nac-admin-btn w-100 mt-1">
+                                <i class="bi bi-plus-lg"></i> Tambah Lisensi
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endif
 
 @endsection

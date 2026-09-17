@@ -59,8 +59,8 @@ class TeamMemberController extends Controller
 
     public function edit(TeamMember $teamMember)
     {
-        // Load relasi rekor & pencapaian sekaligus, biar tidak N+1 query di view
-        $teamMember->load(['records', 'achievements']);
+        // Load relasi rekor, pencapaian, & lisensi sekaligus, biar tidak N+1 query di view
+        $teamMember->load(['records', 'achievements', 'licenses']);
 
         return view('admin.team.edit', [
             'member' => $teamMember,
