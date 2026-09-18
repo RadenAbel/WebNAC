@@ -15,7 +15,7 @@
                 </a>
                 <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="d-inline nac-confirm-delete-form"
                     data-confirm-title="Hapus foto ini?"
-                    data-confirm-text="{{ $gallery->caption ?? 'Foto ini' }} akan dihapus secara permanen dari galeri.">
+                    data-confirm-text="Item galeri ini akan terhapus secara permanen.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>

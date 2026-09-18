@@ -567,6 +567,9 @@ select.nac-join-input::-ms-expand {
   padding-top: 3rem;
   padding-bottom: 3.5rem;
 }
+@media (max-width: 767.98px) {
+  .nac-hero { border-radius: 0 0 1.75rem 1.75rem; }
+}
 .nac-hero--photo::before {
   display: none; /* pola dekoratif gradasi lama tidak perlu lagi kalau backgroundnya sudah foto */
 }
@@ -587,6 +590,27 @@ select.nac-join-input::-ms-expand {
   object-fit: cover;
   object-position: center;
   display: block;
+}
+/* Video YouTube sebagai background hero — teknik "oversize + center" supaya
+   videonya selalu menutupi penuh area (mirip object-fit:cover buat iframe,
+   yang aslinya tidak mendukung object-fit langsung). */
+.nac-hero__bg-video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none; /* video cuma dekorasi, tidak bisa diklik/diinteraksi pengunjung */
+}
+.nac-hero__bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 177.78vh; /* rasio 16:9 dihitung dari tinggi, biar selalu penuh */
+  height: 56.25vw; /* rasio 16:9 dihitung dari lebar */
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: none;
 }
 /* Lapisan hitam transparan di atas foto — gradasi supaya sisi kiri (tempat
    teks) lebih gelap/kontras, sisi kanan sedikit lebih terang biar foto tetap
@@ -653,6 +677,11 @@ select.nac-join-input::-ms-expand {
 
 @media (max-width: 575.98px) {
   .nac-hero-stats-strip__item { flex: 1 1 calc(50% - 0.4rem); }
+
+  .nac-hero-stats-strip--grid {
+    grid-template-columns: 1fr; /* tumpuk ke bawah, bukan 2 kolom sempit */
+    gap: 0.6rem;
+  }
 }
 .nac-hero::before {
   content: "";
@@ -1017,6 +1046,15 @@ select.nac-join-input::-ms-expand {
    ========================================================================== */
 .nac-gallery__head {
   max-width: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.nac-gallery__see-all {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Wrapper track supaya panah bisa jadi overlay di atas slider (posisinya
@@ -1100,6 +1138,56 @@ select.nac-join-input::-ms-expand {
 .nac-gallery__item--featured {
   aspect-ratio: 2 / 1;
 }
+/* ---------- Kartu featured yang isinya video (klik-untuk-putar) ---------- */
+.nac-gallery__play-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+.nac-gallery__play-trigger img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+.nac-gallery__play-trigger:hover img {
+  transform: scale(1.03);
+  filter: brightness(0.85);
+}
+.nac-gallery__play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--nac-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.nac-gallery__play-icon i { margin-left: 4px; } /* biar ikon play kelihatan center secara optis */
+.nac-gallery__play-trigger:hover .nac-gallery__play-icon {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: var(--nac-white);
+}
+.nac-gallery__play-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
 /* Foto-foto di dalam track slider kecil — dibuat memenuhi lebar track-nya
    sendiri, jadi cuma SATU yang kelihatan tiap saat (masuk satu-satu lewat
    panah/geser), tidak lagi mengintip sebagian foto berikutnya. */
@@ -1144,6 +1232,60 @@ select.nac-join-input::-ms-expand {
   .nac-gallery__item--featured { aspect-ratio: 2.4 / 1; }
 }
 
+/* ---------- Halaman Galeri penuh (/galeri) — grid foto & video ---------- */
+/* Masonry murni CSS (bukan Bootstrap row/col) — supaya kartu dengan tinggi
+   beda-beda (ukuran asli foto) tetap rapi tersusun, tidak ada jarak aneh di
+   bawah kartu pendek gara-gara "menunggu" kartu tertinggi di barisnya. */
+.nac-gallery-page__masonry {
+  column-count: 1;
+  column-gap: 1.25rem;
+}
+@media (min-width: 576px) {
+  .nac-gallery-page__masonry { column-count: 2; }
+}
+@media (min-width: 992px) {
+  .nac-gallery-page__masonry { column-count: 3; }
+}
+.nac-gallery-page__item {
+  position: relative;
+  display: inline-block; /* wajib untuk elemen di dalam CSS columns */
+  width: 100%;
+  break-inside: avoid; /* jangan sampai 1 kartu terpotong ke kolom berikutnya */
+  margin: 0 0 1.25rem;
+  border-radius: var(--nac-radius);
+  overflow: hidden;
+  background: var(--nac-mist);
+  box-shadow: 0 6px 16px -12px rgba(10, 14, 20, 0.2);
+}
+.nac-gallery-page__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.nac-gallery-page__item:hover img { transform: scale(1.03); }
+/* Khusus item video (thumbnail YouTube) — tetap pakai rasio bawaan
+   YouTube-nya sendiri, bukan dipaksa ikut aturan di atas. */
+.nac-gallery-page__item .nac-gallery__play-trigger {
+  height: auto;
+}
+.nac-gallery-page__item .nac-gallery__play-trigger img {
+  height: auto;
+  object-fit: initial;
+}
+.nac-gallery-page__item figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  color: var(--nac-white);
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: linear-gradient(0deg, rgba(10, 14, 20, 0.85) 0%, transparent 100%);
+  pointer-events: none;
+}
+
 /* ==========================================================================
    PAGE HEADER (halaman selain home)
    ========================================================================== */
@@ -1165,7 +1307,7 @@ select.nac-join-input::-ms-expand {
     repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0px, rgba(255, 255, 255, 0.035) 1px, transparent 1px, transparent 34px);
   pointer-events: none;
 }
-.nac-page-header .container { position: relative; z-index: 1; }
+.nac-page-header .container { position: relative; z-index: 2; }
 
 /* ---------- Modifier: header dengan foto background + overlay hitam
    transparan (khusus dipakai lewat class tambahan .nac-page-header--photo,
@@ -1177,23 +1319,29 @@ select.nac-join-input::-ms-expand {
 .nac-page-header--photo::before {
   background-image: none;
   background: rgba(10, 14, 20, 0.6);
+  z-index: 1;
+}
+/* ---------- Video YouTube sebagai background header (teknik sama seperti
+   video background hero: oversize + center, biar selalu menutupi penuh). ---------- */
+.nac-page-header__bg-video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nac-page-header__bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 177.78vh;
+  height: 56.25vw;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: none;
 }
 .nac-page-header .nac-breadcrumb { justify-content: center; margin-bottom: 1.75rem; }
-.nac-page-header__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--nac-aqua);
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-}
 .nac-page-header__title {
   font-family: var(--nac-font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
@@ -1748,8 +1896,30 @@ select.nac-join-input::-ms-expand {
   white-space: nowrap;
 }
 @media (max-width: 575.98px) {
-  .nac-about-stats { gap: 1.5rem; row-gap: 1.75rem; flex-wrap: wrap; }
-  .nac-about-stats__label { white-space: normal; max-width: 110px; }
+  .nac-about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .nac-about-stats__item {
+    align-items: center;
+    text-align: center;
+  }
+  .nac-about-stats__icon {
+    margin-left: auto;
+    margin-right: auto;
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+  .nac-about-stats__num {
+    font-size: 1.6rem;
+  }
+  .nac-about-stats__label {
+    white-space: normal;
+    max-width: 100%;
+    font-size: 0.68rem;
+  }
 }
 
 /* ==========================================================================
@@ -1907,6 +2077,17 @@ select.nac-join-input::-ms-expand {
   margin-bottom: 1.1rem;
 }
 .nac-mgmt-modal__scroll p:last-child { margin-bottom: 0; }
+.nac-mgmt-modal__scroll strong { color: var(--nac-ink); font-weight: 700; }
+.nac-mgmt-modal__scroll a { color: var(--nac-deep-aqua); text-decoration: underline; }
+.nac-mgmt-modal__scroll ul,
+.nac-mgmt-modal__scroll ol {
+  color: var(--nac-steel);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 1.1rem;
+  padding-left: 1.4rem;
+}
+.nac-mgmt-modal__scroll li { margin-bottom: 0.35rem; }
 .nac-mgmt-modal__scroll::-webkit-scrollbar { width: 6px; }
 .nac-mgmt-modal__scroll::-webkit-scrollbar-thumb {
   background: rgba(10, 14, 20, 0.15);

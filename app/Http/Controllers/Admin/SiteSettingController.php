@@ -58,6 +58,18 @@ class SiteSettingController extends Controller
             $data['pool_section_photo'] = $request->file('pool_section_photo')->store('settings', 'public');
         }
 
+        if ($data['gallery_header_type'] === 'video') {
+            if ($setting->gallery_header_photo) {
+                Storage::disk('public')->delete($setting->gallery_header_photo);
+            }
+            $data['gallery_header_photo'] = null;
+        } elseif ($request->hasFile('gallery_header_photo')) {
+            if ($setting->gallery_header_photo) {
+                Storage::disk('public')->delete($setting->gallery_header_photo);
+            }
+            $data['gallery_header_photo'] = $request->file('gallery_header_photo')->store('settings', 'public');
+        }
+
         $setting->update($data);
 
         return redirect()

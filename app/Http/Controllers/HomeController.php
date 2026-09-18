@@ -14,15 +14,17 @@ class HomeController extends Controller
     {
         $setting = SiteSetting::current();
 
-        // ============ HERO: foto slider ============
-        // Slider di admin dipetakan ke bentuk yang dipakai carousel foto hero.
+        // ============ HERO: foto/video slider ============
+        // Slider di admin dipetakan ke bentuk yang dipakai carousel hero.
         // Kalau admin belum upload slider sama sekali, $heroPhotos otomatis
         // jadi array kosong — carousel tetap jalan, cuma tampil slide statistik saja.
         $heroPhotos = Slider::active()->get()->map(function ($slider) {
             return [
-                'photo_url' => $slider->image_url,
-                'alt'       => $slider->title,
-                'caption'   => $slider->title,
+                'type'                  => $slider->type,
+                'photo_url'             => $slider->image_url,
+                'video_embed_url'       => $slider->youtube_background_embed_url,
+                'alt'                   => $slider->title,
+                'caption'               => $slider->title,
             ];
         })->values()->all();
 
@@ -41,9 +43,11 @@ class HomeController extends Controller
         // ============ GALERI ============
         $galleryItems = Gallery::active()->get()->map(function ($item) {
             return [
-                'photo_url' => $item->image_url,
-                'alt'       => $item->caption,
-                'caption'   => $item->caption,
+                'type'            => $item->type,
+                'photo_url'       => $item->image_url,
+                'video_embed_url' => $item->youtube_embed_url,
+                'alt'             => $item->caption,
+                'caption'         => $item->caption,
             ];
         })->values()->all();
 

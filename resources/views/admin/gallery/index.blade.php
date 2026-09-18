@@ -33,13 +33,56 @@
 
     @else
 
-        {{-- ============ DESKTOP: grid biasa (>= 768px) ============ --}}
-        <div class="row g-3 d-none d-md-flex">
-            @foreach ($galleries as $gallery)
-                <div class="col-md-4 col-lg-3">
-                    @include('admin.gallery.partials.card', ['gallery' => $gallery])
-                </div>
-            @endforeach
+        {{-- ============ DESKTOP: tabel (>= 768px) ============ --}}
+        <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">Foto</th>
+                        <th>Caption</th>
+                        <th style="width:100px;">Jenis</th>
+                        <th class="text-center" style="width:100px;">Status</th>
+                        <th class="text-end" style="width:120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($galleries as $gallery)
+                        <tr>
+                            <td>
+                                <img src="{{ $gallery->image_url }}" alt="{{ $gallery->caption }}"
+                                    style="width:64px; height:64px; object-fit:cover; border-radius:6px;">
+                            </td>
+                            <td class="fw-bold">{{ $gallery->caption ?? '(tanpa caption)' }}</td>
+                            <td>
+                                @if ($gallery->type === 'video')
+                                    <span class="badge bg-info-subtle text-info-emphasis"><i class="bi bi-youtube"></i> Video</span>
+                                @else
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="bi bi-image"></i> Foto</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if ($gallery->is_active)
+                                    <span class="badge bg-success">Aktif</span>
+                                @else
+                                    <span class="badge bg-secondary">Nonaktif</span>
+                                @endif
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ route('admin.galleries.edit', $gallery) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                                    data-confirm-title="Hapus foto ini?"
+                                    data-confirm-text="Item galeri ini akan terhapus secara permanen.">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
         {{-- ============ MOBILE: tumpukan kartu (< 768px), tap untuk buka semua ============ --}}

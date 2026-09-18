@@ -93,12 +93,11 @@
             // ============================================================
             // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy], sama
             // seperti section lain di halaman ini. Begitu controller kirim
-            // $managementTeam asli (mis. dari tabel management_members),
-            // blade ini otomatis pakai data itu tanpa perlu diubah lagi.
+            // $managementTeam asli (dari tabel management_members), blade
+            // ini otomatis pakai data itu tanpa perlu diubah lagi.
             //
-            // 'full_bio_paragraphs' SENGAJA berupa ARRAY per paragraf (bukan 1 string
-            // panjang) — supaya gampang di-loop jadi beberapa <p> terpisah
-            // di dalam modal, format paragraf tetap rapi.
+            // 'full_bio' berisi HTML (persis format yang dihasilkan editor
+            // Quill di admin) — makanya di-render pakai {!! !!}, bukan {{ }}.
             // ============================================================
             $managementTeam = $managementTeam ?? [
                 [
@@ -106,33 +105,21 @@
                     'position'  => 'Ketua Umum & Pendiri',
                     'photo_url' => 'https://picsum.photos/seed/nac-mgmt-1/500/620',
                     'short_bio' => 'Bambang Nugroho mendirikan Nugroho Aquatic Club pada 2010 dengan visi mencetak atlet renang berkelas nasional dari Kutai Timur.',
-                    'full_bio_paragraphs' => [
-                        'Bambang Nugroho lahir di Surabaya, 12 Mei 1975. Ia mendirikan Nugroho Aquatic Club pada tahun 2010, berawal dari satu kolam latihan kecil dengan 15 murid, hingga kini berkembang menjadi salah satu klub renang terkemuka di Kutai Timur.',
-                        'Sebelum mendirikan NAC, Bambang merupakan mantan atlet renang nasional yang aktif berkompetisi di berbagai kejuaraan tingkat PON dan SEA Games pada era 1995-2003, dengan spesialisasi nomor gaya bebas dan gaya ganti.',
-                        'Di bawah kepemimpinannya, NAC telah melahirkan lebih dari 50 atlet yang berkompetisi di tingkat provinsi dan nasional, serta menjalin kerja sama dengan berbagai sekolah dan instansi olahraga daerah.',
-                    ],
+                    'full_bio'  => '<p>Bambang Nugroho lahir di Surabaya, 12 Mei 1975. Ia mendirikan Nugroho Aquatic Club pada tahun 2010, berawal dari satu kolam latihan kecil dengan 15 murid, hingga kini berkembang menjadi salah satu klub renang terkemuka di Kutai Timur.</p><p>Sebelum mendirikan NAC, Bambang merupakan mantan atlet renang nasional yang aktif berkompetisi di berbagai kejuaraan tingkat <strong>PON</strong> dan <strong>SEA Games</strong> pada era 1995-2003, dengan spesialisasi nomor gaya bebas dan gaya ganti.</p><p>Di bawah kepemimpinannya, NAC telah melahirkan lebih dari 50 atlet yang berkompetisi di tingkat provinsi dan nasional, serta menjalin kerja sama dengan berbagai sekolah dan instansi olahraga daerah.</p>',
                 ],
                 [
                     'name'      => 'Siti Rahmawati',
                     'position'  => 'Direktur Program Latihan',
                     'photo_url' => 'https://picsum.photos/seed/nac-mgmt-2/500/620',
                     'short_bio' => 'Siti mengepalai penyusunan kurikulum latihan NAC, dari kelas pemula Swim School hingga program atlet Elite.',
-                    'full_bio_paragraphs' => [
-                        'Siti Rahmawati bergabung dengan Nugroho Aquatic Club sejak 2013 sebagai pelatih kepala, sebelum dipercaya menjabat Direktur Program Latihan pada 2019. Ia memegang lisensi pelatih renang tingkat nasional dari PRSI.',
-                        'Siti bertanggung jawab merancang kurikulum bertingkat NAC — mulai dari Swim School A & B untuk pemula, hingga program intensif Junior dan Elite bagi calon atlet kompetisi.',
-                        'Ia juga aktif menjadi pembicara pada berbagai pelatihan pelatih renang tingkat daerah dan terlibat dalam penyusunan standar keselamatan kolam renang untuk klub-klub di Kutai Timur.',
-                    ],
+                    'full_bio'  => '<p>Siti Rahmawati bergabung dengan Nugroho Aquatic Club sejak 2013 sebagai pelatih kepala, sebelum dipercaya menjabat Direktur Program Latihan pada 2019. Ia memegang lisensi pelatih renang tingkat nasional dari <strong>PRSI</strong>.</p><p>Siti bertanggung jawab merancang kurikulum bertingkat NAC — mulai dari Swim School A &amp; B untuk pemula, hingga program intensif Junior dan Elite bagi calon atlet kompetisi.</p><p>Ia juga aktif menjadi pembicara pada berbagai pelatihan pelatih renang tingkat daerah dan terlibat dalam penyusunan standar keselamatan kolam renang untuk klub-klub di Kutai Timur.</p>',
                 ],
                 [
                     'name'      => 'Andi Wijaya',
                     'position'  => 'Manajer Operasional & Fasilitas',
                     'photo_url' => 'https://picsum.photos/seed/nac-mgmt-3/500/620',
                     'short_bio' => 'Andi memastikan fasilitas kolam, peralatan, dan operasional harian NAC berjalan sesuai standar kompetisi.',
-                    'full_bio_paragraphs' => [
-                        'Andi Wijaya menangani seluruh aspek operasional Nugroho Aquatic Club sejak 2016, termasuk perawatan kolam, sistem sirkulasi air, dan kelengkapan alat timing elektronik.',
-                        'Berlatar belakang teknik mesin, Andi memastikan setiap fasilitas NAC memenuhi standar keselamatan dan kompetisi yang berlaku, termasuk kalibrasi rutin sistem pencatatan waktu otomatis.',
-                        'Ia juga mengoordinasikan jadwal penggunaan kolam antara kelas Swim School, latihan atlet, dan acara/kejuaraan yang diselenggarakan di lokasi NAC.',
-                    ],
+                    'full_bio'  => '<p>Andi Wijaya menangani seluruh aspek operasional Nugroho Aquatic Club sejak 2016, termasuk perawatan kolam, sistem sirkulasi air, dan kelengkapan alat timing elektronik.</p><p>Berlatar belakang teknik mesin, Andi memastikan setiap fasilitas NAC memenuhi standar keselamatan dan kompetisi yang berlaku, termasuk kalibrasi rutin sistem pencatatan waktu otomatis.</p><p>Ia juga mengoordinasikan jadwal penggunaan kolam antara kelas Swim School, latihan atlet, dan acara/kejuaraan yang diselenggarakan di lokasi NAC.</p>',
                 ],
             ];
         @endphp
@@ -168,9 +155,7 @@
                                     <h3 id="mgmtModal{{ $i }}Label">{{ $member['name'] }}</h3>
                                     <span class="nac-mgmt-modal__position">{{ $member['position'] }}</span>
                                     <div class="nac-mgmt-modal__scroll">
-                                        @foreach($member['full_bio_paragraphs'] as $paragraph)
-                                            <p>{{ $paragraph }}</p>
-                                        @endforeach
+                                        {!! $member['full_bio'] ?? '' !!}
                                     </div>
                                 </div>
                             </div>

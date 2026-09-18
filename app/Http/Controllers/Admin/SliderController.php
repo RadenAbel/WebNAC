@@ -28,7 +28,12 @@ class SliderController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
-        $data['image'] = $request->file('image')->store('sliders', 'public');
+
+        if ($data['type'] === 'photo' && $request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('sliders', 'public');
+        } else {
+            $data['image'] = null;
+        }
 
         Slider::create($data);
 
@@ -47,7 +52,12 @@ class SliderController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
 
-        if ($request->hasFile('image')) {
+        if ($data['type'] === 'video') {
+            if ($slider->image) {
+                Storage::disk('public')->delete($slider->image);
+            }
+            $data['image'] = null;
+        } elseif ($request->hasFile('image')) {
             if ($slider->image) {
                 Storage::disk('public')->delete($slider->image);
             }

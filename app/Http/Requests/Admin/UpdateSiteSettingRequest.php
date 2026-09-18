@@ -44,6 +44,12 @@ class UpdateSiteSettingRequest extends FormRequest
             'pool_section_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'pool_section_title' => ['nullable', 'string', 'max:150'],
             'pool_section_description' => ['nullable', 'string', 'max:1000'],
+            'gallery_header_type'  => ['required', 'in:photo,video'],
+            'gallery_header_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'gallery_header_youtube_url' => [
+                'nullable', 'string', 'max:255',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
+            ],
         ];
     }
 
@@ -63,6 +69,9 @@ class UpdateSiteSettingRequest extends FormRequest
             'about_photo.max'    => 'Ukuran foto About Us maksimal 3MB.',
             'classes_section_photo.max' => 'Ukuran foto background section Kelas maksimal 3MB.',
             'pool_section_photo.max' => 'Ukuran foto background section kolam maksimal 3MB.',
+            'gallery_header_type.required' => 'Pilih dulu jenis background header Galeri: Foto atau Video.',
+            'gallery_header_photo.max' => 'Ukuran foto header Galeri maksimal 3MB.',
+            'gallery_header_youtube_url.regex' => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
         ];
     }
 }

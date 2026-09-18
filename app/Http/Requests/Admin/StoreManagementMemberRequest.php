@@ -20,7 +20,7 @@ class StoreManagementMemberRequest extends FormRequest
             // di-override jadi 'nullable' (foto lama boleh dipertahankan).
             'photo'      => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'short_bio'  => ['nullable', 'string', 'max:500'],
-            'full_bio'   => ['nullable', 'string', 'max:5000'],
+            'full_bio'   => ['nullable', 'string', 'max:20000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active'  => ['nullable', 'boolean'],
         ];

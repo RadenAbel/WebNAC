@@ -6,7 +6,7 @@
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-image"></i></span>
                 <div>
-                    <p class="nac-admin-form-section__title">Foto Acara @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
+                    <p class="nac-admin-form-section__title">Foto Pertandingan @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
                     <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 3MB</p>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-card-text"></i></span>
                 <div>
-                    <p class="nac-admin-form-section__title">Detail Acara</p>
+                    <p class="nac-admin-form-section__title">Detail Pertandingan</p>
                 </div>
             </div>
 

@@ -6,11 +6,11 @@
 
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
-            <h1 class="h4 mb-1">Acara / Kegiatan</h1>
-            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola acara beserta laporan PDF-nya.</p>
+            <h1 class="h4 mb-1">Hasil Pertandingan</h1>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola hasil pertandingan beserta laporan PDF-nya.</p>
         </div>
         <a href="{{ route('admin.events.create') }}" class="btn nac-admin-btn">
-            <i class="bi bi-plus-lg"></i> Tambah Acara
+            <i class="bi bi-plus-lg"></i> Tambah Hasil Pertandingan
         </a>
     </div>
 
@@ -33,13 +33,57 @@
 
     @else
 
-        {{-- ============ DESKTOP: grid biasa (>= 768px) ============ --}}
-        <div class="row g-3 d-none d-md-flex">
-            @foreach ($events as $event)
-                <div class="col-md-6 col-lg-4">
-                    @include('admin.event.partials.card', ['event' => $event])
-                </div>
-            @endforeach
+        {{-- ============ DESKTOP: tabel (>= 768px) ============ --}}
+        <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">Foto</th>
+                        <th>Judul</th>
+                        <th>Tanggal</th>
+                        <th class="text-center" style="width:100px;">Status</th>
+                        <th class="text-end" style="width:160px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($events as $event)
+                        <tr>
+                            <td>
+                                <img src="{{ $event->photo_url ?? asset('images/default-avatar.jpg') }}" alt="{{ $event->title }}"
+                                    style="width:80px; height:60px; object-fit:cover; border-radius:6px;">
+                            </td>
+                            <td class="fw-bold">{{ $event->title }}</td>
+                            <td class="text-secondary" style="font-size:0.85rem;">
+                                <i class="bi bi-calendar3 me-1"></i>{{ $event->event_date_label ?? '-' }}
+                            </td>
+                            <td class="text-center">
+                                @if ($event->is_active)
+                                    <span class="badge bg-success">Aktif</span>
+                                @else
+                                    <span class="badge bg-secondary">Nonaktif</span>
+                                @endif
+                            </td>
+                            <td class="text-end">
+                                @if ($event->pdf_url)
+                                    <a href="{{ $event->pdf_url }}" target="_blank" class="btn btn-sm btn-outline-secondary" title="Lihat PDF">
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                    </a>
+                                @endif
+                                <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                                    data-confirm-title="Hapus hasil pertandingan ini?"
+                                    data-confirm-text="Hasil pertandingan beserta laporan PDF-nya akan terhapus secara permanen.">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
         {{-- ============ MOBILE: tumpukan kartu (< 768px) ============ --}}

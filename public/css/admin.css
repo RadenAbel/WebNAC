@@ -611,6 +611,19 @@ body {
 .nac-admin-content .pagination .page-item.active .page-link {
   background: var(--adm-ink);
   border-color: var(--adm-ink);
+  color: #fff;
+}
+.nac-admin-content .pagination .page-item.disabled .page-link {
+  color: var(--adm-steel-light);
+  background: transparent;
+}
+.nac-admin-content .pagination .page-link:hover {
+  background: var(--adm-mist);
+  color: var(--adm-ink);
+}
+.nac-admin-content .pagination .page-item.active .page-link:hover {
+  background: var(--adm-ink);
+  color: #fff;
 }
 
 /* ==========================================================================

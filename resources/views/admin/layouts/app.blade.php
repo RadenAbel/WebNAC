@@ -49,7 +49,7 @@
                 </a>
                 <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Acara">
                     <i class="bi bi-calendar-event"></i>
-                    <span class="nac-admin-nav__label">Acara</span>
+                    <span class="nac-admin-nav__label">Hasil Pertandingan</span>
                 </a>
                 <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}" title="Tim (Pelatih/Atlet)">
                     <i class="bi bi-people"></i>

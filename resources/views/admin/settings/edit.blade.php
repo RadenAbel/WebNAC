@@ -302,9 +302,75 @@
             </div>
         </div>
 
+        {{-- ============ BACKGROUND — HEADER HALAMAN GALERI ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Background — Header Halaman Galeri</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di bagian paling atas halaman <code>/galeri</code>, di belakang judul "Momen di Nugroho Aquatic Club."
+            </p>
+
+            @php $isGalleryHeaderVideo = old('gallery_header_type', $setting->gallery_header_type ?? 'photo') === 'video'; @endphp
+
+            <div class="btn-group mb-3" role="group">
+                <input type="radio" class="btn-check" name="gallery_header_type" id="galleryHeaderTypePhoto" value="photo" autocomplete="off" {{ $isGalleryHeaderVideo ? '' : 'checked' }}>
+                <label class="btn btn-outline-secondary" for="galleryHeaderTypePhoto"><i class="bi bi-image"></i> Foto</label>
+
+                <input type="radio" class="btn-check" name="gallery_header_type" id="galleryHeaderTypeVideo" value="video" autocomplete="off" {{ $isGalleryHeaderVideo ? 'checked' : '' }}>
+                <label class="btn btn-outline-secondary" for="galleryHeaderTypeVideo"><i class="bi bi-youtube"></i> Video</label>
+            </div>
+            @error('gallery_header_type') <div class="text-danger mb-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
+
+            <div class="row g-3">
+                <div class="col-lg-6" id="galleryHeaderPhotoPanel" style="{{ $isGalleryHeaderVideo ? 'display:none;' : '' }}">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->gallery_header_photo ? $setting->gallery_header_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto header Galeri"
+                            id="galleryHeaderPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="gallery_header_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('gallery_header_photo') is-invalid @enderror"
+                            onchange="document.getElementById('galleryHeaderPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('gallery_header_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6" id="galleryHeaderVideoPanel" style="{{ $isGalleryHeaderVideo ? '' : 'display:none;' }}">
+                    <label class="form-label">Link YouTube</label>
+                    <input type="text" name="gallery_header_youtube_url" class="form-control @error('gallery_header_youtube_url') is-invalid @enderror"
+                        value="{{ old('gallery_header_youtube_url', $setting->gallery_header_youtube_url) }}" placeholder="https://www.youtube.com/watch?v=...">
+                    @error('gallery_header_youtube_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Video diputar otomatis (tanpa suara) sebagai background header.</small>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn nac-admin-btn">
             <i class="bi bi-check-lg me-1"></i> Simpan Semua Pengaturan
         </button>
     </form>
+
+    @push('scripts')
+    <script>
+        (function () {
+            var typePhoto = document.getElementById('galleryHeaderTypePhoto');
+            var typeVideo = document.getElementById('galleryHeaderTypeVideo');
+            var photoPanel = document.getElementById('galleryHeaderPhotoPanel');
+            var videoPanel = document.getElementById('galleryHeaderVideoPanel');
+            if (!typePhoto || !typeVideo) return;
+
+            function sync() {
+                var isVideo = typeVideo.checked;
+                photoPanel.style.display = isVideo ? 'none' : '';
+                videoPanel.style.display = isVideo ? '' : 'none';
+            }
+            typePhoto.addEventListener('change', sync);
+            typeVideo.addEventListener('change', sync);
+        })();
+    </script>
+    @endpush
 
 @endsection

@@ -6,7 +6,7 @@
 @section('content')
 
 <section class="nac-page-header">
-    <div class="container text-center" data-aos="fade-up">
+    <div class="container text-center" data-aos="fade-up" >
         <h1 class="nac-page-header__title">Acara &amp; Kegiatan Kami.</h1>
         <p class="nac-page-header__desc">
             Dokumentasi kegiatan dan hasil dari kegiatan yang pernah diikuti Nugroho Aquatic Club.

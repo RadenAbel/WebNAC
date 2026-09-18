@@ -50,12 +50,14 @@
             <div class="col-12">
                 <label class="form-label">
                     Bio Lengkap
-                    <i class="bi bi-info-circle text-secondary" title="Tampil di modal 'Learn more'. Pisahkan tiap paragraf dengan baris kosong."></i>
+                    <i class="bi bi-info-circle text-secondary" title="Tampil di modal 'Learn more'. Bisa diformat: bold, italic, list, dst."></i>
                 </label>
-                <textarea name="full_bio" rows="8" class="form-control @error('full_bio') is-invalid @enderror"
-                    placeholder="Paragraf pertama...&#10;&#10;Paragraf kedua...&#10;&#10;Paragraf ketiga...">{{ old('full_bio', $member->full_bio) }}</textarea>
-                @error('full_bio') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                <small class="text-secondary">Tekan Enter 2x di antara paragraf, supaya tampil sebagai paragraf terpisah di modal detail.</small>
+                <div id="fullBioEditor" style="height:260px; background:#fff;" class="@error('full_bio') is-invalid @enderror"></div>
+                {{-- Textarea asli disembunyikan — dipakai buat nyimpen hasil HTML dari
+                     editor, ini yang beneran dikirim ke server saat form disubmit. --}}
+                <textarea name="full_bio" id="fullBioInput" class="d-none">{{ old('full_bio', $member->full_bio) }}</textarea>
+                @error('full_bio') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                <small class="text-secondary">Pakai toolbar di atas buat bold, italic, list, dst. Tekan Enter untuk paragraf baru.</small>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Urutan Tampil</label>
@@ -75,3 +77,47 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        (function () {
+            var editorEl = document.getElementById('fullBioEditor');
+            var hiddenInput = document.getElementById('fullBioInput');
+            if (!editorEl || !hiddenInput) return;
+
+            var quill = new Quill(editorEl, {
+                theme: 'snow',
+                placeholder: 'Tulis bio lengkap di sini...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        ['link'],
+                        ['clean'],
+                    ],
+                },
+            });
+
+            // Mode edit: isi editor dengan HTML yang sudah tersimpan sebelumnya
+            if (hiddenInput.value.trim() !== '') {
+                quill.clipboard.dangerouslyPasteHTML(hiddenInput.value);
+            }
+
+            // Begitu form mau dikirim, salin HTML dari editor ke textarea
+            // tersembunyi dulu — supaya yang benar-benar terkirim ke server
+            // adalah hasil format lengkapnya (bold/italic/list/dst), bukan
+            // textarea yang kosong.
+            var form = hiddenInput.closest('form');
+            if (form) {
+                form.addEventListener('submit', function () {
+                    hiddenInput.value = quill.root.innerHTML;
+                });
+            }
+        })();
+    </script>
+@endpush

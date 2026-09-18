@@ -120,4 +120,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         counterEls.forEach(function (el) { counterObserver.observe(el); });
     }
+
+    // ============ Klik-untuk-putar video (kartu Galeri, dsb) ============
+    // Thumbnail + tombol play ditampilkan dulu (hemat bandwidth, tidak load
+    // iframe YouTube kalau tidak diklik) — begitu diklik, baru diganti jadi
+    // iframe video yang benar-benar diputar.
+    document.querySelectorAll('[data-play-video]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var embedUrl = btn.getAttribute('data-play-video');
+            var iframe = document.createElement('iframe');
+            iframe.src = embedUrl + (embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            iframe.className = 'nac-gallery__play-iframe';
+            iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.setAttribute('frameborder', '0');
+            btn.replaceWith(iframe);
+        });
+    });
 });

@@ -28,21 +28,32 @@
         ];
     @endphp
 
-    {{-- Background: foto dari Slider (admin), bergantian otomatis kalau lebih dari 1.
-         Kalau belum ada foto sama sekali, otomatis fallback ke gradasi biru lama
-         (lihat var(--nac-gradient-hero) di .nac-hero, tidak pernah tampil kosong). --}}
+    {{-- Background: foto ATAU video dari Slider (admin), bergantian otomatis
+         kalau lebih dari 1 slide. Kalau belum ada slider sama sekali, otomatis
+         fallback ke gradasi biru lama (lihat var(--nac-gradient-hero) di
+         .nac-hero, tidak pernah tampil kosong). --}}
     @if(count($heroPhotos))
-        <div id="heroBgCarousel" class="carousel slide nac-hero__bg" data-bs-ride="carousel" data-bs-interval="5000">
+        <div id="heroBgCarousel" class="carousel slide nac-hero__bg" data-bs-ride="carousel" data-bs-interval="6000">
             <div class="carousel-inner h-100">
                 @foreach($heroPhotos as $i => $photo)
                     <div class="carousel-item h-100 {{ $i === 0 ? 'active' : '' }}">
-                        <img src="{{ $photo['photo_url'] }}" alt="{{ $photo['alt'] ?? '' }}" class="nac-hero__bg-img" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                        @if(($photo['type'] ?? 'photo') === 'video' && !empty($photo['video_embed_url']))
+                            <div class="nac-hero__bg-video-wrap">
+                                <iframe src="{{ $photo['video_embed_url'] }}"
+                                    class="nac-hero__bg-video"
+                                    allow="autoplay; encrypted-media"
+                                    loading="{{ $i === 0 ? 'eager' : 'lazy' }}"
+                                    title="{{ $photo['alt'] ?? '' }}"></iframe>
+                            </div>
+                        @else
+                            <img src="{{ $photo['photo_url'] }}" alt="{{ $photo['alt'] ?? '' }}" class="nac-hero__bg-img" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                        @endif
                     </div>
                 @endforeach
             </div>
         </div>
-        {{-- Lapisan hitam transparan di atas foto — biar teks putih tetap kebaca
-             di atas foto apa pun, terlepas terang/gelapnya foto itu sendiri. --}}
+        {{-- Lapisan hitam transparan di atas foto/video — biar teks putih tetap
+             kebaca di atas apa pun latar belakangnya. --}}
         <div class="nac-hero__overlay"></div>
     @endif
 
@@ -121,23 +132,30 @@
 <section class="nac-section nac-gallery" id="galeri">
     <div class="container">
         <div class="nac-gallery__head" data-aos="fade-up">
-            <span class="nac-eyebrow">Galeri</span>
-            <h2 class="nac-section__title">Momen di Nugroho Aquatic Club</h2>
+            <div>
+                <span class="nac-eyebrow">Galeri</span>
+                <h2 class="nac-section__title">Momen di Nugroho Aquatic Club</h2>
+            </div>
+            <a href="{{ route('gallery.index') }}" class="nac-btn nac-btn--outline-dark nac-gallery__see-all">
+                Lihat Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+            </a>
         </div>
 
         @php
-            // 🔧 DUMMY — ganti dengan data asli galeri dari controller (mis. $galleryItems).
+            // 🔧 DUMMY — ganti dengan data asli galeri dari controller ($galleryItems).
             $galleryItems = $galleryItems ?? [
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-1/900/500', 'alt' => 'Latihan di kolam utama',         'caption' => 'Latihan Pagi'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-2/700/500', 'alt' => 'Sesi latihan teknik start',       'caption' => 'Teknik Start'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-3/700/500', 'alt' => 'Suasana kejuaraan renang',        'caption' => 'Hari Kejuaraan'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-4/700/500', 'alt' => 'Pelatih membimbing atlet junior', 'caption' => 'Bimbingan Pelatih'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-5/700/500', 'alt' => 'Fasilitas kolam dari atas',       'caption' => 'Kolam Standar Kompetisi'],
-                ['photo_url' => 'https://picsum.photos/seed/nac-pool-6/700/500', 'alt' => 'Sesi latihan fisik di gym',       'caption' => 'Fitness & Recovery'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-1/900/500', 'alt' => 'Latihan di kolam utama',         'caption' => 'Latihan Pagi'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-2/700/500', 'alt' => 'Sesi latihan teknik start',       'caption' => 'Teknik Start'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-3/700/500', 'alt' => 'Suasana kejuaraan renang',        'caption' => 'Hari Kejuaraan'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-4/700/500', 'alt' => 'Pelatih membimbing atlet junior', 'caption' => 'Bimbingan Pelatih'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-5/700/500', 'alt' => 'Fasilitas kolam dari atas',       'caption' => 'Kolam Standar Kompetisi'],
+                ['type' => 'photo', 'photo_url' => 'https://picsum.photos/seed/nac-pool-6/700/500', 'alt' => 'Sesi latihan fisik di gym',       'caption' => 'Fitness & Recovery'],
             ];
 
-            // Foto pertama tampil statis (besar, tidak ikut geser). Sisanya
-            // yang masuk slider kecil di sebelahnya.
+            // Item pertama tampil statis (besar, tidak ikut geser) — ini yang
+            // bisa dipilih admin jadi foto ATAU video. Sisanya yang masuk
+            // slider kecil di sebelahnya (selalu tampil sebagai thumbnail foto,
+            // walau type-nya video — cukup pratinjau, tidak perlu diputar di situ).
             $featuredItem = $galleryItems[0] ?? null;
             $sliderItems  = array_slice($galleryItems, 1);
         @endphp
@@ -145,7 +163,13 @@
         <div class="nac-gallery__layout" data-aos="fade-up" data-aos-delay="100">
             @if($featuredItem)
                 <figure class="nac-gallery__item nac-gallery__item--featured @if(empty($featuredItem['photo_url'])) is-empty @endif">
-                    @if(!empty($featuredItem['photo_url']))
+                    @if(($featuredItem['type'] ?? 'photo') === 'video' && !empty($featuredItem['video_embed_url']))
+                        <button type="button" class="nac-gallery__play-trigger" data-play-video="{{ $featuredItem['video_embed_url'] }}" aria-label="Putar video">
+                            <img src="{{ $featuredItem['photo_url'] }}" alt="{{ $featuredItem['alt'] ?? '' }}" loading="lazy"
+                                 onload="this.closest('.nac-gallery__item').classList.add('is-loaded')">
+                            <span class="nac-gallery__play-icon"><i class="fa-solid fa-play"></i></span>
+                        </button>
+                    @elseif(!empty($featuredItem['photo_url']))
                         <img src="{{ $featuredItem['photo_url'] }}"
                              alt="{{ $featuredItem['alt'] ?? '' }}"
                              loading="lazy"

@@ -31,6 +31,9 @@ class SiteSetting extends Model
         'pool_section_photo',
         'pool_section_title',
         'pool_section_description',
+        'gallery_header_type',
+        'gallery_header_photo',
+        'gallery_header_youtube_url',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -51,6 +54,41 @@ class SiteSetting extends Model
     public function getPoolSectionPhotoUrlAttribute(): ?string
     {
         return $this->pool_section_photo ? asset('storage/' . $this->pool_section_photo) : null;
+    }
+
+    public function getGalleryHeaderPhotoUrlAttribute(): ?string
+    {
+        return $this->gallery_header_photo ? asset('storage/' . $this->gallery_header_photo) : null;
+    }
+
+    /**
+     * Ekstrak ID video YouTube dari link header Galeri. Ditulis manual
+     * (bukan pakai trait HasYoutubeVideo) karena nama kolomnya beda —
+     * SiteSetting punya banyak field YouTube berbeda (channel sosmed,
+     * header Galeri, dst), tidak cuma satu seperti Gallery/Slider.
+     */
+    public function getGalleryHeaderYoutubeIdAttribute(): ?string
+    {
+        if (! $this->gallery_header_youtube_url) {
+            return null;
+        }
+
+        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $this->gallery_header_youtube_url, $match)) {
+            return $match[1];
+        }
+
+        return null;
+    }
+
+    public function getGalleryHeaderVideoEmbedUrlAttribute(): ?string
+    {
+        $id = $this->gallery_header_youtube_id;
+
+        if (! $id) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1";
     }
 
     /**

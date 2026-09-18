@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasYoutubeVideo;
 
 class Slider extends Model
 {
-    use HasFactory;
+    use HasFactory, HasYoutubeVideo;
 
     protected $fillable = [
         'image',
+        'type',
+        'youtube_url',
         'title',
         'subtitle',
         'button_text',
@@ -27,6 +30,10 @@ class Slider extends Model
 
     public function getImageUrlAttribute(): ?string
     {
+        if ($this->type === 'video') {
+            return $this->youtube_thumbnail_url;
+        }
+
         return $this->image ? asset('storage/' . $this->image) : null;
     }
 

@@ -28,13 +28,18 @@ class GalleryController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
-        $data['image'] = $request->file('image')->store('galleries', 'public');
+
+        if ($data['type'] === 'photo' && $request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('galleries', 'public');
+        } else {
+            $data['image'] = null; // type video tidak butuh upload gambar (pakai thumbnail YouTube)
+        }
 
         Gallery::create($data);
 
         return redirect()
             ->route('admin.galleries.index')
-            ->with('status', 'Foto galeri berhasil ditambahkan.');
+            ->with('status', 'Item galeri berhasil ditambahkan.');
     }
 
     public function edit(Gallery $gallery)
@@ -47,7 +52,13 @@ class GalleryController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
 
-        if ($request->hasFile('image')) {
+        if ($data['type'] === 'video') {
+            // Pindah ke video: foto lama (kalau ada) sudah tidak dipakai, hapus dari storage.
+            if ($gallery->image) {
+                Storage::disk('public')->delete($gallery->image);
+            }
+            $data['image'] = null;
+        } elseif ($request->hasFile('image')) {
             if ($gallery->image) {
                 Storage::disk('public')->delete($gallery->image);
             }
@@ -58,7 +69,7 @@ class GalleryController extends Controller
 
         return redirect()
             ->route('admin.galleries.index')
-            ->with('status', 'Foto galeri berhasil diperbarui.');
+            ->with('status', 'Item galeri berhasil diperbarui.');
     }
 
     public function destroy(Gallery $gallery)

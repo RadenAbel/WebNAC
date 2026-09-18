@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
             <h1 class="h4 mb-1">Slider Beranda</h1>
-            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola foto hero slider di halaman utama.</p>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola foto dan video hero slider di halaman utama.</p>
         </div>
         <a href="{{ route('admin.sliders.create') }}" class="btn nac-admin-btn">
             <i class="bi bi-plus-lg"></i> Tambah Slider
@@ -33,13 +33,56 @@
 
     @else
 
-        {{-- ============ DESKTOP: grid biasa (>= 768px) ============ --}}
-        <div class="row g-3 d-none d-md-flex">
-            @foreach ($sliders as $slider)
-                <div class="col-md-6 col-lg-4">
-                    @include('admin.slider.partials.card', ['slider' => $slider])
-                </div>
-            @endforeach
+        {{-- ============ DESKTOP: tabel (>= 768px) ============ --}}
+        <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">Foto</th>
+                        <th>Judul</th>
+                        <th style="width:100px;">Jenis</th>
+                        <th class="text-center" style="width:100px;">Status</th>
+                        <th class="text-end" style="width:120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($sliders as $slider)
+                        <tr>
+                            <td>
+                                <img src="{{ $slider->image_url }}" alt="{{ $slider->title }}"
+                                    style="width:80px; height:45px; object-fit:cover; border-radius:6px;">
+                            </td>
+                            <td class="fw-bold">{{ $slider->title ?? '(tanpa judul)' }}</td>
+                            <td>
+                                @if ($slider->type === 'video')
+                                    <span class="badge bg-info-subtle text-info-emphasis"><i class="bi bi-youtube"></i> Video</span>
+                                @else
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="bi bi-image"></i> Foto</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if ($slider->is_active)
+                                    <span class="badge bg-success">Aktif</span>
+                                @else
+                                    <span class="badge bg-secondary">Nonaktif</span>
+                                @endif
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ route('admin.sliders.edit', $slider) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST" class="d-inline nac-confirm-delete-form"
+                                    data-confirm-title="Hapus slider ini?"
+                                    data-confirm-text="Slider ini akan terhapus secara permanen.">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
         {{-- ============ MOBILE: tumpukan kartu (< 768px), tap untuk buka semua ============ --}}
