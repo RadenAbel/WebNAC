@@ -11,9 +11,7 @@
         <h1 class="h4 fw-bold mt-2 mb-1">Edit: {{ $member->name }}</h1>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     <div class="bg-white border rounded-3 p-4">
         <form action="{{ route('admin.management.update', $member) }}" method="POST" enctype="multipart/form-data">

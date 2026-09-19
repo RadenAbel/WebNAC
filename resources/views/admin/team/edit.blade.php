@@ -11,11 +11,7 @@
         <h1 class="h4 fw-bold mt-2 mb-1">Edit: {{ $member->name }}</h1>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">
-            {{ session('status') }}
-        </div>
-    @endif
+    @include('admin.partials.toast')
 
     {{-- ============ FORM PROFIL ============ --}}
     <div class="bg-white border rounded-3 p-4 mb-4">
@@ -69,7 +65,9 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.records.destroy', [$member, $record]) }}" method="POST"
-                                    onsubmit="return confirm('Hapus rekor ini?');">
+                                    class="nac-confirm-delete-form"
+                                    data-confirm-title="Hapus rekor ini?"
+                                    data-confirm-text="Rekor waktu ini akan terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus rekor">
@@ -273,7 +271,9 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.achievements.destroy', [$member, $achievement]) }}" method="POST"
-                                    onsubmit="return confirm('Hapus pencapaian ini?');">
+                                    class="nac-confirm-delete-form"
+                                    data-confirm-title="Hapus pencapaian ini?"
+                                    data-confirm-text="Data pencapaian ini akan terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus pencapaian">
@@ -437,7 +437,9 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ route('admin.team.licenses.destroy', [$member, $license]) }}" method="POST"
-                                    onsubmit="return confirm('Hapus lisensi ini?');">
+                                    class="nac-confirm-delete-form"
+                                    data-confirm-title="Hapus lisensi ini?"
+                                    data-confirm-text="Data lisensi ini akan terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus lisensi">

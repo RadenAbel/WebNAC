@@ -20,7 +20,7 @@ class StoreTeamMemberRequest extends FormRequest
             'name'   => ['required', 'string', 'max:255'],
             'photo'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'], // maks 2MB
             'role'   => ['required', 'in:pelatih,atlet'],
-            'category' => ['nullable', 'string', 'in:Junior,Senior,Swim Class A,Swim Class B,Head Coach,Assistant Coach,Fitness Coach'],
+            'category' => ['nullable', 'string', 'in:Novato,Avance,Campeón'],
             'swim_style' => ['nullable', 'string', 'in:Gaya Bebas,Gaya Dada,Gaya Punggung,Gaya Kupu-Kupu,Gaya Ganti (Individual Medley),Serba Bisa (All-Round)'],
             'age'    => ['nullable', 'integer', 'min:1', 'max:100'],
             'birth_date'  => ['nullable', 'date', 'before_or_equal:today'],

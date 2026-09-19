@@ -11,9 +11,7 @@
         </p>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -215,10 +213,12 @@
                     </div>
                     <div>
                         <label class="form-label fw-bold">Deskripsi</label>
-                        <textarea name="about_description" rows="5"
-                            class="form-control @error('about_description') is-invalid @enderror"
-                            placeholder="Sejak 2010, Nugroho Aquatic Center menjadi tempat lahirnya atlet renang...">{{ old('about_description', $setting->about_description) }}</textarea>
-                        @error('about_description') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <div id="aboutDescriptionEditor" style="height:220px; background:#fff;" class="@error('about_description') is-invalid @enderror"></div>
+                        {{-- Textarea asli disembunyikan — dipakai buat nyimpen hasil HTML dari
+                             editor, ini yang beneran dikirim ke server saat form disubmit. --}}
+                        <textarea name="about_description" id="aboutDescriptionInput" class="d-none">{{ old('about_description', $setting->about_description) }}</textarea>
+                        @error('about_description') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                        <small class="text-secondary">Di halaman Beranda, cuma 3 paragraf pertama yang ditampilkan (ringkas). Halaman Tentang Kami menampilkan semuanya.</small>
                     </div>
                 </div>
             </div>
@@ -348,6 +348,144 @@
             </div>
         </div>
 
+        {{-- ============ BACKGROUND — HEADER HALAMAN ACARA ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Background — Header Halaman Acara</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di bagian paling atas halaman <code>/acara</code>, di belakang judul "Acara &amp; Kegiatan Kami."
+            </p>
+
+            @php $isEventHeaderVideo = old('event_header_type', $setting->event_header_type ?? 'photo') === 'video'; @endphp
+
+            <div class="btn-group mb-3" role="group">
+                <input type="radio" class="btn-check" name="event_header_type" id="eventHeaderTypePhoto" value="photo" autocomplete="off" {{ $isEventHeaderVideo ? '' : 'checked' }}>
+                <label class="btn btn-outline-secondary" for="eventHeaderTypePhoto"><i class="bi bi-image"></i> Foto</label>
+
+                <input type="radio" class="btn-check" name="event_header_type" id="eventHeaderTypeVideo" value="video" autocomplete="off" {{ $isEventHeaderVideo ? 'checked' : '' }}>
+                <label class="btn btn-outline-secondary" for="eventHeaderTypeVideo"><i class="bi bi-youtube"></i> Video</label>
+            </div>
+            @error('event_header_type') <div class="text-danger mb-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
+
+            <div class="row g-3">
+                <div class="col-lg-6" id="eventHeaderPhotoPanel" style="{{ $isEventHeaderVideo ? 'display:none;' : '' }}">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->event_header_photo ? $setting->event_header_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto header Acara"
+                            id="eventHeaderPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="event_header_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('event_header_photo') is-invalid @enderror"
+                            onchange="document.getElementById('eventHeaderPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('event_header_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6" id="eventHeaderVideoPanel" style="{{ $isEventHeaderVideo ? '' : 'display:none;' }}">
+                    <label class="form-label">Link YouTube</label>
+                    <input type="text" name="event_header_youtube_url" class="form-control @error('event_header_youtube_url') is-invalid @enderror"
+                        value="{{ old('event_header_youtube_url', $setting->event_header_youtube_url) }}" placeholder="https://www.youtube.com/watch?v=...">
+                    @error('event_header_youtube_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Video diputar otomatis (tanpa suara) sebagai background header.</small>
+                </div>
+            </div>
+        </div>
+
+        {{-- ============ BACKGROUND — HEADER HALAMAN ATLET & PELATIH ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Background — Header Halaman Atlet &amp; Pelatih</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Satu setting yang sama dipakai bersama untuk halaman <code>/our-team/atlet</code> dan <code>/our-team/pelatih</code> — tidak perlu diatur terpisah.
+            </p>
+
+            @php $isTeamHeaderVideo = old('team_header_type', $setting->team_header_type ?? 'photo') === 'video'; @endphp
+
+            <div class="btn-group mb-3" role="group">
+                <input type="radio" class="btn-check" name="team_header_type" id="teamHeaderTypePhoto" value="photo" autocomplete="off" {{ $isTeamHeaderVideo ? '' : 'checked' }}>
+                <label class="btn btn-outline-secondary" for="teamHeaderTypePhoto"><i class="bi bi-image"></i> Foto</label>
+
+                <input type="radio" class="btn-check" name="team_header_type" id="teamHeaderTypeVideo" value="video" autocomplete="off" {{ $isTeamHeaderVideo ? 'checked' : '' }}>
+                <label class="btn btn-outline-secondary" for="teamHeaderTypeVideo"><i class="bi bi-youtube"></i> Video</label>
+            </div>
+            @error('team_header_type') <div class="text-danger mb-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
+
+            <div class="row g-3">
+                <div class="col-lg-6" id="teamHeaderPhotoPanel" style="{{ $isTeamHeaderVideo ? 'display:none;' : '' }}">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->team_header_photo ? $setting->team_header_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto header Atlet/Pelatih"
+                            id="teamHeaderPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="team_header_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('team_header_photo') is-invalid @enderror"
+                            onchange="document.getElementById('teamHeaderPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('team_header_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6" id="teamHeaderVideoPanel" style="{{ $isTeamHeaderVideo ? '' : 'display:none;' }}">
+                    <label class="form-label">Link YouTube</label>
+                    <input type="text" name="team_header_youtube_url" class="form-control @error('team_header_youtube_url') is-invalid @enderror"
+                        value="{{ old('team_header_youtube_url', $setting->team_header_youtube_url) }}" placeholder="https://www.youtube.com/watch?v=...">
+                    @error('team_header_youtube_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Video diputar otomatis (tanpa suara) sebagai background header.</small>
+                </div>
+            </div>
+        </div>
+
+        {{-- ============ BACKGROUND — HEADER HALAMAN JOIN US ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Background — Header Halaman Join Us</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di bagian paling atas halaman <code>/join</code>, di belakang judul "Mulai perjalanan renangmu bersama kami."
+            </p>
+
+            @php $isJoinHeaderVideo = old('join_header_type', $setting->join_header_type ?? 'photo') === 'video'; @endphp
+
+            <div class="btn-group mb-3" role="group">
+                <input type="radio" class="btn-check" name="join_header_type" id="joinHeaderTypePhoto" value="photo" autocomplete="off" {{ $isJoinHeaderVideo ? '' : 'checked' }}>
+                <label class="btn btn-outline-secondary" for="joinHeaderTypePhoto"><i class="bi bi-image"></i> Foto</label>
+
+                <input type="radio" class="btn-check" name="join_header_type" id="joinHeaderTypeVideo" value="video" autocomplete="off" {{ $isJoinHeaderVideo ? 'checked' : '' }}>
+                <label class="btn btn-outline-secondary" for="joinHeaderTypeVideo"><i class="bi bi-youtube"></i> Video</label>
+            </div>
+            @error('join_header_type') <div class="text-danger mb-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
+
+            <div class="row g-3">
+                <div class="col-lg-6" id="joinHeaderPhotoPanel" style="{{ $isJoinHeaderVideo ? 'display:none;' : '' }}">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->join_header_photo ? $setting->join_header_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto header Join Us"
+                            id="joinHeaderPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="join_header_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('join_header_photo') is-invalid @enderror"
+                            onchange="document.getElementById('joinHeaderPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('join_header_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6" id="joinHeaderVideoPanel" style="{{ $isJoinHeaderVideo ? '' : 'display:none;' }}">
+                    <label class="form-label">Link YouTube</label>
+                    <input type="text" name="join_header_youtube_url" class="form-control @error('join_header_youtube_url') is-invalid @enderror"
+                        value="{{ old('join_header_youtube_url', $setting->join_header_youtube_url) }}" placeholder="https://www.youtube.com/watch?v=...">
+                    @error('join_header_youtube_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Video diputar otomatis (tanpa suara) sebagai background header.</small>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn nac-admin-btn">
             <i class="bi bi-check-lg me-1"></i> Simpan Semua Pengaturan
         </button>
@@ -355,11 +493,11 @@
 
     @push('scripts')
     <script>
-        (function () {
-            var typePhoto = document.getElementById('galleryHeaderTypePhoto');
-            var typeVideo = document.getElementById('galleryHeaderTypeVideo');
-            var photoPanel = document.getElementById('galleryHeaderPhotoPanel');
-            var videoPanel = document.getElementById('galleryHeaderVideoPanel');
+        function nacSetupHeaderToggle(prefix) {
+            var typePhoto = document.getElementById(prefix + 'TypePhoto');
+            var typeVideo = document.getElementById(prefix + 'TypeVideo');
+            var photoPanel = document.getElementById(prefix + 'PhotoPanel');
+            var videoPanel = document.getElementById(prefix + 'VideoPanel');
             if (!typePhoto || !typeVideo) return;
 
             function sync() {
@@ -369,6 +507,58 @@
             }
             typePhoto.addEventListener('change', sync);
             typeVideo.addEventListener('change', sync);
+        }
+        nacSetupHeaderToggle('galleryHeader');
+        nacSetupHeaderToggle('eventHeader');
+        nacSetupHeaderToggle('teamHeader');
+        nacSetupHeaderToggle('joinHeader');
+    </script>
+    @endpush
+
+    @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    @endpush
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        (function () {
+            var editorEl = document.getElementById('aboutDescriptionEditor');
+            var hiddenInput = document.getElementById('aboutDescriptionInput');
+            if (!editorEl || !hiddenInput) return;
+
+            // Toolbar lebih lengkap dari yang di Tim Manajemen — ada heading,
+            // warna teks & warna background, dan perataan (align).
+            var quill = new Quill(editorEl, {
+                theme: 'snow',
+                placeholder: 'Tulis deskripsi tentang klub di sini...',
+                modules: {
+                    toolbar: [
+                        [{ header: [2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ color: [] }, { background: [] }],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ align: [] }],
+                        ['link'],
+                        ['clean'],
+                    ],
+                },
+            });
+
+            // Mode edit: isi editor dengan HTML yang sudah tersimpan sebelumnya
+            if (hiddenInput.value.trim() !== '') {
+                quill.clipboard.dangerouslyPasteHTML(hiddenInput.value);
+            }
+
+            // Begitu form mau dikirim, salin HTML dari editor ke textarea
+            // tersembunyi dulu — supaya yang benar-benar terkirim ke server
+            // adalah hasil format lengkapnya, bukan textarea yang kosong.
+            var form = hiddenInput.closest('form');
+            if (form) {
+                form.addEventListener('submit', function () {
+                    hiddenInput.value = quill.root.innerHTML;
+                });
+            }
         })();
     </script>
     @endpush

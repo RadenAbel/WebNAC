@@ -6,7 +6,7 @@
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-image"></i></span>
                 <div>
-                    <p class="nac-admin-form-section__title">Foto Pertandingan @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
+                    <p class="nac-admin-form-section__title">Foto Hasil Pertandingan @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
                     <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 3MB</p>
                 </div>
             </div>
@@ -37,20 +37,20 @@
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-card-text"></i></span>
                 <div>
-                    <p class="nac-admin-form-section__title">Detail Pertandingan</p>
+                    <p class="nac-admin-form-section__title">Detail Hasil Pertandingan</p>
                 </div>
             </div>
 
             <div class="row g-3">
                 <div class="col-12">
-                    <label class="form-label">Nama Acara <span class="text-danger">*</span></label>
+                    <label class="form-label">Nama Hasil Pertandingan <span class="text-danger">*</span></label>
                     <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
                         value="{{ old('title', $event->title) }}" placeholder="Kejuaraan Renang Antar Klub 2026" required>
                     @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Tanggal Acara <span class="text-danger">*</span></label>
+                    <label class="form-label">Tanggal Hasil Pertandingan <span class="text-danger">*</span></label>
                     <input type="date" name="event_date" class="form-control @error('event_date') is-invalid @enderror"
                         value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}" required>
                     @error('event_date') <div class="invalid-feedback">{{ $message }}</div> @enderror

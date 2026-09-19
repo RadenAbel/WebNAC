@@ -7,16 +7,14 @@
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
             <h1 class="h4 mb-1">Slider Beranda</h1>
-            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola foto dan video hero slider di halaman utama.</p>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola foto hero slider di halaman utama.</p>
         </div>
         <a href="{{ route('admin.sliders.create') }}" class="btn nac-admin-btn">
             <i class="bi bi-plus-lg"></i> Tambah Slider
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     @if ($sliders->isEmpty())
 
@@ -121,7 +119,7 @@
             </div>
         </div>
 
-        <div class="mt-3 d-none d-md-block">{{ $sliders->links() }}</div>
+        <div class="mt-3">{{ $sliders->links() }}</div>
 
     @endif
 

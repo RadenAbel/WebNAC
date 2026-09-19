@@ -157,4 +157,31 @@ document.addEventListener('DOMContentLoaded', function () {
             item.querySelector('[data-view-mode]').classList.remove('d-none');
         });
     });
+
+    // ============ Dropdown aksi tabel (mis. "..." di halaman Pendaftaran) ============
+    // Dibuat manual (bukan andalkan data-bs-toggle="dropdown" bawaan
+    // Bootstrap) — supaya perilakunya pasti bisa diandalkan sendiri tanpa
+    // bergantung ke inisialisasi JS Bootstrap.
+    document.querySelectorAll('[data-dropdown-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var menu = btn.parentElement.querySelector('.nac-dropdown-menu');
+            if (!menu) return;
+
+            var willOpen = !menu.classList.contains('is-open');
+
+            // Tutup dulu semua dropdown lain yang mungkin lagi kebuka
+            document.querySelectorAll('.nac-dropdown-menu.is-open').forEach(function (m) {
+                m.classList.remove('is-open');
+            });
+
+            if (willOpen) menu.classList.add('is-open');
+        });
+    });
+    // Klik di luar dropdown mana pun otomatis menutup semuanya
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.nac-dropdown-menu.is-open').forEach(function (m) {
+            m.classList.remove('is-open');
+        });
+    });
 });

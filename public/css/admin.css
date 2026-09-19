@@ -599,6 +599,52 @@ body {
 .alert-info    { background: var(--adm-aqua-soft); color: var(--adm-deep-aqua); }
 
 /* ==========================================================================
+   BADGE "MENUNGGU TINJAUAN" (halaman Pendaftaran)
+   ========================================================================== */
+.nac-admin-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #FFF7E6;
+  color: #B45309;
+  border: 1px solid #FDE7B8;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   DROPDOWN AKSI CUSTOM (JS manual, bukan andalkan Bootstrap data-bs-toggle)
+   ========================================================================== */
+.nac-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.nac-dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.35rem;
+  z-index: 50;
+  min-width: 180px;
+}
+.nac-dropdown-menu.is-open {
+  display: block;
+}
+
+/* ==========================================================================
+   SUDUT MELENGKUNG TABEL — dipasang langsung di sel pojok (bukan lewat
+   overflow:hidden di wrapper), supaya dropdown/tooltip di dalam tabel tidak
+   ikut kepotong kalau posisinya "meluber" keluar kartu.
+   ========================================================================== */
+.bg-white.border.rounded-3 > table.table thead tr:first-child th:first-child { border-top-left-radius: var(--adm-radius-lg); }
+.bg-white.border.rounded-3 > table.table thead tr:first-child th:last-child { border-top-right-radius: var(--adm-radius-lg); }
+.bg-white.border.rounded-3 > table.table tbody tr:last-child td:first-child { border-bottom-left-radius: var(--adm-radius-lg); }
+.bg-white.border.rounded-3 > table.table tbody tr:last-child td:last-child { border-bottom-right-radius: var(--adm-radius-lg); }
+
+/* ==========================================================================
    PAGINATION
    ========================================================================== */
 .nac-admin-content .pagination .page-link {

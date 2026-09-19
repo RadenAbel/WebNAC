@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('admin_title', 'Tambah Acara')
+@section('admin_title', 'Tambah Hasil Pertandingan')
 
 @section('admin_content')
 
@@ -8,7 +8,7 @@
         <a href="{{ route('admin.events.index') }}" class="nac-admin-back-btn">
             <span class="nac-admin-back-btn__icon"><i class="bi bi-arrow-left"></i></span> Kembali ke daftar acara
         </a>
-        <h1 class="h4 mt-3 mb-1">Tambah Acara</h1>
+        <h1 class="h4 mt-3 mb-1">Tambah Hasil Pertandingan</h1>
     </div>
 
     <div class="bg-white border rounded-3 p-4">

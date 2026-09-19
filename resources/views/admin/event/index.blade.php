@@ -1,22 +1,20 @@
 @extends('admin.layouts.app')
 
-@section('admin_title', 'Acara')
+@section('admin_title', 'Hasil Pertandingan')
 
 @section('admin_content')
 
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
-            <h1 class="h4 mb-1">Hasil Pertandingan</h1>
-            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola hasil pertandingan beserta laporan PDF-nya.</p>
+            <h1 class="h4 mb-1">Hasil Pertandingan / Kegiatan</h1>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola acara beserta laporan PDF-nya.</p>
         </div>
         <a href="{{ route('admin.events.create') }}" class="btn nac-admin-btn">
             <i class="bi bi-plus-lg"></i> Tambah Hasil Pertandingan
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     @if ($events->isEmpty())
 
@@ -26,7 +24,7 @@
                 <p class="nac-admin-empty__title">Belum ada acara</p>
                 <p class="nac-admin-empty__desc">Tambahkan acara pertama lengkap dengan laporan PDF-nya.</p>
                 <a href="{{ route('admin.events.create') }}" class="btn nac-admin-btn">
-                    <i class="bi bi-plus-lg"></i> Tambah Acara
+                    <i class="bi bi-plus-lg"></i> Tambah Hasil Pertandingan
                 </a>
             </div>
         </div>
@@ -73,8 +71,8 @@
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline nac-confirm-delete-form"
-                                    data-confirm-title="Hapus hasil pertandingan ini?"
-                                    data-confirm-text="Hasil pertandingan beserta laporan PDF-nya akan terhapus secara permanen.">
+                                    data-confirm-title="Hapus acara ini?"
+                                    data-confirm-text="Hasil Pertandingan beserta laporan PDF-nya akan terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
@@ -107,8 +105,8 @@
                 </div>
 
                 <button type="button" class="nac-admin-stack-trigger" data-stack-trigger
-                    data-label-closed="Lihat Semua Acara" data-label-open="Tutup">
-                    <span data-stack-trigger-text>Lihat Semua Acara</span>
+                    data-label-closed="Lihat Semua Hasil Pertandingan" data-label-open="Tutup">
+                    <span data-stack-trigger-text>Lihat Semua Hasil Pertandingan</span>
                     <i class="bi bi-chevron-right"></i>
                 </button>
             </div>
@@ -122,7 +120,7 @@
             </div>
         </div>
 
-        <div class="mt-3 d-none d-md-block">{{ $events->links() }}</div>
+        <div class="mt-3">{{ $events->links() }}</div>
 
     @endif
 

@@ -16,11 +16,7 @@
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">
-            {{ session('status') }}
-        </div>
-    @endif
+    @include('admin.partials.toast')
 
     {{-- Filter peran --}}
     <div class="btn-group mb-3" role="group">
@@ -87,7 +83,7 @@
                                 </a>
                                 <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="d-inline nac-confirm-delete-form"
                                     data-confirm-title="Hapus {{ $member->name }}?"
-                                    data-confirm-text="Rekor waktu & pencapaian {{ $member->name }} juga akan ikut terhapus secara permanen.">
+                                    data-confirm-text="Rekor & pencapaiannya juga akan ikut terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -152,7 +148,7 @@
                             </a>
                             <form action="{{ route('admin.team.destroy', $member) }}" method="POST" class="flex-grow-1 nac-confirm-delete-form"
                                 data-confirm-title="Hapus {{ $member->name }}?"
-                                data-confirm-text="Rekor waktu & pencapaian {{ $member->name }} juga akan ikut terhapus secara permanen.">
+                                data-confirm-text="Rekor & pencapaiannya juga akan ikut terhapus secara permanen.">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger w-100">

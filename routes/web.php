@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\ManagementMemberController;
+use App\Http\Controllers\Admin\JoinRequestController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\Admin\SliderController as AdminSliderController;
@@ -55,8 +56,9 @@ Route::get('/galeri', [GalleryController::class, 'index'])
 Route::get('/acara/{event}', [EventController::class, 'show'])
     ->name('event.show');
 
-// Halaman pendaftaran "Join Us" — form publik, submit-nya mengirim email
-// ke pengelola (lihat App\Mail\JoinRequestMail & App\Http\Controllers\JoinController).
+// Halaman pendaftaran "Join Us" — form publik, submit-nya disimpan ke tabel
+// join_requests dan ditinjau admin lewat menu "Pendaftaran" (bukan email
+// langsung lagi — lihat App\Http\Controllers\JoinController & Admin\JoinRequestController).
 Route::get('/join', [JoinController::class, 'create'])->name('join.create');
 Route::post('/join', [JoinController::class, 'store'])
     ->middleware('throttle:5,1') // cegah spam submit bertubi-tubi
@@ -126,6 +128,14 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // CRUD Tim Manajemen (halaman Tentang Kami)
     Route::resource('management', ManagementMemberController::class)->except(['show']);
+
+    // Pendaftaran Join Us — cuma index/show + 2 aksi (terima/tolak), bukan
+    // resource CRUD penuh (tidak ada create/edit/delete manual oleh admin).
+    Route::get('join-requests', [JoinRequestController::class, 'index'])->name('join-requests.index');
+    Route::get('join-requests/{joinRequest}', [JoinRequestController::class, 'show'])->name('join-requests.show');
+    Route::post('join-requests/{joinRequest}/accept', [JoinRequestController::class, 'accept'])->name('join-requests.accept');
+    Route::post('join-requests/{joinRequest}/reject', [JoinRequestController::class, 'reject'])->name('join-requests.reject');
+    Route::delete('join-requests/{joinRequest}', [JoinRequestController::class, 'destroy'])->name('join-requests.destroy');
 
     // CRUD Jadwal
     Route::resource('schedules', AdminScheduleController::class)->except(['show']);

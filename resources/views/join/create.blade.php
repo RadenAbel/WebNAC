@@ -5,7 +5,20 @@
 
 @section('content')
 
-<section class="nac-page-header">
+<section class="nac-page-header @if($setting->join_header_type === 'photo' && $setting->join_header_photo_url) nac-page-header--photo @elseif($setting->join_header_type === 'video' && $setting->join_header_video_embed_url) nac-page-header--photo @endif"
+    @if($setting->join_header_type === 'photo' && $setting->join_header_photo_url)
+        style="background-image: url('{{ $setting->join_header_photo_url }}');"
+    @endif>
+
+    @if($setting->join_header_type === 'video' && $setting->join_header_video_embed_url)
+        <div class="nac-page-header__bg-video-wrap">
+            <iframe src="{{ $setting->join_header_video_embed_url }}"
+                class="nac-page-header__bg-video"
+                allow="autoplay; encrypted-media"
+                title="Background video halaman Join Us"></iframe>
+        </div>
+    @endif
+
     <div class="container text-center" data-aos="fade-up">
         <h1 class="nac-page-header__title">Mulai perjalanan renangmu bersama kami.</h1>
         <p class="nac-page-header__desc">
@@ -14,7 +27,7 @@
     </div>
 </section>
 
-<section class="nac-section nac-join-section">
+<section class="nac-section nac-join-section nac-section--decorated nac-dot-pattern">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -33,6 +46,17 @@
 
                     <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data" novalidate class="mt-4" id="joinForm">
                         @csrf
+
+                        {{-- Honeypot anti-bot — SENGAJA disembunyikan lewat CSS (bukan
+                             type="hidden"), supaya bot spam yang cuma cek atribut type
+                             tetap "tertipu" dan mengisinya. Manusia normal tidak akan
+                             pernah melihat/mengisi field ini. Kalau terisi, validasi di
+                             StoreJoinRequest (rule 'prohibited') otomatis menolaknya. --}}
+                        <div style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true" tabindex="-1">
+                            <label for="website">Jangan isi kolom ini</label>
+                            <input type="text" name="website" id="website" autocomplete="off" tabindex="-1">
+                        </div>
+
                         <div class="row g-5">
 
                             {{-- ---- Kolom foto ---- --}}
@@ -88,9 +112,9 @@
                                         <label class="nac-join-label">Kategori yang Diminati <span class="text-danger">*</span></label>
                                         <select name="category" class="nac-join-input @error('category') is-invalid @enderror" required>
                                             <option value="">— Pilih Kategori —</option>
-                                            <option value="Swim School A1 - Pemula" {{ old('category', request('category')) === 'Swim School A1 - Pemula' ? 'selected' : '' }}>Novato</option>
-                                            <option value="Swim School B1 - Intermediate" {{ old('category', request('category')) === 'Swim School B1 - Intermediate' ? 'selected' : '' }}>Avance</option>
-                                            <option value="NAC Elite" {{ old('category', request('category')) === 'NAC Elite' ? 'selected' : '' }}>Campeo'n</option>
+                                            <option value="Novato" {{ old('category', request('category')) === 'Novato' ? 'selected' : '' }}>Novato</option>
+                                            <option value="Avance" {{ old('category', request('category')) === 'Avance' ? 'selected' : '' }}>Avance</option>
+                                            <option value="Campeón" {{ old('category', request('category')) === 'Campeón' ? 'selected' : '' }}>Campeón</option>
                                         </select>
                                         @error('category') <div class="nac-join-error">{{ $message }}</div> @enderror
                                     </div>

@@ -38,7 +38,7 @@ class UpdateSiteSettingRequest extends FormRequest
 
             // About Us
             'about_title'       => ['nullable', 'string', 'max:150'],
-            'about_description' => ['nullable', 'string', 'max:2000'],
+            'about_description' => ['nullable', 'string', 'max:10000'],
             'about_photo'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'classes_section_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'pool_section_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
@@ -47,6 +47,24 @@ class UpdateSiteSettingRequest extends FormRequest
             'gallery_header_type'  => ['required', 'in:photo,video'],
             'gallery_header_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'gallery_header_youtube_url' => [
+                'nullable', 'string', 'max:255',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
+            ],
+            'event_header_type'  => ['required', 'in:photo,video'],
+            'event_header_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'event_header_youtube_url' => [
+                'nullable', 'string', 'max:255',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
+            ],
+            'team_header_type'  => ['required', 'in:photo,video'],
+            'team_header_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'team_header_youtube_url' => [
+                'nullable', 'string', 'max:255',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
+            ],
+            'join_header_type'  => ['required', 'in:photo,video'],
+            'join_header_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'join_header_youtube_url' => [
                 'nullable', 'string', 'max:255',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
             ],
@@ -72,6 +90,15 @@ class UpdateSiteSettingRequest extends FormRequest
             'gallery_header_type.required' => 'Pilih dulu jenis background header Galeri: Foto atau Video.',
             'gallery_header_photo.max' => 'Ukuran foto header Galeri maksimal 3MB.',
             'gallery_header_youtube_url.regex' => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
+            'event_header_type.required' => 'Pilih dulu jenis background header Acara: Foto atau Video.',
+            'event_header_photo.max' => 'Ukuran foto header Acara maksimal 3MB.',
+            'event_header_youtube_url.regex' => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
+            'team_header_type.required' => 'Pilih dulu jenis background header Atlet/Pelatih: Foto atau Video.',
+            'team_header_photo.max' => 'Ukuran foto header Atlet/Pelatih maksimal 3MB.',
+            'team_header_youtube_url.regex' => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
+            'join_header_type.required' => 'Pilih dulu jenis background header Join Us: Foto atau Video.',
+            'join_header_photo.max' => 'Ukuran foto header Join Us maksimal 3MB.',
+            'join_header_youtube_url.regex' => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
         ];
     }
 }

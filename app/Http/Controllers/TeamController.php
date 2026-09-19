@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SiteSetting;
 use App\Models\TeamMember;
 
 class TeamController extends Controller
@@ -11,9 +12,10 @@ class TeamController extends Controller
      */
     public function athletes()
     {
+        $setting = SiteSetting::current();
         $athletes = TeamMember::active()->atlet()->get();
 
-        return view('team.athletes', compact('athletes'));
+        return view('team.athletes', compact('setting', 'athletes'));
     }
 
     /**
@@ -21,9 +23,10 @@ class TeamController extends Controller
      */
     public function coaches()
     {
+        $setting = SiteSetting::current();
         $coaches = TeamMember::active()->pelatih()->get();
 
-        return view('team.coaches', compact('coaches'));
+        return view('team.coaches', compact('setting', 'coaches'));
     }
 
     /**

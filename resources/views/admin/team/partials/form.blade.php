@@ -105,17 +105,9 @@
                     <label class="form-label">Kategori</label>
                     <select name="category" class="form-select @error('category') is-invalid @enderror">
                         <option value="">— Pilih Kategori —</option>
-                        <optgroup label="Atlet">
-                            <option value="Junior" {{ old('category', $member->category) === 'Junior' ? 'selected' : '' }}>Junior</option>
-                            <option value="Senior" {{ old('category', $member->category) === 'Senior' ? 'selected' : '' }}>Senior</option>
-                            <option value="Swim Class A" {{ old('category', $member->category) === 'Swim Class A' ? 'selected' : '' }}>Swim Class A</option>
-                            <option value="Swim Class B" {{ old('category', $member->category) === 'Swim Class B' ? 'selected' : '' }}>Swim Class B</option>
-                        </optgroup>
-                        <optgroup label="Pelatih">
-                            <option value="Head Coach" {{ old('category', $member->category) === 'Head Coach' ? 'selected' : '' }}>Head Coach</option>
-                            <option value="Assistant Coach" {{ old('category', $member->category) === 'Assistant Coach' ? 'selected' : '' }}>Assistant Coach</option>
-                            <option value="Fitness Coach" {{ old('category', $member->category) === 'Fitness Coach' ? 'selected' : '' }}>Fitness Coach</option>
-                        </optgroup>
+                        <option value="Novato" {{ old('category', $member->category) === 'Novato' ? 'selected' : '' }}>Novato</option>
+                        <option value="Avance" {{ old('category', $member->category) === 'Avance' ? 'selected' : '' }}>Avance</option>
+                        <option value="Campeón" {{ old('category', $member->category) === 'Campeón' ? 'selected' : '' }}>Campeón</option>
                     </select>
                     @error('category') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>

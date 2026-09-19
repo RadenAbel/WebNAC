@@ -34,6 +34,15 @@ class SiteSetting extends Model
         'gallery_header_type',
         'gallery_header_photo',
         'gallery_header_youtube_url',
+        'event_header_type',
+        'event_header_photo',
+        'event_header_youtube_url',
+        'team_header_type',
+        'team_header_photo',
+        'team_header_youtube_url',
+        'join_header_type',
+        'join_header_photo',
+        'join_header_youtube_url',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -83,6 +92,93 @@ class SiteSetting extends Model
     public function getGalleryHeaderVideoEmbedUrlAttribute(): ?string
     {
         $id = $this->gallery_header_youtube_id;
+
+        if (! $id) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1";
+    }
+
+    public function getEventHeaderPhotoUrlAttribute(): ?string
+    {
+        return $this->event_header_photo ? asset('storage/' . $this->event_header_photo) : null;
+    }
+
+    public function getEventHeaderYoutubeIdAttribute(): ?string
+    {
+        if (! $this->event_header_youtube_url) {
+            return null;
+        }
+
+        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $this->event_header_youtube_url, $match)) {
+            return $match[1];
+        }
+
+        return null;
+    }
+
+    public function getEventHeaderVideoEmbedUrlAttribute(): ?string
+    {
+        $id = $this->event_header_youtube_id;
+
+        if (! $id) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1";
+    }
+
+    public function getTeamHeaderPhotoUrlAttribute(): ?string
+    {
+        return $this->team_header_photo ? asset('storage/' . $this->team_header_photo) : null;
+    }
+
+    public function getTeamHeaderYoutubeIdAttribute(): ?string
+    {
+        if (! $this->team_header_youtube_url) {
+            return null;
+        }
+
+        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $this->team_header_youtube_url, $match)) {
+            return $match[1];
+        }
+
+        return null;
+    }
+
+    public function getTeamHeaderVideoEmbedUrlAttribute(): ?string
+    {
+        $id = $this->team_header_youtube_id;
+
+        if (! $id) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1";
+    }
+
+    public function getJoinHeaderPhotoUrlAttribute(): ?string
+    {
+        return $this->join_header_photo ? asset('storage/' . $this->join_header_photo) : null;
+    }
+
+    public function getJoinHeaderYoutubeIdAttribute(): ?string
+    {
+        if (! $this->join_header_youtube_url) {
+            return null;
+        }
+
+        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $this->join_header_youtube_url, $match)) {
+            return $match[1];
+        }
+
+        return null;
+    }
+
+    public function getJoinHeaderVideoEmbedUrlAttribute(): ?string
+    {
+        $id = $this->join_header_youtube_id;
 
         if (! $id) {
             return null;

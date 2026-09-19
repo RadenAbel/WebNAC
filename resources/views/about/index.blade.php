@@ -27,7 +27,7 @@
                 <span class="nac-eyebrow">Profil Kami</span>
                 <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
                 <p class="nac-lead">
-                    {{ $setting->about_description ?? 'Sejak berdiri, Nugroho Aquatic Club menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.' }}
+                    {!! $setting->about_description ?? '<p>Sejak berdiri, Nugroho Aquatic Club menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.</p>' !!}
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
@@ -216,24 +216,19 @@
 
             <div class="nac-join-classes">
                 <div class="nac-join-class">
-                    <span class="nac-join-class__badge">Swim School A</span>
+                    <span class="nac-join-class__badge">Novato</span>
                     <h5>Untuk Pemula</h5>
-                    <p>Dikhususkan bagi yang belum pernah belajar renang. Tersedia 2 kelas untuk pemula: A1 dan A2.</p>
+                    <p>Dikhususkan bagi yang belum pernah belajar renang atau baru mengenal air. Fokus pada pengenalan teknik dasar dan keamanan di kolam.</p>
                 </div>
                 <div class="nac-join-class">
-                    <span class="nac-join-class__badge">Swim School B</span>
+                    <span class="nac-join-class__badge">Avance</span>
                     <h5>Tingkat Lanjutan</h5>
-                    <p>Bagi murid dari Swim School A atau calon murid yang sudah menguasai 1-2 gaya renang. B1 untuk mengasah kemampuan lebih lanjut, B2 sebagai persiapan masuk klub.</p>
+                    <p>Bagi murid dari Novato atau calon murid yang sudah menguasai 1-2 gaya renang. Fokus mengasah kemampuan lebih lanjut sebagai persiapan masuk klub.</p>
                 </div>
                 <div class="nac-join-class">
-                    <span class="nac-join-class__badge">NAC Junior</span>
+                    <span class="nac-join-class__badge">Campeón</span>
                     <h5>Menuju Atlet</h5>
-                    <p>Bagi murid dari Swim School B atau calon murid yang sudah menguasai 3-4 gaya renang. Pada tingkat ini, murid mulai dilatih menjadi atlet.</p>
-                </div>
-                <div class="nac-join-class">
-                    <span class="nac-join-class__badge">NAC Elite</span>
-                    <h5>Tingkat Akhir</h5>
-                    <p>Calon atlet yang kemampuannya sudah diasah di NAC Junior akan dinaikkan ke tingkat ini.</p>
+                    <p>Bagi murid dari Avance atau calon murid yang sudah menguasai beberapa gaya renang. Pada tingkat ini, murid mulai dilatih menjadi atlet kompetisi.</p>
                 </div>
             </div>
 

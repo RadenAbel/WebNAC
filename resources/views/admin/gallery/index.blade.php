@@ -14,9 +14,7 @@
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     @if ($galleries->isEmpty())
 
@@ -123,7 +121,7 @@
             </div>
         </div>
 
-        <div class="mt-3 d-none d-md-block">{{ $galleries->links() }}</div>
+        <div class="mt-3">{{ $galleries->links() }}</div>
 
     @endif
 

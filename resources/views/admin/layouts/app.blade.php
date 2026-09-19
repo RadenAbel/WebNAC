@@ -47,7 +47,7 @@
                     <i class="bi bi-calendar-week"></i>
                     <span class="nac-admin-nav__label">Jadwal</span>
                 </a>
-                <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Acara">
+                <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Hasil Pertandingan">
                     <i class="bi bi-calendar-event"></i>
                     <span class="nac-admin-nav__label">Hasil Pertandingan</span>
                 </a>
@@ -58,6 +58,14 @@
                 <a href="{{ route('admin.management.index') }}" class="{{ request()->routeIs('admin.management.*') ? 'active' : '' }}" title="Tim Manajemen">
                     <i class="bi bi-person-badge"></i>
                     <span class="nac-admin-nav__label">Tim Manajemen</span>
+                </a>
+                <a href="{{ route('admin.join-requests.index') }}" class="{{ request()->routeIs('admin.join-requests.*') ? 'active' : '' }}" title="Pendaftaran">
+                    <i class="bi bi-person-plus"></i>
+                    <span class="nac-admin-nav__label">Pendaftaran</span>
+                    @php $navPendingCount = \App\Models\JoinRequest::pending()->count(); @endphp
+                    @if($navPendingCount > 0)
+                        <span class="badge bg-danger ms-auto">{{ $navPendingCount }}</span>
+                    @endif
                 </a>
 
                 <span class="nac-admin-nav__group">Pengaturan</span>
@@ -137,6 +145,39 @@
             });
         });
     </script>
+    @if(session('whatsapp_redirect'))
+        <script>
+            // PENTING: window.open() otomatis saat halaman dimuat (tanpa klik
+            // pengguna) hampir pasti diblokir oleh pop-up blocker browser.
+            // Makanya di sini dibungkus jadi tombol konfirmasi (SweetAlert2)
+            // dulu — window.open() dipanggil DI DALAM handler klik tombolnya,
+            // supaya dianggap browser sebagai aksi asli pengguna, bukan popup liar.
+            Swal.fire({
+                title: 'Siap kirim pesan WhatsApp?',
+                text: 'Pesan sudah disiapkan otomatis sesuai status pendaftaran ini.',
+                icon: 'success',
+                confirmButtonText: 'Buka WhatsApp',
+                confirmButtonColor: '#25D366',
+                showCancelButton: true,
+                cancelButtonText: 'Nanti saja',
+                reverseButtons: true,
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    window.open("{{ session('whatsapp_redirect') }}", '_blank');
+                }
+            });
+        </script>
+    @elseif(session('whatsapp_error'))
+        <script>
+            Swal.fire({
+                title: 'Nomor WhatsApp Tidak Valid',
+                text: @json(session('whatsapp_error')),
+                icon: 'warning',
+                confirmButtonText: 'Mengerti',
+                confirmButtonColor: '#dc3545',
+            });
+        </script>
+    @endif
     @stack('scripts')
 </body>
 </html>

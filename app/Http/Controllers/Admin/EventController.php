@@ -35,7 +35,7 @@ class EventController extends Controller
 
         return redirect()
             ->route('admin.events.index')
-            ->with('status', 'Acara berhasil ditambahkan.');
+            ->with('status', 'Hasil Pertandingan berhasil ditambahkan.');
     }
 
     public function edit(Event $event)
@@ -66,7 +66,7 @@ class EventController extends Controller
 
         return redirect()
             ->route('admin.events.index')
-            ->with('status', 'Acara berhasil diperbarui.');
+            ->with('status', 'Hasil Pertandingan berhasil diperbarui.');
     }
 
     public function destroy(Event $event)
@@ -82,6 +82,6 @@ class EventController extends Controller
 
         return redirect()
             ->route('admin.events.index')
-            ->with('status', 'Acara berhasil dihapus.');
+            ->with('status', 'Hasil Pertandingan berhasil dihapus.');
     }
 }

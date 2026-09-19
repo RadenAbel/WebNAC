@@ -70,6 +70,42 @@ class SiteSettingController extends Controller
             $data['gallery_header_photo'] = $request->file('gallery_header_photo')->store('settings', 'public');
         }
 
+        if ($data['event_header_type'] === 'video') {
+            if ($setting->event_header_photo) {
+                Storage::disk('public')->delete($setting->event_header_photo);
+            }
+            $data['event_header_photo'] = null;
+        } elseif ($request->hasFile('event_header_photo')) {
+            if ($setting->event_header_photo) {
+                Storage::disk('public')->delete($setting->event_header_photo);
+            }
+            $data['event_header_photo'] = $request->file('event_header_photo')->store('settings', 'public');
+        }
+
+        if ($data['team_header_type'] === 'video') {
+            if ($setting->team_header_photo) {
+                Storage::disk('public')->delete($setting->team_header_photo);
+            }
+            $data['team_header_photo'] = null;
+        } elseif ($request->hasFile('team_header_photo')) {
+            if ($setting->team_header_photo) {
+                Storage::disk('public')->delete($setting->team_header_photo);
+            }
+            $data['team_header_photo'] = $request->file('team_header_photo')->store('settings', 'public');
+        }
+
+        if ($data['join_header_type'] === 'video') {
+            if ($setting->join_header_photo) {
+                Storage::disk('public')->delete($setting->join_header_photo);
+            }
+            $data['join_header_photo'] = null;
+        } elseif ($request->hasFile('join_header_photo')) {
+            if ($setting->join_header_photo) {
+                Storage::disk('public')->delete($setting->join_header_photo);
+            }
+            $data['join_header_photo'] = $request->file('join_header_photo')->store('settings', 'public');
+        }
+
         $setting->update($data);
 
         return redirect()

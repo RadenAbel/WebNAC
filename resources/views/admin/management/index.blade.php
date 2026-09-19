@@ -16,9 +16,7 @@
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.9rem;">{{ session('status') }}</div>
-    @endif
+    @include('admin.partials.toast')
 
     <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
         @if ($managementMembers->isEmpty())
