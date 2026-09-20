@@ -24,28 +24,13 @@
     $origin         = $member->hometown ?? 'Surabaya, Jawa Timur';
     $specialization = $member->category ?? ($member->role === 'pelatih' ? 'Pelatih Kepala' : 'Gaya Bebas');
 
-    // Ringkasan medali/prestasi (tampil di kanan atas kartu)
-    $medalStats = $member->medal_stats ?? [
-        'gold'   => 8,
-        'silver' => 5,
-        'bronze' => 3,
-    ];
-    $medalMax   = max(1, max($medalStats));
-    $medalTotal = array_sum($medalStats);
-
     // Tabel "Rekor Waktu Terbaik"
     $personalBests = $member->personal_bests ?? [
-        ['event' => '50m Gaya Bebas',      'time' => '25.10',   'medal' => 'gold',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
-        ['event' => '100m Gaya Bebas',     'time' => '54.32',   'medal' => null,     'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
-        ['event' => '50m Gaya Punggung',   'time' => '27.85',   'medal' => 'silver', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
-        ['event' => '100m Gaya Kupu-Kupu', 'time' => '59.40',   'medal' => 'bronze', 'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
-        ['event' => '200m Gaya Ganti',     'time' => '2:12.67', 'medal' => null,     'pool_length' => '50m', 'age' => 15, 'competition' => 'Kejurda Jawa Timur 2022', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '20/11/2022'],
-    ];
-
-    $medalDotClass = [
-        'gold'   => 'nac-medal-dot--gold',
-        'silver' => 'nac-medal-dot--silver',
-        'bronze' => 'nac-medal-dot--bronze',
+        ['event' => '50m Gaya Bebas',      'time' => '25.10',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
+        ['event' => '100m Gaya Bebas',     'time' => '54.32',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
+        ['event' => '50m Gaya Punggung',   'time' => '27.85',   'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
+        ['event' => '100m Gaya Kupu-Kupu', 'time' => '59.40',   'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
+        ['event' => '200m Gaya Ganti',     'time' => '2:12.67', 'pool_length' => '50m', 'age' => 15, 'competition' => 'Kejurda Jawa Timur 2022', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '20/11/2022'],
     ];
 @endphp
 
@@ -72,90 +57,134 @@
 {{-- ============ KARTU PROFIL (terang, gaya "athlete profile") ============ --}}
 <section class="nac-profile-card-wrap">
     <div class="container">
-        <div class="nac-profile-card" data-aos="fade-up">
+        <div class="nac-profile-card nac-profile-card--v2" data-aos="fade-up">
             <span class="nac-profile-card__accent" aria-hidden="true"></span>
 
-            <div class="nac-profile-card__top">
-                <div class="nac-profile-card__info">
-                    <span class="nac-eyebrow">{{ $roleLabel }} &middot; Nugroho Aquatic Club</span>
-                    <h1 class="nac-profile-card__name">
-                        {{ $firstName }}
-                        @if($lastName)
-                            <span>{{ $lastName }}</span>
-                        @endif
-                    </h1>
-
-                    <div class="nac-profile-card__tags">
-                        <div class="nac-profile-card__tag">
-                            <span class="nac-profile-card__tag-label">Asal</span>
-                            <span class="nac-profile-card__tag-value">
-                                <span class="fi fi-id nac-flag-icon"></span> {{ $origin }}
-                            </span>
-                        </div>
-                        <div class="nac-profile-card__tag">
-                            <span class="nac-profile-card__tag-label">Kategori</span>
-                            <span class="nac-profile-card__tag-value">
-                                <i class="fa-solid fa-water"></i> {{ $specialization }}
-                            </span>
+            <div class="nac-profile-card__row">
+                @if(!empty($member->photo_url) && $member->photo_is_cutout)
+                    {{-- Foto sudah background transparan (PNG cutout) — tampil "3D"
+                         mengambang keluar dari batas kartu, tanpa bingkai kotak. --}}
+                    <div class="nac-profile-card__photo-cutout">
+                        <img src="{{ $member->photo_url }}"
+                             alt="Foto {{ $member->name }}"
+                             fetchpriority="high">
+                    </div>
+                @else
+                    <div class="nac-profile-card__photo-side">
+                        <div class="nac-profile-card__photo-side-frame @if(empty($member->photo_url)) is-empty @endif">
+                            @if(!empty($member->photo_url))
+                                <img src="{{ $member->photo_url }}"
+                                     alt="Foto {{ $member->name }}"
+                                     width="220" height="280"
+                                     fetchpriority="high"
+                                     onload="this.parentElement.classList.add('is-loaded')">
+                            @else
+                                <div class="nac-photo-placeholder">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span>Foto belum tersedia</span>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <div class="nac-profile-card__photo">
-                    <div class="nac-profile-card__photo-frame @if(empty($member->photo_url)) is-empty @endif">
-                        @if(!empty($member->photo_url))
-                            <img src="{{ $member->photo_url }}"
-                                 alt="Foto {{ $member->name }}"
-                                 width="280" height="280"
-                                 fetchpriority="high"
-                                 onload="this.parentElement.classList.add('is-loaded')">
-                        @else
-                            <div class="nac-photo-placeholder">
-                                <i class="fa-solid fa-image"></i>
-                                <span>Foto belum tersedia</span>
-                            </div>
-                        @endif
+                <div class="nac-profile-card__col">
+                    <div class="nac-profile-detail-item">
+                        <span class="nac-profile-detail-item__label">Nama {{ $roleLabel }}</span>
+                        <span class="nac-profile-detail-item__value">{{ $member->name }}</span>
                     </div>
-                </div>
-
-                <div class="nac-profile-card__medals">
-                    @if($member->role === 'atlet')
-                        <span class="nac-medal-total-label">Total Prestasi &amp; Medali</span>
-                        <span class="nac-medal-total-num">{{ $medalTotal }}</span>
-
-                        <div class="nac-medal-bars">
-                            <div class="nac-medal-bar nac-medal-bar--gold">
-                                <span class="nac-medal-bar__count">{{ $medalStats['gold'] }}</span>
-                                <span class="nac-medal-bar__fill">
-                                    <span style="height: {{ round(($medalStats['gold'] / $medalMax) * 100) }}%"></span>
-                                </span>
-                                <span class="nac-medal-bar__label">Emas</span>
-                            </div>
-                            <div class="nac-medal-bar nac-medal-bar--silver">
-                                <span class="nac-medal-bar__count">{{ $medalStats['silver'] }}</span>
-                                <span class="nac-medal-bar__fill">
-                                    <span style="height: {{ round(($medalStats['silver'] / $medalMax) * 100) }}%"></span>
-                                </span>
-                                <span class="nac-medal-bar__label">Perak</span>
-                            </div>
-                            <div class="nac-medal-bar nac-medal-bar--bronze">
-                                <span class="nac-medal-bar__count">{{ $medalStats['bronze'] }}</span>
-                                <span class="nac-medal-bar__fill">
-                                    <span style="height: {{ round(($medalStats['bronze'] / $medalMax) * 100) }}%"></span>
-                                </span>
-                                <span class="nac-medal-bar__label">Perunggu</span>
+                    <div class="nac-profile-detail-item">
+                        <span class="nac-profile-detail-item__label">Tempat, Tanggal Lahir</span>
+                        <span class="nac-profile-detail-item__value">
+                            {{ $member->birth_place ?? '-' }}{{ $member->birth_date_label ? ', ' . $member->birth_date_label : '' }}
+                        </span>
+                    </div>
+                    <div class="nac-profile-detail-item-pair">
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Umur</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->age ? $member->age . ' Tahun' : '-' }}</span>
+                        </div>
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Gender</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->gender ?? '-' }}</span>
+                        </div>
+                    </div>
+                    @if($member->swim_style)
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Spesialis Gaya</span>
+                            <div class="nac-profile-style-tags">
+                                @foreach($member->swim_style_array as $style)
+                                    <span class="nac-profile-style-tag">{{ $style }}</span>
+                                @endforeach
                             </div>
                         </div>
-                    @else
-                        <span class="nac-medal-total-label">Total Lisensi</span>
-                        <span class="nac-medal-total-num">{{ $member->licenses->count() }}</span>
+                    @endif
 
-                        <div class="nac-license-summary">
-                            <i class="fa-solid fa-certificate"></i>
-                            <span>Sertifikasi Kepelatihan</span>
+                    @if(!empty($member->bio))
+                        <button type="button" class="btn nac-btn nac-btn--outline-dark nac-profile-desc-btn" data-bs-toggle="offcanvas" data-bs-target="#atletDescOffcanvas" aria-controls="atletDescOffcanvas">
+                            <i class="fa-solid fa-circle-info"></i> Lihat Deskripsi {{ $roleLabel }}
+                        </button>
+                    @endif
+                </div>
+
+                <div class="nac-profile-card__col">
+                    <div class="nac-profile-detail-item-pair">
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Tinggi Badan</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->height_cm ? $member->height_cm . ' cm' : '-' }}</span>
+                        </div>
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Berat Badan</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->weight_kg ? $member->weight_kg . ' kg' : '-' }}</span>
+                        </div>
+                    </div>
+                    <div class="nac-profile-detail-item">
+                        <span class="nac-profile-detail-item__label">Tanggal Bergabung</span>
+                        <span class="nac-profile-detail-item__value">{{ $member->join_date_label ?? '-' }}</span>
+                    </div>
+                    <div class="nac-profile-detail-item">
+                        <span class="nac-profile-detail-item__label">Status di Klub</span>
+                        <span class="nac-profile-detail-item__value">{{ $specialization }}</span>
+                    </div>
+
+                    @if(!empty($member->whatsapp) || !empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Sosial Media Saya</span>
+                            <div class="nac-profile-actions nac-profile-actions--light" style="margin-top: 0.4rem;">
+                                @if(!empty($member->whatsapp))
+                                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $member->whatsapp) }}" target="_blank" rel="noopener" class="nac-profile-contact-btn" title="Hubungi via WhatsApp" aria-label="Hubungi {{ $member->name }} via WhatsApp">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </a>
+                                @endif
+
+                                @if(!empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
+                                    <div class="nac-profile-social nac-profile-social--light">
+                                        @if(!empty($member->instagram_url))
+                                            <a href="{{ $member->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram {{ $member->name }}">
+                                                <i class="fa-brands fa-instagram"></i>
+                                            </a>
+                                        @endif
+                                    @if(!empty($member->facebook_url))
+                                        <a href="{{ $member->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook {{ $member->name }}">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    @endif
+                                    @if(!empty($member->tiktok_url))
+                                        <a href="{{ $member->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok {{ $member->name }}">
+                                            <i class="fa-brands fa-tiktok"></i>
+                                        </a>
+                                    @endif
+                                    @if(!empty($member->email))
+                                        <a href="mailto:{{ $member->email }}" aria-label="Email {{ $member->name }}">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>
+            </div>
             </div>
 
             <ul class="nav nac-profile-tabs" id="profileTab" role="tablist">
@@ -171,13 +200,26 @@
                         <button class="nav-link active" id="tab-lisensi-btn" data-bs-toggle="tab" data-bs-target="#tab-lisensi" type="button" role="tab" aria-controls="tab-lisensi" aria-selected="true">Lisensi</button>
                     </li>
                 @endif
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="tab-profil-btn" data-bs-toggle="tab" data-bs-target="#tab-profil" type="button" role="tab" aria-controls="tab-profil" aria-selected="false">Profil</button>
-                </li>
             </ul>
         </div>
     </div>
 </section>
+
+{{-- ============ PANEL GESER: DESKRIPSI ATLET/PELATIH (dari kiri layar) ============ --}}
+<div class="offcanvas offcanvas-start nac-desc-offcanvas" tabindex="-1" id="atletDescOffcanvas" aria-labelledby="atletDescOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="atletDescOffcanvasLabel">Mengenal {{ $member->name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Tutup"></button>
+    </div>
+    <div class="offcanvas-body">
+        <p class="nac-lead">
+            {{ $member->bio ?? ($member->name . ' bergabung bersama Nugroho Aquatic Club dan aktif berlatih serta berkompetisi di berbagai ajang renang tingkat daerah maupun nasional. Profil lengkap akan diperbarui secara berkala.') }}
+        </p>
+        @if(!empty($member->tagline))
+            <p class="nac-profile-card__tagline">&ldquo;{{ $member->tagline }}&rdquo;</p>
+        @endif
+    </div>
+</div>
 
 {{-- ============ ISI TAB ============ --}}
 <section class="nac-section nac-section--tint nac-profile-tabsection">
@@ -195,7 +237,6 @@
                             <tr>
                                 <th>Nomor</th>
                                 <th>Waktu</th>
-                                <th>Medali</th>
                                 <th>Panjang Kolam</th>
                                 <th>Usia*</th>
                                 <th>Kompetisi</th>
@@ -208,13 +249,6 @@
                                 <tr>
                                     <td data-label="Nomor">{{ $best['event'] }}</td>
                                     <td data-label="Waktu" class="nac-rekor-table__time">{{ $best['time'] }}</td>
-                                    <td data-label="Medali">
-                                        @if(!empty($best['medal']))
-                                            <span class="nac-medal-dot {{ $medalDotClass[$best['medal']] ?? '' }}" title="{{ ucfirst($best['medal']) }}"></span>
-                                        @else
-                                            <span class="nac-rekor-table__dash">&ndash;</span>
-                                        @endif
-                                    </td>
                                     <td data-label="Panjang Kolam">{{ $best['pool_length'] }}</td>
                                     <td data-label="Usia*">{{ $best['age'] }}</td>
                                     <td data-label="Kompetisi">{{ $best['competition'] }}</td>
@@ -242,10 +276,10 @@
 
                 @php
                     $achievements = (!empty($member->achievements) && count($member->achievements)) ? $member->achievements : [
-                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 1, 'silver' => 0, 'bronze' => 0],
-                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 0, 'silver' => 1, 'bronze' => 0],
-                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia', 'gold' => 0, 'silver' => 0, 'bronze' => 1],
-                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => null, 'country' => null, 'gold' => 0, 'silver' => 0, 'bronze' => 0],
+                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
+                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => null, 'country' => null],
                     ];
                 @endphp
 
@@ -256,9 +290,6 @@
                                 <th style="width:56px;">No</th>
                                 <th>Prestasi &amp; Penghargaan</th>
                                 <th style="width:110px;">Tanggal</th>
-                                <th style="width:64px;" class="text-center">Emas</th>
-                                <th style="width:64px;" class="text-center">Perak</th>
-                                <th style="width:72px;" class="text-center">Perunggu</th>
                                 <th style="width:130px;">Negara</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -272,9 +303,6 @@
                                     $desc        = is_array($achievement) ? ($achievement['description'] ?? null) : null;
                                     $countryCode = is_array($achievement) ? ($achievement['country_code'] ?? null) : null;
                                     $countryName = is_array($achievement) ? ($achievement['country'] ?? null) : null;
-                                    $gold        = is_array($achievement) ? ($achievement['gold'] ?? 0) : 0;
-                                    $silver      = is_array($achievement) ? ($achievement['silver'] ?? 0) : 0;
-                                    $bronze      = is_array($achievement) ? ($achievement['bronze'] ?? 0) : 0;
                                 @endphp
                                 <tr>
                                     <td data-label="No" class="nac-achievement-table__no">{{ $i + 1 }}</td>
@@ -285,27 +313,6 @@
                                         </span>
                                     </td>
                                     <td data-label="Tanggal" class="nac-achievement-table__year">{{ $eventDate ?? $year ?? '–' }}</td>
-                                    <td data-label="Emas" class="text-center">
-                                        @if($gold)
-                                            {{ $gold }}
-                                        @else
-                                            <span class="nac-rekor-table__dash">–</span>
-                                        @endif
-                                    </td>
-                                    <td data-label="Perak" class="text-center">
-                                        @if($silver)
-                                            {{ $silver }}
-                                        @else
-                                            <span class="nac-rekor-table__dash">–</span>
-                                        @endif
-                                    </td>
-                                    <td data-label="Perunggu" class="text-center">
-                                        @if($bronze)
-                                            {{ $bronze }}
-                                        @else
-                                            <span class="nac-rekor-table__dash">–</span>
-                                        @endif
-                                    </td>
                                     <td data-label="Negara">
                                         @if($countryCode)
                                             <span class="nac-achievement-table__flag" title="{{ $countryName }}">
@@ -381,116 +388,6 @@
             @endif
 
             {{-- ---------- TAB: PROFIL ---------- --}}
-            <div class="tab-pane fade" id="tab-profil" role="tabpanel" aria-labelledby="tab-profil-btn">
-                <div class="row g-5">
-                    <div class="col-lg-7" data-aos="fade-up">
-                        <h2 class="nac-section__title mb-3">Mengenal {{ $member->name }}</h2>
-                        <p class="nac-lead">
-                            {{ $member->bio ?? ($member->name . ' bergabung bersama Nugroho Aquatic Club dan aktif berlatih serta berkompetisi di berbagai ajang renang tingkat daerah maupun nasional. Profil lengkap akan diperbarui secara berkala.') }}
-                        </p>
-
-                        @if(!empty($member->tagline))
-                            <p class="nac-profile-card__tagline">&ldquo;{{ $member->tagline }}&rdquo;</p>
-                        @endif
-
-                        @if($member->birth_place || $member->birth_date_label || $member->join_date_label || $member->swim_style)
-                            <div class="nac-profile-info-list" data-aos="fade-up" data-aos-delay="60">
-                                @if($member->birth_place || $member->birth_date_label)
-                                    <div class="nac-profile-info-item">
-                                        <i class="fa-solid fa-cake-candles"></i>
-                                        <div>
-                                            <span class="nac-profile-info-item__label">Tempat, Tanggal Lahir</span>
-                                            <span class="nac-profile-info-item__value">
-                                                {{ $member->birth_place ?? '-' }}{{ $member->birth_date_label ? ', ' . $member->birth_date_label : '' }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                @endif
-                                @if($member->join_date_label)
-                                    <div class="nac-profile-info-item">
-                                        <i class="fa-solid fa-calendar-check"></i>
-                                        <div>
-                                            <span class="nac-profile-info-item__label">Bergabung Sejak</span>
-                                            <span class="nac-profile-info-item__value">{{ $member->join_date_label }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                                @if($member->swim_style)
-                                    <div class="nac-profile-info-item">
-                                        <i class="fa-solid fa-person-swimming"></i>
-                                        <div>
-                                            <span class="nac-profile-info-item__label">Gaya Spesialis</span>
-                                            <span class="nac-profile-info-item__value">{{ $member->swim_style }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="col-lg-5" data-aos="fade-up" data-aos-delay="80">
-                        <div class="nac-profile-stats nac-profile-stats--light">
-                            <div class="nac-profile-stats__item">
-                                <i class="fa-solid fa-cake-candles"></i>
-                                <div>
-                                    <span class="nac-profile-stats__num">{{ $member->age ?? 17 }}</span>
-                                    <span class="nac-profile-stats__label">Tahun</span>
-                                </div>
-                            </div>
-                            <div class="nac-profile-stats__item">
-                                <i class="fa-solid {{ $member->role === 'pelatih' ? 'fa-certificate' : 'fa-medal' }}"></i>
-                                <div>
-                                    <span class="nac-profile-stats__num nac-profile-stats__num--text">{{ $specialization }}</span>
-                                    <span class="nac-profile-stats__label">Kategori</span>
-                                </div>
-                            </div>
-                            <div class="nac-profile-stats__item">
-                                <i class="fa-solid fa-timeline"></i>
-                                <div>
-                                    <span class="nac-profile-stats__num">{{ $member->experience_years ?? 4 }}+</span>
-                                    <span class="nac-profile-stats__label">Tahun Pengalaman</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        @if(!empty($member->whatsapp) || !empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
-                            <div class="nac-profile-actions nac-profile-actions--light">
-                                @if(!empty($member->whatsapp))
-                                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $member->whatsapp) }}" target="_blank" rel="noopener" class="nac-btn nac-btn--primary">
-                                        <i class="fa-brands fa-whatsapp"></i> Hubungi Saya
-                                    </a>
-                                @endif
-
-                                @if(!empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
-                                    <div class="nac-profile-social nac-profile-social--light">
-                                        @if(!empty($member->instagram_url))
-                                            <a href="{{ $member->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram {{ $member->name }}">
-                                                <i class="fa-brands fa-instagram"></i>
-                                            </a>
-                                        @endif
-                                        @if(!empty($member->facebook_url))
-                                            <a href="{{ $member->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook {{ $member->name }}">
-                                                <i class="fa-brands fa-facebook-f"></i>
-                                            </a>
-                                        @endif
-                                        @if(!empty($member->tiktok_url))
-                                            <a href="{{ $member->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok {{ $member->name }}">
-                                                <i class="fa-brands fa-tiktok"></i>
-                                            </a>
-                                        @endif
-                                        @if(!empty($member->email))
-                                            <a href="mailto:{{ $member->email }}" aria-label="Email {{ $member->name }}">
-                                                <i class="fa-solid fa-envelope"></i>
-                                            </a>
-                                        @endif
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </section>

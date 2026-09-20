@@ -14,7 +14,6 @@ class TeamMemberRecord extends Model
         'team_member_id',
         'event',
         'time',
-        'medal',
         'pool_length',
         'age_at_record',
         'competition',

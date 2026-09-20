@@ -42,6 +42,8 @@ class TeamMemberController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['photo_is_cutout'] = $request->boolean('photo_is_cutout');
+        $data['swim_style'] = !empty($data['swim_style']) ? implode(', ', $data['swim_style']) : null;
         $data['instagram_url'] = SocialLinkHelper::toFullUrl($data['instagram_url'] ?? null, 'instagram');
         $data['facebook_url']  = SocialLinkHelper::toFullUrl($data['facebook_url'] ?? null, 'facebook');
         $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
@@ -71,6 +73,8 @@ class TeamMemberController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['photo_is_cutout'] = $request->boolean('photo_is_cutout');
+        $data['swim_style'] = !empty($data['swim_style']) ? implode(', ', $data['swim_style']) : null;
         $data['instagram_url'] = SocialLinkHelper::toFullUrl($data['instagram_url'] ?? null, 'instagram');
         $data['facebook_url']  = SocialLinkHelper::toFullUrl($data['facebook_url'] ?? null, 'facebook');
         $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');

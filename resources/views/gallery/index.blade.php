@@ -20,20 +20,14 @@
     @endif
 
     <div class="container text-center" data-aos="fade-up">
-        <span class="nac-page-header__icon"><i class="fa-solid fa-images"></i></span>
-
         <h1 class="nac-page-header__title">Momen di Nugroho Aquatic Club.</h1>
         <p class="nac-page-header__desc">
             Dokumentasi foto dan video kegiatan latihan, kejuaraan, dan keseharian di NAC.
         </p>
     </div>
-
-    <svg class="nac-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
-    </svg>
 </section>
 
-<section class="nac-section">
+<section class="nac-section nac-section--decorated nac-dot-pattern">
     <div class="container">
         @if ($galleries->isEmpty())
             <p class="text-center nac-muted">Galeri belum tersedia.</p>

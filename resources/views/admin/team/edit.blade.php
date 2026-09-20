@@ -52,7 +52,6 @@
                             <div>
                                 <div class="fw-bold">{{ $record->event }} — {{ $record->time }}</div>
                                 <div class="text-secondary">
-                                    @if ($record->medal) {{ $record->medal }} · @endif
                                     @if ($record->pool_length) Kolam {{ $record->pool_length }}m · @endif
                                     @if ($record->age_at_record) Usia {{ $record->age_at_record }} th · @endif
                                     @if ($record->competition) {{ $record->competition }} @endif
@@ -104,14 +103,6 @@
                                     <input type="text" name="time" class="form-control form-control-sm" value="{{ $record->time }}" required>
                                 </div>
                                 <div class="col-6">
-                                    <select name="medal" class="form-select form-select-sm">
-                                        <option value="">Medali (opsional)</option>
-                                        <option value="Emas" {{ $record->medal === 'Emas' ? 'selected' : '' }}>Emas</option>
-                                        <option value="Perak" {{ $record->medal === 'Perak' ? 'selected' : '' }}>Perak</option>
-                                        <option value="Perunggu" {{ $record->medal === 'Perunggu' ? 'selected' : '' }}>Perunggu</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
                                     <select name="pool_length" class="form-select form-select-sm">
                                         <option value="">Panjang kolam</option>
                                         <option value="25" {{ (string) $record->pool_length === '25' ? 'selected' : '' }}>25 meter</option>
@@ -160,7 +151,7 @@
                     Tambah Rekor Baru
                 </p>
 
-                @if ($errors->hasAny(['event', 'time', 'medal', 'pool_length', 'age_at_record', 'competition', 'country', 'record_date']) && old('_form') === 'record')
+                @if ($errors->hasAny(['event', 'time', 'pool_length', 'age_at_record', 'competition', 'country', 'record_date']) && old('_form') === 'record')
                     <div class="alert alert-danger py-2 px-3 mb-2" style="font-size:0.82rem;">
                         {{ $errors->first() }}
                     </div>
@@ -186,14 +177,6 @@
                         </div>
                         <div class="col-6">
                             <input type="text" name="time" class="form-control form-control-sm" placeholder="Waktu, mis. 24.50" required>
-                        </div>
-                        <div class="col-6">
-                            <select name="medal" class="form-select form-select-sm">
-                                <option value="">Medali (opsional)</option>
-                                <option value="Emas">Emas</option>
-                                <option value="Perak">Perak</option>
-                                <option value="Perunggu">Perunggu</option>
-                            </select>
                         </div>
                         <div class="col-6">
                             <select name="pool_length" class="form-select form-select-sm">
@@ -258,13 +241,6 @@
                                         <i class="bi bi-calendar3 me-1"></i>{{ $achievement->event_date_label }}
                                     </div>
                                 @endif
-                                @if (($achievement->total_gold ?? 0) > 0 || ($achievement->total_silver ?? 0) > 0 || ($achievement->total_bronze ?? 0) > 0)
-                                    <div class="mt-1" style="font-size:0.78rem;">
-                                        @if ($achievement->total_gold > 0) <span class="me-2">🥇 {{ $achievement->total_gold }}</span> @endif
-                                        @if ($achievement->total_silver > 0) <span class="me-2">🥈 {{ $achievement->total_silver }}</span> @endif
-                                        @if ($achievement->total_bronze > 0) <span>🥉 {{ $achievement->total_bronze }}</span> @endif
-                                    </div>
-                                @endif
                             </div>
                             <div class="d-flex gap-1 flex-shrink-0">
                                 <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle-edit title="Edit pencapaian">
@@ -308,18 +284,6 @@
                                             <option value="{{ $code }}" {{ strtoupper((string) $achievement->country) === $code ? 'selected' : '' }}>{{ $name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
-                                    <input type="number" name="total_gold" class="form-control form-control-sm" min="0" value="{{ $achievement->total_gold ?? 0 }}">
-                                </div>
-                                <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
-                                    <input type="number" name="total_silver" class="form-control form-control-sm" min="0" value="{{ $achievement->total_silver ?? 0 }}">
-                                </div>
-                                <div class="col-4">
-                                    <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
-                                    <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" value="{{ $achievement->total_bronze ?? 0 }}">
                                 </div>
                                 <div class="col-12">
                                     <textarea name="description" rows="2" class="form-control form-control-sm">{{ $achievement->description }}</textarea>
@@ -371,18 +335,6 @@
                                     <option value="{{ $code }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥇 Emas</label>
-                            <input type="number" name="total_gold" class="form-control form-control-sm" min="0" placeholder="0">
-                        </div>
-                        <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥈 Perak</label>
-                            <input type="number" name="total_silver" class="form-control form-control-sm" min="0" placeholder="0">
-                        </div>
-                        <div class="col-4">
-                            <label class="text-secondary d-block mb-1" style="font-size:0.72rem;">🥉 Perunggu</label>
-                            <input type="number" name="total_bronze" class="form-control form-control-sm" min="0" placeholder="0">
                         </div>
                         <div class="col-12">
                             <textarea name="description" rows="2" class="form-control form-control-sm" placeholder="Deskripsi singkat (opsional)"></textarea>

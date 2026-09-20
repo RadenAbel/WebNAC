@@ -2944,8 +2944,8 @@ select.nac-join-input::-ms-expand {
   gap: 0.75rem;
 }
 .nac-profile-social a {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3066,6 +3066,142 @@ select.nac-join-input::-ms-expand {
   padding: 2.75rem 3.5rem 0;
   overflow: hidden;
 }
+
+/* ---------- Kartu profil v2: foto di kiri (mengambang, overflow dikit ke
+   atas & bawah kartu), 2 kolom info label/value di kanan — persis referensi ---------- */
+.nac-profile-card--v2 { overflow: visible; }
+.nac-profile-card__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.nac-profile-card__photo-side {
+  flex-shrink: 0;
+  display: flex;
+  margin: -1.5rem 0;
+}
+.nac-profile-card__photo-side-frame {
+  position: relative;
+  width: 300px;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--nac-mist);
+  box-shadow: 0 24px 40px -14px rgba(10, 14, 20, 0.3), 0 6px 16px -4px rgba(10, 14, 20, 0.18);
+}
+.nac-profile-card__photo-side-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nac-profile-card__photo-side-frame.is-loaded img { opacity: 1; }
+.nac-profile-card__photo-side-frame:not(.is-loaded):not(.is-empty)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, var(--nac-mist) 8%, #e9edf0 18%, var(--nac-mist) 33%);
+  background-size: 200% 100%;
+  animation: nac-shimmer 1.5s linear infinite;
+}
+.nac-profile-card__photo-side-frame .nac-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: var(--nac-steel);
+  font-size: 0.72rem;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+.nac-profile-card__photo-side-frame .nac-photo-placeholder i { font-size: 1.75rem; }
+
+/* ---------- Foto cutout (background transparan) — gaya "3D" mengambang,
+   benar-benar keluar dari batas kartu, mengikuti siluet aslinya (bukan
+   dikotakin). Butuh .nac-profile-card--v2 { overflow: visible; } yang
+   sudah ada supaya tidak kepotong. ---------- */
+.nac-profile-card__photo-cutout {
+  position: relative;
+  flex-shrink: 0;
+  width: 280px;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: -5.5rem -1rem 0 0;
+  z-index: 2;
+}
+.nac-profile-card__photo-cutout img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+  display: block;
+  filter: drop-shadow(0 20px 20px rgba(10, 14, 20, 0.28));
+}
+@media (max-width: 767.98px) {
+  .nac-profile-card__photo-cutout {
+    width: 220px;
+    align-self: auto;
+    margin: -5rem auto 0;
+  }
+  .nac-profile-card__photo-cutout img { max-height: 440px; height: auto; object-fit: contain; }
+}
+
+.nac-profile-card__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.nac-profile-detail-item-pair {
+  display: flex;
+  gap: 2rem;
+}
+.nac-profile-detail-item__label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--nac-steel);
+  margin-bottom: 0.3rem;
+}
+.nac-profile-detail-item__value {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--nac-ink);
+}
+.nac-profile-style-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.nac-profile-style-tag {
+  background: var(--nac-ink);
+  color: var(--nac-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+}
+@media (max-width: 767.98px) {
+  .nac-profile-card__row { flex-direction: column; padding: 2rem 1.5rem; gap: 1.75rem; }
+  .nac-profile-card__photo-side { margin: -3rem auto 0; }
+  .nac-profile-card__photo-side-frame { width: 100%; max-width: 300px; min-height: 260px; }
+  .nac-profile-detail-item-pair { gap: 1.5rem; }
+}
+@media (max-width: 575.98px) {
+  .nac-profile-card { padding: 2.25rem 1.5rem 0; }
+  .nac-profile-detail-grid { grid-template-columns: 1fr; }
+}
+
 .nac-profile-card__accent {
   position: absolute;
   top: 1.75rem;
@@ -3612,14 +3748,63 @@ select.nac-join-input::-ms-expand {
 }
 
 .nac-profile-actions--light { margin-bottom: 0; }
+
+/* ---------- Footer kartu profil: tombol "Lihat Deskripsi" + kontak/sosial ---------- */
+.nac-profile-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  margin-top: 0;
+}
+.nac-profile-card__footer .nac-profile-actions {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nac-profile-contact-btn {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(10, 14, 20, 0.15);
+  background: transparent;
+  color: var(--nac-ink);
+  font-size: 1.15rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.nac-profile-contact-btn:hover {
+  background: var(--nac-ink);
+  color: var(--nac-white);
+  border-color: var(--nac-ink);
+}
+
+/* ---------- Panel geser deskripsi (Bootstrap Offcanvas, dari kiri) ---------- */
+.nac-desc-offcanvas {
+  width: 420px;
+  max-width: 92vw;
+}
+.nac-desc-offcanvas .offcanvas-header { padding: 1.75rem 1.75rem 0.5rem; }
+.nac-desc-offcanvas .offcanvas-title {
+  font-family: var(--nac-font-display);
+  font-size: 1.4rem;
+}
+.nac-desc-offcanvas .offcanvas-body { padding: 1rem 1.75rem 1.75rem; }
+.nac-desc-offcanvas .nac-lead { max-width: none; }
+
 .nac-profile-social--light a {
   color: var(--nac-graphite);
   border-color: rgba(10, 14, 20, 0.15);
 }
 .nac-profile-social--light a:hover {
-  background: var(--nac-gradient-accent);
-  color: var(--nac-ink);
-  border-color: transparent;
+  background: var(--nac-ink);
+  color: var(--nac-white);
+  border-color: var(--nac-ink);
 }
 .nac-profile-card__tagline {
   font-style: italic;

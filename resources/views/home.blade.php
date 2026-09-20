@@ -119,7 +119,7 @@
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
 
-                {{-- 🔧 Ganti 'about.index' dengan nama route halaman detail "Tentang Kami" kamu --}}
+                {{-- Ganti 'about.index' dengan nama route halaman detail "Tentang Kami" kamu --}}
                 <a href="{{ route('about.index') }}" class="nac-btn nac-btn--outline-dark mt-2">
                     Selengkapnya Tentang Kami <i class="fa-solid fa-arrow-right"></i>
                 </a>

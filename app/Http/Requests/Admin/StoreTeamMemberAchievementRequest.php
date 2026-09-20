@@ -18,9 +18,6 @@ class StoreTeamMemberAchievementRequest extends FormRequest
             'year'        => ['nullable', 'digits:4'],
             'event_date'  => ['nullable', 'date', 'before_or_equal:today'],
             'country'     => ['nullable', 'string', 'size:2', 'in:' . implode(',', array_keys(config('countries')))],
-            'total_gold'   => ['nullable', 'integer', 'min:0'],
-            'total_silver' => ['nullable', 'integer', 'min:0'],
-            'total_bronze' => ['nullable', 'integer', 'min:0'],
             'description' => ['nullable', 'string', 'max:1000'],
         ];
     }

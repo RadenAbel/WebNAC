@@ -16,18 +16,12 @@ class TeamMemberAchievement extends Model
         'year',
         'event_date',
         'country',
-        'total_gold',
-        'total_silver',
-        'total_bronze',
         'description',
         'sort_order',
     ];
 
     protected $casts = [
         'event_date'   => 'date',
-        'total_gold'   => 'integer',
-        'total_silver' => 'integer',
-        'total_bronze' => 'integer',
         'sort_order'   => 'integer',
     ];
 

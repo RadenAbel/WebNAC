@@ -23,12 +23,10 @@ class DashboardController extends Controller
             'totalSchedules' => Schedule::count(),
 
             // ============ Statistik Kejuaraan ============
-            // Dihitung otomatis dari rekor waktu (team_member_records) &
-            // pencapaian (team_member_achievements) yang diinput admin di
-            // halaman Tim — bukan angka manual, jadi selalu akurat.
-            'totalGold'        => TeamMemberRecord::where('medal', 'Emas')->count(),
-            'totalSilver'      => TeamMemberRecord::where('medal', 'Perak')->count(),
-            'totalBronze'      => TeamMemberRecord::where('medal', 'Perunggu')->count(),
+            // Total medali sekarang murni dari kolom `total_medals` yang
+            // diisi manual per anggota tim (Rekor Waktu & Pencapaian tidak
+            // lagi mencatat medali sama sekali).
+            'totalMedals'      => TeamMember::sum('total_medals'),
             'totalCompetitions'=> TeamMemberRecord::whereNotNull('competition')
                                     ->distinct()
                                     ->count('competition'),
@@ -40,15 +38,6 @@ class DashboardController extends Controller
                                     ->latest('id')
                                     ->take(5)
                                     ->get(),
-
-            // Tren jumlah medali per tahun (untuk bar chart) — hanya rekor
-            // yang tanggalnya diisi admin yang dihitung.
-            'medalsByYear' => TeamMemberRecord::whereNotNull('record_date')
-                                    ->whereNotNull('medal')
-                                    ->selectRaw('YEAR(record_date) as year, COUNT(*) as total')
-                                    ->groupBy('year')
-                                    ->orderBy('year')
-                                    ->pluck('total', 'year'),
         ]);
     }
 }

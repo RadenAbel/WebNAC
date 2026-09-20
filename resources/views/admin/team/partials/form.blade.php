@@ -30,6 +30,17 @@
             @error('photo')
                 <div class="text-danger mt-2" style="font-size:0.8rem;">{{ $message }}</div>
             @enderror
+
+            <div class="form-check mt-3">
+                <input type="checkbox" name="photo_is_cutout" value="1" class="form-check-input" id="photoIsCutout"
+                    {{ old('photo_is_cutout', $member->photo_is_cutout) ? 'checked' : '' }}>
+                <label class="form-check-label" for="photoIsCutout" style="font-size:0.85rem;">
+                    Foto ini sudah background transparan (PNG cutout)
+                </label>
+                <div class="text-secondary" style="font-size:0.78rem;">
+                    Kalau dicentang, foto ditampilkan gaya "3D" mengambang keluar dari kartu profil di halaman publik — tanpa bingkai kotak, sesuai bentuk aslinya. Kalau tidak dicentang (foto biasa berlatar), tetap ditampilkan dalam bingkai kotak seperti biasa.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -68,6 +79,32 @@
                     <input type="text" name="birth_place" class="form-control @error('birth_place') is-invalid @enderror"
                         value="{{ old('birth_place', $member->birth_place) }}" placeholder="Surabaya">
                     @error('birth_place') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Gender</label>
+                    <select name="gender" class="form-select @error('gender') is-invalid @enderror">
+                        <option value="">— Pilih —</option>
+                        <option value="Laki-Laki" {{ old('gender', $member->gender) === 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
+                        <option value="Perempuan" {{ old('gender', $member->gender) === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                    @error('gender') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tinggi Badan (cm)</label>
+                    <input type="number" name="height_cm" min="0" max="250"
+                        class="form-control @error('height_cm') is-invalid @enderror"
+                        value="{{ old('height_cm', $member->height_cm) }}" placeholder="170">
+                    @error('height_cm') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Berat Badan (kg)</label>
+                    <input type="number" name="weight_kg" min="0" max="250"
+                        class="form-control @error('weight_kg') is-invalid @enderror"
+                        value="{{ old('weight_kg', $member->weight_kg) }}" placeholder="60">
+                    @error('weight_kg') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
@@ -113,17 +150,6 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Gaya Spesialis</label>
-                    <select name="swim_style" class="form-select @error('swim_style') is-invalid @enderror">
-                        <option value="">— Pilih Gaya —</option>
-                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
-                            <option value="{{ $style }}" {{ old('swim_style', $member->swim_style) === $style ? 'selected' : '' }}>{{ $style }}</option>
-                        @endforeach
-                    </select>
-                    @error('swim_style') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-md-6">
                     <label class="form-label">Asal Kota</label>
                     <input type="text" name="origin_city" class="form-control @error('origin_city') is-invalid @enderror"
                         value="{{ old('origin_city', $member->origin_city) }}" placeholder="Surabaya">
@@ -152,6 +178,22 @@
                         class="form-control @error('total_achievements') is-invalid @enderror"
                         value="{{ old('total_achievements', $member->total_achievements ?? 0) }}">
                     @error('total_achievements') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Gaya Spesialis</label>
+                    <div class="border rounded-3 p-3" style="background:#fafbfc;">
+                        @php $selectedStyles = old('swim_style', $member->swim_style_array ?? []); @endphp
+                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
+                            <div class="form-check">
+                                <input type="checkbox" name="swim_style[]" value="{{ $style }}" class="form-check-input" id="style{{ $loop->index }}"
+                                    {{ in_array($style, $selectedStyles) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="style{{ $loop->index }}" style="font-size:0.88rem;">{{ $style }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <small class="text-secondary">Bisa pilih lebih dari satu.</small>
+                    @error('swim_style') <div class="text-danger" style="font-size:0.8rem;">{{ $message }}</div> @enderror
                 </div>
             </div>
         </div>

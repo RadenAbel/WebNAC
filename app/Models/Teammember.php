@@ -14,6 +14,7 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'photo',
+        'photo_is_cutout',
         'whatsapp',
         'instagram_url',
         'facebook_url',
@@ -21,6 +22,9 @@ class TeamMember extends Model
         'age',
         'birth_date',
         'birth_place',
+        'gender',
+        'height_cm',
+        'weight_kg',
         'join_date',
         'role',
         'category',
@@ -36,9 +40,12 @@ class TeamMember extends Model
 
     protected $casts = [
         'is_active'          => 'boolean',
+        'photo_is_cutout'    => 'boolean',
         'age'                => 'integer',
         'birth_date'         => 'date',
         'join_date'          => 'date',
+        'height_cm'          => 'integer',
+        'weight_kg'          => 'integer',
         'years_experience'   => 'integer',
         'total_medals'       => 'integer',
         'total_achievements' => 'integer',
@@ -70,6 +77,21 @@ class TeamMember extends Model
         }
 
         return $value;
+    }
+
+    /**
+     * swim_style disimpan sebagai 1 string dipisah koma (mis. "Gaya Bebas,
+     * Gaya Punggung") — accessor ini memecahnya jadi array, dipakai untuk
+     * pre-fill checkbox di form admin dan render banyak tag di halaman
+     * publik (tidak perlu tabel/kolom terpisah untuk multi-pilih).
+     */
+    public function getSwimStyleArrayAttribute(): array
+    {
+        if (! $this->swim_style) {
+            return [];
+        }
+
+        return array_map('trim', explode(',', $this->swim_style));
     }
 
     public function getBirthDateLabelAttribute(): ?string
@@ -151,34 +173,14 @@ class TeamMember extends Model
     }
 
     /**
-     * Breakdown medali emas/perak/perunggu, dihitung dari relasi `records`
-     * (bukan dari kolom total_medals yang diisi manual admin) — supaya
-     * angkanya selalu akurat mengikuti rekor yang benar-benar diinput.
+     * Total medali — sekarang murni dari kolom `total_medals` yang diisi
+     * manual oleh admin di profil anggota tim (bukan dihitung otomatis
+     * dari Rekor Waktu / Pencapaian lagi, karena kedua sistem itu sudah
+     * tidak mencatat medali sama sekali).
      */
-    /**
-     * Breakdown medali emas/perak/perunggu — DIGABUNG dari 2 sumber:
-     * 1. Relasi `records` (tiap rekor waktu punya 1 medali)
-     * 2. Relasi `achievements` (tiap prestasi bisa punya beberapa medali
-     *    sekaligus, diisi manual admin lewat kolom total_gold/silver/bronze)
-     * Supaya "Total Prestasi & Medali" di atas profil selalu akurat
-     * mengikuti SEMUA data yang diinput admin, bukan cuma dari rekor waktu.
-     */
-    public function getMedalStatsAttribute(): array
+    public function getTotalMedalsCountAttribute(): int
     {
-        // PENTING: pakai getRelationValue(), BUKAN $this->achievements langsung.
-        // TeamController (publik) sengaja "menimpa" $member->achievements jadi
-        // array biasa (buat kebutuhan tampilan tabel) lewat setAttribute().
-        // Kalau di sini masih pakai $this->achievements, Eloquent akan baca
-        // hasil timpaan itu (array) alih-alih relasi aslinya (Collection),
-        // dan ->sum() di bawah bakal error karena dipanggil di atas array.
-        $records = $this->relationLoaded('records') ? $this->getRelationValue('records') : $this->records()->get();
-        $achievements = $this->relationLoaded('achievements') ? $this->getRelationValue('achievements') : $this->achievements()->get();
-
-        return [
-            'gold'   => $records->where('medal', 'Emas')->count() + $achievements->sum('total_gold'),
-            'silver' => $records->where('medal', 'Perak')->count() + $achievements->sum('total_silver'),
-            'bronze' => $records->where('medal', 'Perunggu')->count() + $achievements->sum('total_bronze'),
-        ];
+        return (int) ($this->total_medals ?? 0);
     }
 
     /**
@@ -189,17 +191,10 @@ class TeamMember extends Model
     {
         $records = $this->relationLoaded('records') ? $this->getRelationValue('records') : $this->records()->get();
 
-        $medalKeyMap = [
-            'Emas'     => 'gold',
-            'Perak'    => 'silver',
-            'Perunggu' => 'bronze',
-        ];
-
-        return $records->map(function ($record) use ($medalKeyMap) {
+        return $records->map(function ($record) {
             return [
                 'event'        => $record->event,
                 'time'         => $record->time,
-                'medal'        => $medalKeyMap[$record->medal] ?? null,
                 'pool_length'  => $record->pool_length ? $record->pool_length . 'm' : null,
                 'age'          => $record->age_at_record,
                 'competition'  => $record->competition,

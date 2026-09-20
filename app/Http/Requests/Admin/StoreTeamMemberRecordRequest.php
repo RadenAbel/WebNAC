@@ -16,7 +16,6 @@ class StoreTeamMemberRecordRequest extends FormRequest
         return [
             'event'         => ['required', 'string', 'max:150'], // Nomor, mis. "50m Gaya Bebas"
             'time'          => ['required', 'string', 'max:30'],  // Waktu, mis. "24.50"
-            'medal'         => ['nullable', 'string', 'max:30'],
             'pool_length'   => ['nullable', 'integer', 'in:25,50'],
             'age_at_record' => ['nullable', 'integer', 'min:1', 'max:100'],
             'competition'   => ['nullable', 'string', 'max:150'],

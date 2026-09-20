@@ -3,11 +3,20 @@
 @section('admin_title', 'Dashboard')
 
 @section('admin_content')
+
+    <div class="mb-4">
+        <span class="nac-admin-greeting__date"><i class="bi bi-calendar3"></i> {{ now()->translatedFormat('l, d F Y') }}</span>
+        <h1 class="nac-admin-greeting__title mb-1">Halo, {{ explode(' ', auth()->user()->name)[0] }} 👋</h1>
+        <p class="text-secondary mb-0" style="font-size:0.92rem;">
+            Ringkasan konten website Nugroho Aquatic Center saat ini.
+        </p>
+    </div>
+
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
             <div class="nac-admin-stat-card">
                 <div>
-                    <div class="nac-admin-stat-card__label">Tim</div>
+                    <div class="nac-admin-stat-card__label">Total Tim</div>
                     <div class="nac-admin-stat-card__num">{{ $totalTeam }}</div>
                 </div>
                 <span class="nac-admin-stat-card__icon"><i class="bi bi-people"></i></span>
@@ -34,7 +43,7 @@
         <div class="col-6 col-lg-3">
             <div class="nac-admin-stat-card">
                 <div>
-                    <div class="nac-admin-stat-card__label">Galeri</div>
+                    <div class="nac-admin-stat-card__label">Foto Galeri</div>
                     <div class="nac-admin-stat-card__num">{{ $totalGalleries }}</div>
                 </div>
                 <span class="nac-admin-stat-card__icon"><i class="bi bi-camera"></i></span>
@@ -47,33 +56,21 @@
         <h2 class="h6 mb-0" style="border:none; padding:0;">
             <i class="bi bi-trophy-fill text-warning me-1"></i> Statistik Kejuaraan
         </h2>
+        <span class="badge" style="background:var(--adm-aqua-soft); color:var(--adm-deep-aqua); font-size:0.75rem;">
+            <i class="bi bi-flag-fill me-1"></i>{{ $totalCompetitions }} Kejuaraan Diikuti
+        </span>
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-lg-5">
-            <div class="bg-white border rounded-3 p-4 h-100">
-                <p class="fw-bold mb-3" style="font-size:0.85rem; color:var(--adm-ink);">Komposisi Medali</p>
-                <div style="max-width:220px; margin:0 auto;">
-                    <canvas id="medalDonutChart"></canvas>
+        <div class="col-lg-4">
+            <div class="bg-white border rounded-3 p-4 h-100 text-center d-flex flex-column justify-content-center">
+                <p class="fw-bold mb-2" style="font-size:0.85rem; color:var(--adm-ink);">Total Medali</p>
+                <div style="font-size:2.75rem; font-weight:800; color:var(--adm-deep-aqua); line-height:1;">
+                    {{ $totalMedals }}
                 </div>
-                <div class="d-flex justify-content-center gap-3 mt-3" style="font-size:0.78rem;">
-                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F5B301;margin-right:4px;"></span>Emas {{ $totalGold }}</span>
-                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9AA5B1;margin-right:4px;"></span>Perak {{ $totalSilver }}</span>
-                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#C97C3D;margin-right:4px;"></span>Perunggu {{ $totalBronze }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-7">
-            <div class="bg-white border rounded-3 p-4 h-100">
-                <p class="fw-bold mb-3" style="font-size:0.85rem; color:var(--adm-ink);">Tren Medali per Tahun</p>
-                @if ($medalsByYear->isEmpty())
-                    <p class="text-secondary text-center py-5 mb-0" style="font-size:0.85rem;">
-                        Belum ada rekor dengan tanggal &amp; medali yang diinput.
-                    </p>
-                @else
-                    <canvas id="medalYearChart" height="140"></canvas>
-                @endif
+                <p class="text-secondary mb-0 mt-2" style="font-size:0.78rem;">
+                    Dijumlah dari field "Total Medali" tiap anggota tim.
+                </p>
             </div>
         </div>
     </div>
@@ -137,55 +134,28 @@
                     </li>
                 </ul>
             </div>
+
+            <div class="bg-white border rounded-3 p-4 mt-3">
+                <h2 class="h6 mb-3" style="border:none; padding:0; margin:0 0 1rem;">
+                    <i class="bi bi-award text-warning me-1"></i> Prestasi Terbaru
+                </h2>
+
+                @forelse ($recentAchievements as $achievement)
+                    <div class="nac-achievement-item">
+                        <span class="nac-achievement-item__icon"><i class="bi bi-award-fill"></i></span>
+                        <div>
+                            <div class="nac-achievement-item__title">{{ $achievement->title }}</div>
+                            <div class="nac-achievement-item__meta">
+                                {{ $achievement->teamMember->name ?? '-' }}
+                                @if ($achievement->year) · {{ $achievement->year }} @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-secondary mb-0" style="font-size:0.85rem;">Belum ada pencapaian yang diinput.</p>
+                @endforelse
+            </div>
         </div>
     </div>
 
 @endsection
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script>
-    // Donut: komposisi medali Emas/Perak/Perunggu
-    new Chart(document.getElementById('medalDonutChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Emas', 'Perak', 'Perunggu'],
-            datasets: [{
-                data: [{{ $totalGold }}, {{ $totalSilver }}, {{ $totalBronze }}],
-                backgroundColor: ['#F5B301', '#9AA5B1', '#C97C3D'],
-                borderWidth: 0,
-            }]
-        },
-        options: {
-            cutout: '68%',
-            plugins: { legend: { display: false } },
-        }
-    });
-
-    // Bar: tren jumlah medali per tahun
-    var yearChartEl = document.getElementById('medalYearChart');
-    if (yearChartEl) {
-        new Chart(yearChartEl, {
-            type: 'bar',
-            data: {
-                labels: @json(array_keys($medalsByYear->toArray())),
-                datasets: [{
-                    label: 'Medali',
-                    data: @json(array_values($medalsByYear->toArray())),
-                    backgroundColor: '#1E6FA8',
-                    borderRadius: 6,
-                    maxBarThickness: 40,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1 } },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
-    }
-</script>
-@endpush
