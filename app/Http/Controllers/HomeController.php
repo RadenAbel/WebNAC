@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use App\Models\PricingPlan;
 use App\Models\Schedule;
 use App\Models\SiteSetting;
 use App\Models\Slider;
@@ -54,12 +55,16 @@ class HomeController extends Controller
         // ============ JADWAL ============
         $schedules = Schedule::active()->get();
 
+        // ============ BIAYA PENDAFTARAN ============
+        $pricingPlans = PricingPlan::active()->ordered()->get();
+
         return view('home', compact(
             'setting',
             'heroPhotos',
             'heroStats',
             'galleryItems',
-            'schedules'
+            'schedules',
+            'pricingPlans'
         ));
     }
 }

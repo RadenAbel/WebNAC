@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('admin_title', 'Dashboard') — Admin Nugroho Aquatic Club</title>
+    <link rel="icon" href="{{ asset('img/Logo.png') }}" type="image/png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -20,7 +21,12 @@
     <div class="nac-admin-shell">
         <aside class="nac-admin-sidebar">
             <div class="nac-admin-sidebar__brand">
-                <span class="nac-admin-sidebar__brand-mark">NAC</span>
+                @php $adminLogoSetting = \App\Models\SiteSetting::current(); @endphp
+                @if($adminLogoSetting->logo_url)
+                    <img src="{{ $adminLogoSetting->logo_url }}" alt="Logo" class="nac-admin-sidebar__brand-mark nac-admin-sidebar__brand-mark--img">
+                @else
+                    <span class="nac-admin-sidebar__brand-mark">NAC</span>
+                @endif
                 <span class="nac-admin-sidebar__brand-text">
                     Admin Panel
                     <small>Nugroho Aquatic Club</small>
@@ -35,45 +41,75 @@
 
                 <span class="nac-admin-nav__group">Konten Website</span>
 
-                <a href="{{ route('admin.sliders.index') }}" class="{{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}" title="Slider">
-                    <i class="bi bi-images"></i>
-                    <span class="nac-admin-nav__label">Slider</span>
-                </a>
-                <a href="{{ route('admin.galleries.index') }}" class="{{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}" title="Galeri">
-                    <i class="bi bi-camera"></i>
-                    <span class="nac-admin-nav__label">Galeri</span>
-                </a>
-                <a href="{{ route('admin.schedules.index') }}" class="{{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}" title="Jadwal">
-                    <i class="bi bi-calendar-week"></i>
-                    <span class="nac-admin-nav__label">Jadwal</span>
-                </a>
-                <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Hasil Pertandingan">
-                    <i class="bi bi-calendar-event"></i>
-                    <span class="nac-admin-nav__label">Hasil Pertandingan</span>
-                </a>
-                <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}" title="Tim (Pelatih/Atlet)">
-                    <i class="bi bi-people"></i>
-                    <span class="nac-admin-nav__label">Tim (Pelatih/Atlet)</span>
-                </a>
-                <a href="{{ route('admin.management.index') }}" class="{{ request()->routeIs('admin.management.*') ? 'active' : '' }}" title="Tim Manajemen">
-                    <i class="bi bi-person-badge"></i>
-                    <span class="nac-admin-nav__label">Tim Manajemen</span>
-                </a>
-                <a href="{{ route('admin.join-requests.index') }}" class="{{ request()->routeIs('admin.join-requests.*') ? 'active' : '' }}" title="Pendaftaran">
-                    <i class="bi bi-person-plus"></i>
-                    <span class="nac-admin-nav__label">Pendaftaran</span>
-                    @php $navPendingCount = \App\Models\JoinRequest::pending()->count(); @endphp
-                    @if($navPendingCount > 0)
-                        <span class="badge bg-danger ms-auto">{{ $navPendingCount }}</span>
+                @if(auth()->user()->canAccess('sliders'))
+                    <a href="{{ route('admin.sliders.index') }}" class="{{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}" title="Slider">
+                        <i class="bi bi-images"></i>
+                        <span class="nac-admin-nav__label">Slider</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('galleries'))
+                    <a href="{{ route('admin.galleries.index') }}" class="{{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}" title="Galeri">
+                        <i class="bi bi-camera"></i>
+                        <span class="nac-admin-nav__label">Galeri</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('schedules'))
+                    <a href="{{ route('admin.schedules.index') }}" class="{{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}" title="Jadwal">
+                        <i class="bi bi-calendar-week"></i>
+                        <span class="nac-admin-nav__label">Jadwal</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('events'))
+                    <a href="{{ route('admin.events.index') }}" class="{{ request()->routeIs('admin.events.*') ? 'active' : '' }}" title="Hasil Pertandingan">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="nac-admin-nav__label">Hasil Pertandingan</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('pricing'))
+                    <a href="{{ route('admin.pricing.index') }}" class="{{ request()->routeIs('admin.pricing.*') ? 'active' : '' }}" title="Biaya Pendaftaran">
+                        <i class="bi bi-tag"></i>
+                        <span class="nac-admin-nav__label">Biaya Pendaftaran</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('team'))
+                    <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}" title="Tim (Pelatih/Atlet)">
+                        <i class="bi bi-people"></i>
+                        <span class="nac-admin-nav__label">Tim (Pelatih/Atlet)</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('management'))
+                    <a href="{{ route('admin.management.index') }}" class="{{ request()->routeIs('admin.management.*') ? 'active' : '' }}" title="Tim Manajemen">
+                        <i class="bi bi-person-badge"></i>
+                        <span class="nac-admin-nav__label">Tim Manajemen</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('join-requests'))
+                    <a href="{{ route('admin.join-requests.index') }}" class="{{ request()->routeIs('admin.join-requests.*') ? 'active' : '' }}" title="Pendaftaran">
+                        <i class="bi bi-person-plus"></i>
+                        <span class="nac-admin-nav__label">Pendaftaran</span>
+                        @php $navPendingCount = \App\Models\JoinRequest::pending()->count(); @endphp
+                        @if($navPendingCount > 0)
+                            <span class="badge bg-danger ms-auto">{{ $navPendingCount }}</span>
+                        @endif
+                    </a>
+                @endif
+
+                @if(auth()->user()->canAccess('settings') || auth()->user()->isSuperAdmin())
+                    <span class="nac-admin-nav__group">Pengaturan</span>
+
+                    @if(auth()->user()->canAccess('settings'))
+                        <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" title="Pengaturan Situs">
+                            <i class="bi bi-gear"></i>
+                            <span class="nac-admin-nav__label">Pengaturan Situs</span>
+                        </a>
                     @endif
-                </a>
-
-                <span class="nac-admin-nav__group">Pengaturan</span>
-
-                <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" title="Pengaturan Situs">
-                    <i class="bi bi-gear"></i>
-                    <span class="nac-admin-nav__label">Pengaturan Situs</span>
-                </a>
+                    @if(auth()->user()->isSuperAdmin())
+                        <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" title="Kelola Admin">
+                            <i class="bi bi-shield-lock"></i>
+                            <span class="nac-admin-nav__label">Kelola Admin</span>
+                        </a>
+                    @endif
+                @endif
             </nav>
 
             <div class="nac-admin-sidebar__footer">

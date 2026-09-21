@@ -120,7 +120,7 @@
                 </ul>
 
                 {{-- Ganti 'about.index' dengan nama route halaman detail "Tentang Kami" kamu --}}
-                <a href="{{ route('about.index') }}" class="nac-btn nac-btn--outline-dark mt-2">
+                <a href="{{ route('about.index') }}" class="nac-btn nac-btn--outline-dark nac-about-more-btn" style="margin-top: 3rem !important; display: inline-flex;">
                     Selengkapnya Tentang Kami <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -232,48 +232,39 @@
         </div>
 
         <div class="row g-4 mt-3 justify-content-center">
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
-                <div class="nac-price-card nac-price-card--highlight">
-                    <span class="nac-price-card__tag">Paling Diminati</span>
-                    <h5>Novato</h5>
-                    <p class="nac-price-card__desc">Level pemula yang baru ingin belajar renang.</p>
-                    <div class="nac-price-card__price">Rp460.000<span>/bulan</span></div>
-                    <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 2x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Pengenalan teknik dasar</li>
-                        <li><i class="fa-solid fa-check"></i> Pendampingan pelatih junior</li>
-                    </ul>
-                    <a href="{{ route('join.create', ['category' => 'Swim School A1 - Pemula']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
-                </div>
-            </div>
+            @forelse ($pricingPlans as $i => $plan)
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ $i * 75 }}">
+                    <div class="nac-price-card @if($plan->is_highlighted) nac-price-card--highlight @endif">
+                        @if($plan->is_highlighted)
+                            <span class="nac-price-card__tag">Paling Diminati</span>
+                        @endif
+                        <h5>{{ $plan->title }}</h5>
+                        @if($plan->description)
+                            <p class="nac-price-card__desc">{{ $plan->description }}</p>
+                        @endif
 
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="75">
-                <div class="nac-price-card">
-                    <h5>Avance</h5>
-                    <p class="nac-price-card__desc">Level menengah, pembinaan teknik berkelanjutan.</p>
-                    <div class="nac-price-card__price">Rp540.000<span>/bulan</span></div>
-                    <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> 4x latihan per minggu</li>
-                        <li><i class="fa-solid fa-check"></i> Pembinaan teknik lanjutan</li>
-                        <li><i class="fa-solid fa-check"></i> Evaluasi rutin</li>
-                    </ul>
-                    <a href="{{ route('join.create', ['category' => 'Swim School B1 - Intermediate']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
-                </div>
-            </div>
+                        @if($plan->has_discount)
+                            <div class="nac-price-card__price-row">
+                                <span class="nac-price-card__price-old">{{ $plan->price_label }}</span>
+                                <span class="nac-price-card__discount-badge">-{{ $plan->discount_percent }}%</span>
+                            </div>
+                            <div class="nac-price-card__price">{{ $plan->discounted_price_label }}<span>/bulan</span></div>
+                        @else
+                            <div class="nac-price-card__price">{{ $plan->price_label }}<span>/bulan</span></div>
+                        @endif
 
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
-                <div class="nac-price-card">
-                    <h5>Campeón</h5>
-                    <p class="nac-price-card__desc">Calon atlet yang sudah siap untuk berkompetisi.</p>
-                    <div class="nac-price-card__price">Rp600.000<span>/bulan</span></div>
-                    <ul class="nac-price-card__list">
-                        <li><i class="fa-solid fa-check"></i> Latihan intensif harian</li>
-                        <li><i class="fa-solid fa-check"></i> Program menuju kejuaraan</li>
-                        <li><i class="fa-solid fa-check"></i> Akses ruang fitness &amp; recovery</li>
-                    </ul>
-                    <a href="{{ route('join.create', ['category' => 'NAC Elite']) }}" class="btn nac-btn nac-btn--outline-dark w-100">Daftar Sekarang</a>
+                        @if(count($plan->feature_list))
+                            <ul class="nac-price-card__list">
+                                @foreach($plan->feature_list as $feature)
+                                    <li><i class="fa-solid fa-check"></i> {{ $feature }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @empty
+                <p class="text-center nac-muted">Belum ada paket harga yang ditampilkan.</p>
+            @endforelse
         </div>
     </div>
 </section>

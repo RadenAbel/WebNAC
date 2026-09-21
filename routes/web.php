@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\ManagementMemberController;
 use App\Http\Controllers\Admin\JoinRequestController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\Admin\SliderController as AdminSliderController;
@@ -88,63 +90,104 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
-    // CRUD Tim (Pelatih/Atlet)
-    // parameters(['team' => 'teamMember']) WAJIB ada — supaya nama parameter
-    // di URL ({teamMember}) sama persis dengan nama argumen di controller
-    // (TeamMember $teamMember). Kalau tidak disamakan, Laravel gagal
-    // mengenali route model binding dan diam-diam mengisi model kosong.
-    Route::resource('team', AdminTeamMemberController::class)
-        ->except(['show'])
-        ->parameters(['team' => 'teamMember']);
+    // ============ Tim (Pelatih/Atlet) — butuh izin 'team' ============
+    Route::middleware('permission:team')->group(function () {
+        // CRUD Tim (Pelatih/Atlet)
+        // parameters(['team' => 'teamMember']) WAJIB ada — supaya nama parameter
+        // di URL ({teamMember}) sama persis dengan nama argumen di controller
+        // (TeamMember $teamMember). Kalau tidak disamakan, Laravel gagal
+        // mengenali route model binding dan diam-diam mengisi model kosong.
+        Route::resource('team', AdminTeamMemberController::class)
+            ->except(['show'])
+            ->parameters(['team' => 'teamMember']);
 
-    // Nested: Rekor waktu terbaik & Pencapaian — dikelola dari halaman edit anggota tim
-    Route::post('team/{teamMember}/records', [TeamMemberRecordController::class, 'store'])
-        ->name('team.records.store');
-    Route::put('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'update'])
-        ->name('team.records.update');
-    Route::delete('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'destroy'])
-        ->name('team.records.destroy');
+        // Nested: Rekor waktu terbaik & Pencapaian — dikelola dari halaman edit anggota tim
+        Route::post('team/{teamMember}/records', [TeamMemberRecordController::class, 'store'])
+            ->name('team.records.store');
+        Route::put('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'update'])
+            ->name('team.records.update');
+        Route::delete('team/{teamMember}/records/{record}', [TeamMemberRecordController::class, 'destroy'])
+            ->name('team.records.destroy');
 
-    Route::post('team/{teamMember}/achievements', [TeamMemberAchievementController::class, 'store'])
-        ->name('team.achievements.store');
-    Route::put('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'update'])
-        ->name('team.achievements.update');
-    Route::delete('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'destroy'])
-        ->name('team.achievements.destroy');
+        Route::post('team/{teamMember}/achievements', [TeamMemberAchievementController::class, 'store'])
+            ->name('team.achievements.store');
+        Route::put('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'update'])
+            ->name('team.achievements.update');
+        Route::delete('team/{teamMember}/achievements/{achievement}', [TeamMemberAchievementController::class, 'destroy'])
+            ->name('team.achievements.destroy');
 
-    // Nested: Lisensi — khusus role 'pelatih', dikelola dari halaman edit anggota tim
-    Route::post('team/{teamMember}/licenses', [TeamMemberLicenseController::class, 'store'])
-        ->name('team.licenses.store');
-    Route::put('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'update'])
-        ->name('team.licenses.update');
-    Route::delete('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'destroy'])
-        ->name('team.licenses.destroy');
+        // Nested: Lisensi — khusus role 'pelatih', dikelola dari halaman edit anggota tim
+        Route::post('team/{teamMember}/licenses', [TeamMemberLicenseController::class, 'store'])
+            ->name('team.licenses.store');
+        Route::put('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'update'])
+            ->name('team.licenses.update');
+        Route::delete('team/{teamMember}/licenses/{license}', [TeamMemberLicenseController::class, 'destroy'])
+            ->name('team.licenses.destroy');
+    });
 
-    // CRUD Slider
-    Route::resource('sliders', AdminSliderController::class)->except(['show']);
+    // CRUD Slider — butuh izin 'sliders'
+    Route::middleware('permission:sliders')->group(function () {
+        Route::resource('sliders', AdminSliderController::class)->except(['show']);
+    });
 
-    // CRUD Galeri
-    Route::resource('galleries', AdminGalleryController::class)->except(['show']);
+    // CRUD Galeri — butuh izin 'galleries'
+    Route::middleware('permission:galleries')->group(function () {
+        Route::resource('galleries', AdminGalleryController::class)->except(['show']);
+    });
 
-    // CRUD Tim Manajemen (halaman Tentang Kami)
-    Route::resource('management', ManagementMemberController::class)->except(['show']);
+    // CRUD Tim Manajemen — butuh izin 'management'
+    Route::middleware('permission:management')->group(function () {
+        Route::resource('management', ManagementMemberController::class)->except(['show']);
+    });
 
-    // Pendaftaran Join Us — cuma index/show + 2 aksi (terima/tolak), bukan
-    // resource CRUD penuh (tidak ada create/edit/delete manual oleh admin).
-    Route::get('join-requests', [JoinRequestController::class, 'index'])->name('join-requests.index');
-    Route::get('join-requests/{joinRequest}', [JoinRequestController::class, 'show'])->name('join-requests.show');
-    Route::post('join-requests/{joinRequest}/accept', [JoinRequestController::class, 'accept'])->name('join-requests.accept');
-    Route::post('join-requests/{joinRequest}/reject', [JoinRequestController::class, 'reject'])->name('join-requests.reject');
-    Route::delete('join-requests/{joinRequest}', [JoinRequestController::class, 'destroy'])->name('join-requests.destroy');
+    // Pendaftaran Join Us — butuh izin 'join-requests'
+    Route::middleware('permission:join-requests')->group(function () {
+        Route::get('join-requests', [JoinRequestController::class, 'index'])->name('join-requests.index');
+        Route::get('join-requests/{joinRequest}', [JoinRequestController::class, 'show'])->name('join-requests.show');
+        Route::post('join-requests/{joinRequest}/accept', [JoinRequestController::class, 'accept'])->name('join-requests.accept');
+        Route::post('join-requests/{joinRequest}/reject', [JoinRequestController::class, 'reject'])->name('join-requests.reject');
+        Route::delete('join-requests/{joinRequest}', [JoinRequestController::class, 'destroy'])->name('join-requests.destroy');
+    });
 
-    // CRUD Jadwal
-    Route::resource('schedules', AdminScheduleController::class)->except(['show']);
+    // CRUD Jadwal — butuh izin 'schedules'
+    Route::middleware('permission:schedules')->group(function () {
+        Route::resource('schedules', AdminScheduleController::class)->except(['show']);
+    });
 
-    // CRUD Acara
-    Route::resource('events', AdminEventController::class)->except(['show']);
+    // CRUD Hasil Pertandingan — butuh izin 'events'
+    Route::middleware('permission:events')->group(function () {
+        Route::resource('events', AdminEventController::class)->except(['show']);
+    });
 
-    // Pengaturan Situs — singleton (cuma 1 baris data), jadi cuma butuh
-    // edit & update, tidak ada index/create/destroy.
-    Route::get('settings', [AdminSiteSettingController::class, 'edit'])->name('settings.edit');
-    Route::put('settings', [AdminSiteSettingController::class, 'update'])->name('settings.update');
+    // CRUD Biaya Pendaftaran — butuh izin 'pricing'
+    // parameters(['pricing' => 'pricingPlan']) WAJIB ada — sama seperti
+    // 'team' di atas, supaya nama parameter di URL ({pricingPlan}) sama
+    // persis dengan nama argumen di controller (PricingPlan $pricingPlan).
+    Route::middleware('permission:pricing')->group(function () {
+        Route::resource('pricing', PricingPlanController::class)
+            ->except(['show'])
+            ->parameters(['pricing' => 'pricingPlan']);
+    });
+
+    // Pengaturan Situs — butuh izin 'settings' (bisa diberikan Super Admin
+    // ke akun 'admin' juga kalau mau, lewat Kelola Admin).
+    Route::middleware('permission:settings')->group(function () {
+        // Singleton (cuma 1 baris data), jadi cuma butuh edit & update,
+        // tidak ada index/create/destroy.
+        Route::get('settings', [AdminSiteSettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [AdminSiteSettingController::class, 'update'])->name('settings.update');
+    });
+
+    // ============================================================
+    // KHUSUS SUPER ADMIN — Kelola Akun Admin. Middleware 'super_admin'
+    // (alias untuk EnsureSuperAdmin, lihat bootstrap/app.php) menolak
+    // akses (403) kalau role akun yang login bukan 'super_admin' —
+    // berlaku SETELAH middleware 'auth' di atas, jadi auth()->user()
+    // pasti sudah ada di sini.
+    // ============================================================
+    Route::middleware('super_admin')->group(function () {
+        // Kelola Akun Admin — resource penuh KECUALI show (tidak perlu
+        // halaman detail terpisah, cukup index + form edit).
+        Route::resource('users', AdminUserController::class)->except(['show']);
+    });
 });

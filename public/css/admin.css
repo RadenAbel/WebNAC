@@ -60,24 +60,44 @@ body {
   border-radius: var(--adm-radius-lg);
   padding: 2.75rem 2.25rem;
   box-shadow: var(--adm-shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.nac-admin-login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--adm-gradient);
 }
 
 .nac-admin-login-brand {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 2rem;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: var(--adm-graphite);
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
 .nac-admin-login-mark {
   background: var(--adm-gradient);
   color: var(--adm-ink);
   font-family: 'Archivo Black', sans-serif;
-  font-size: 0.78rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: var(--adm-radius-sm);
+  font-size: 1.3rem;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px -8px rgba(30, 111, 168, 0.45);
+}
+.nac-admin-login-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 10px 24px -8px rgba(10, 14, 20, 0.3);
 }
 
 .nac-admin-login-card h1 {
@@ -85,11 +105,41 @@ body {
   font-weight: 800;
   margin-bottom: 0.35rem;
   letter-spacing: -0.01em;
+  text-align: center;
 }
 .nac-admin-login-card > p {
   color: var(--adm-steel);
   font-size: 0.88rem;
   margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.nac-admin-login-input-group .input-group-text {
+  background: var(--adm-white);
+  border: 1.5px solid var(--adm-border);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  color: var(--adm-steel);
+}
+.nac-admin-login-input-group .form-control {
+  border: 1.5px solid var(--adm-border);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+.nac-admin-login-input-group .form-control:focus {
+  box-shadow: none;
+  border-color: var(--adm-deep-aqua);
+}
+.nac-admin-login-input-group:focus-within .input-group-text {
+  border-color: var(--adm-deep-aqua);
+  color: var(--adm-deep-aqua);
+}
+
+.nac-admin-login-remember {
+  font-size: 0.85rem;
+  color: var(--adm-steel);
 }
 
 .nac-admin-back-link {
@@ -152,6 +202,10 @@ body {
   font-family: 'Archivo Black', sans-serif;
   font-size: 0.72rem;
   color: var(--adm-ink);
+}
+.nac-admin-sidebar__brand-mark--img {
+  border-radius: 50%;
+  object-fit: cover;
 }
 .nac-admin-sidebar__brand-text {
   font-weight: 800;
@@ -319,8 +373,8 @@ body {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: var(--adm-gradient);
-  color: var(--adm-ink);
+  background: rgba(10, 14, 20, 0.8);
+  color: var(--adm-white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -416,18 +470,19 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: var(--adm-gradient);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--adm-ink);
   font-weight: 700;
   font-size: 0.87rem;
-  border: none;
+  border: 1.5px solid rgba(10, 14, 20, 0.15);
   border-radius: var(--adm-radius-sm);
   padding: 0.6rem 1.1rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 .nac-admin-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px -10px rgba(30, 111, 168, 0.5);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 20px -10px rgba(10, 14, 20, 0.25);
   color: var(--adm-ink);
 }
 .nac-admin-btn:active { transform: translateY(0); }
@@ -1296,6 +1351,13 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
 }
 
 .nac-admin-stack-group.is-open .nac-admin-stack-deck-wrap { display: none; }
+
+/* Dashboard: "Prestasi Terbaru" — 3 item pertama selalu tampil, sisanya
+   disembunyikan dan dibuka lewat tombol "Lihat Selengkapnya" (kartu
+   terbuka turun, tidak pindah halaman). Dipakai atribut [data-stack-group]
+   yang sama dengan pola stack mobile Slider/Galeri. */
+[data-stack-group] .nac-admin-stack-more { display: none; }
+[data-stack-group].is-open .nac-admin-stack-more { display: block !important; }
 .nac-admin-stack-group.is-open .nac-admin-stack-grid { display: block; }
 .nac-admin-stack-group.is-open .nac-admin-stack-trigger i { transform: rotate(90deg); }
 
