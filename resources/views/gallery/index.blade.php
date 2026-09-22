@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Galeri — Nugroho Aquatic Club')
-@section('meta_description', 'Dokumentasi momen, kegiatan, dan video di Nugroho Aquatic Club.')
+@section('meta_description', 'Foto dan video latihan serta kejuaraan Nugroho Aquatic Club di Everglade Aquatic Center, Sangatta, Kutai Timur.')
 
 @section('content')
 
@@ -27,7 +27,7 @@
     </div>
 </section>
 
-<section class="nac-section nac-section--decorated nac-dot-pattern">
+<section class="nac-section">
     <div class="container">
         @if ($galleries->isEmpty())
             <p class="text-center nac-muted">Galeri belum tersedia.</p>

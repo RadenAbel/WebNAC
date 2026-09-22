@@ -1142,6 +1142,14 @@ select.nac-join-input::-ms-expand {
 @media (max-width: 767.98px) {
   .nac-gallery__layout { flex-direction: column; padding-top: 1.5rem; }
 }
+/* Tablet/iPad (768-1199px): foto utama (lebar terkunci ~672px) + slider tidak
+   muat berdampingan — slider jadi terjepit. Di rentang ini disusun atas-bawah,
+   masing-masing selebar penuh. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .nac-gallery__layout { flex-direction: column; }
+  .nac-gallery__item,
+  .nac-gallery__item--featured { height: 340px; }
+}
 
 .nac-gallery__track {
   display: flex;
@@ -2241,6 +2249,14 @@ select.nac-join-input::-ms-expand {
     margin-top: -2.5rem;
     width: 92%;
   }
+  /* Kartu teks naik menimpa bagian bawah foto (margin-top negatif di atas),
+     jadi badge "Sejak" dipindah ke kanan atas supaya tidak tertutup. */
+  .nac-about-overlap__badge {
+    top: 1.25rem;
+    right: 1.25rem;
+    bottom: auto;
+    left: auto;
+  }
 }
 @media (max-width: 575.98px) {
   .nac-about-overlap__card { width: 100%; padding: 2rem 1.5rem; }
@@ -2740,12 +2756,14 @@ select.nac-join-input::-ms-expand {
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.15);
   color: var(--nac-white);
-  transition: background 0.25s ease, border-color 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
+/* Hover putih transparan — kontras jelas di atas latar footer yang hitam. */
 .nac-footer__social a:hover {
-  background: var(--nac-gradient-accent);
-  color: var(--nac-ink);
-  border-color: transparent;
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--nac-white);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 .nac-footer__title {
   color: var(--nac-white);
@@ -3046,6 +3064,8 @@ select.nac-join-input::-ms-expand {
   .nac-profile-hero .nac-eyebrow--light { display: block; text-align: center; }
   .nac-profile-stats { justify-content: center; text-align: left; }
   .nac-profile-actions { justify-content: center; }
+  /* Ikon sosial media di kartu profil (baru) tetap rata kiri, tidak ikut center */
+  .nac-profile-detail-item .nac-profile-actions { justify-content: flex-start; }
   .nac-breadcrumb { justify-content: center; text-align: center; }
 }
 
@@ -3099,17 +3119,17 @@ select.nac-join-input::-ms-expand {
   display: flex;
   align-items: flex-start;
   gap: 2.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 .nac-profile-card__photo-side {
   flex-shrink: 0;
   display: flex;
-  margin: -1.5rem 0;
+  margin: -1.5rem 0 0; /* cuma "nembus" ke atas; bawah tidak negatif, jadi kartu ikut memanjang mengikuti tinggi foto */
 }
 .nac-profile-card__photo-side-frame {
   position: relative;
   width: 300px;
-  height: 320px;
+  height: 400px;
   border-radius: 20px;
   overflow: hidden;
   background: var(--nac-mist);
@@ -3119,6 +3139,7 @@ select.nac-join-input::-ms-expand {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -3170,13 +3191,14 @@ select.nac-join-input::-ms-expand {
   display: block;
   filter: drop-shadow(0 20px 20px rgba(10, 14, 20, 0.28));
 }
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
   .nac-profile-card__photo-cutout {
-    width: 220px;
+    flex: 0 0 100%;
+    width: 100%;
     align-self: auto;
-    margin: -5rem auto 0;
+    margin: -5rem 0 0;
   }
-  .nac-profile-card__photo-cutout img { max-height: 440px; height: auto; object-fit: contain; }
+  .nac-profile-card__photo-cutout img { width: auto; max-width: 260px; height: auto; max-height: 420px; object-fit: contain; }
 }
 
 .nac-profile-card__col {
@@ -3216,10 +3238,23 @@ select.nac-join-input::-ms-expand {
   padding: 0.3rem 0.8rem;
   border-radius: 999px;
 }
-@media (max-width: 767.98px) {
-  .nac-profile-card__row { flex-direction: column; padding: 2rem 1.5rem; gap: 1.75rem; }
-  .nac-profile-card__photo-side { margin: -3rem auto 0; }
-  .nac-profile-card__photo-side-frame { width: 100%; max-width: 300px; min-height: 260px; }
+/* Laptop kecil / iPad Pro landscape (992-1199px): masih berdampingan,
+   tapi foto & jarak dikecilkan supaya 2 kolom info tidak terjepit. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .nac-profile-card { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .nac-profile-card__row { gap: 1.75rem; }
+  .nac-profile-card__photo-side-frame { width: 240px; height: 340px; }
+  .nac-profile-card__photo-cutout { width: 240px; }
+}
+/* Tablet & HP (<992px): foto di atas (tengah), 2 kolom info di bawahnya —
+   di tablet tetap berdampingan 2 kolom, di HP kecil turun jadi 1 kolom
+   (otomatis lewat flex-basis, lihat .nac-profile-card__col di bawah). */
+@media (max-width: 991.98px) {
+  .nac-profile-card { padding-left: 2rem; padding-right: 2rem; }
+  .nac-profile-card__row { flex-wrap: wrap; gap: 1.75rem 2rem; }
+  .nac-profile-card__photo-side { flex: 0 0 100%; justify-content: center; margin: -1.5rem 0 0; }
+  .nac-profile-card__photo-side-frame { width: 100%; max-width: 300px; height: 380px; }
+  .nac-profile-card__col { flex: 1 1 240px; }
   .nac-profile-detail-item-pair { gap: 1.5rem; }
 }
 @media (max-width: 575.98px) {
@@ -3990,6 +4025,12 @@ select.nac-join-input::-ms-expand {
   box-shadow: 0 16px 32px -16px rgba(10, 14, 20, 0.18);
   border-color: #dde3e7;
   color: inherit;
+}
+/* Baris tanpa PDF: tidak bisa dibuka, jadi tidak diberi efek "terangkat"
+   saat disorot (efek itu memberi kesan bisa diklik). */
+.nac-event-row--static:hover {
+  transform: none;
+  box-shadow: none;
 }
 .nac-event-row__date {
   flex: 0 0 100px;

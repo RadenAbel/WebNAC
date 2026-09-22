@@ -110,6 +110,11 @@
                         </a>
                     @endif
                 @endif
+                <span class="nac-admin-nav__group">Akun</span>
+                <a href="{{ route('admin.password.edit') }}" class="{{ request()->routeIs('admin.password.*') ? 'active' : '' }}" title="Ganti Password">
+                    <i class="bi bi-key"></i>
+                    <span class="nac-admin-nav__label">Ganti Password</span>
+                </a>
             </nav>
 
             <div class="nac-admin-sidebar__footer">
@@ -136,13 +141,13 @@
                     <a href="{{ route('home') }}" target="_blank" class="nac-admin-topbar__view-site">
                         <i class="bi bi-box-arrow-up-right"></i> <span>Lihat Situs</span>
                     </a>
-                    <div class="nac-admin-topbar__user">
+                    <a href="{{ route('admin.password.edit') }}" class="nac-admin-topbar__user" title="Ganti password">
                         <span class="nac-admin-topbar__avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                         <div class="d-none d-sm-block">
                             <div class="nac-admin-topbar__user-name">{{ auth()->user()->name }}</div>
-                            <div class="nac-admin-topbar__user-role">Administrator</div>
+                            <div class="nac-admin-topbar__user-role">{{ auth()->user()->isSuperAdmin() ? 'Super Admin' : 'Admin' }}</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </header>
 

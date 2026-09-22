@@ -1,8 +1,8 @@
 <div class="nac-admin-grid-card">
-    <img src="{{ $slider->image_url }}" alt="{{ $slider->title }}"
+    <img src="{{ $slider->image_url }}" alt="Background slider {{ $slider->sort_order }}"
         class="nac-admin-grid-card__img" style="aspect-ratio:16/9;">
     <div class="nac-admin-grid-card__body">
-        <div class="nac-admin-grid-card__title">{{ $slider->title ?? '(tanpa judul)' }}</div>
+        <div class="nac-admin-grid-card__title">Background #{{ $slider->sort_order }}</div>
         <div class="nac-admin-grid-card__footer">
             @if ($slider->is_active)
                 <span class="badge bg-success">Aktif</span>

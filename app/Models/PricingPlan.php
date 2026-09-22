@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\FlushesPublicCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class PricingPlan extends Model
 {
+    use FlushesPublicCache;
+
     protected $fillable = [
         'title',
         'description',

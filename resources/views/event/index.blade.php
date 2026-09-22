@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Acara — Nugroho Aquatic Club')
-@section('meta_description', 'Kegiatan dan acara yang diselenggarakan Nugroho Aquatic Club, lengkap dengan laporan kegiatannya.')
+@section('title', 'Hasil Pertandingan — Nugroho Aquatic Club')
+@section('meta_description', 'Hasil pertandingan dan kejuaraan renang yang diikuti atlet Nugroho Aquatic Club, Sangatta, Kutai Timur.')
 
 @section('content')
 
@@ -20,9 +20,9 @@
     @endif
 
     <div class="container text-center" data-aos="fade-up">
-        <h1 class="nac-page-header__title">Hasil Pertandingan &amp; Kegiatan Kami.</h1>
+        <h1 class="nac-page-header__title">Acara &amp; Kegiatan Kami.</h1>
         <p class="nac-page-header__desc">
-            Dokumentasi kegiatan dan hasil dari pertandingan yang pernah diikuti Nugroho Aquatic Club.
+            Dokumentasi kegiatan dan hasil dari kegiatan yang pernah diikuti Nugroho Aquatic Club.
         </p>
     </div>
 </section>

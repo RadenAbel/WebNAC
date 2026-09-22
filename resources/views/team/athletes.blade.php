@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Atlet — Nugroho Aquatic Club')
-@section('meta_description', 'Kenali atlet berprestasi Nugroho Aquatic Club.')
+@section('title', 'Atlet Renang — Nugroho Aquatic Club Sangatta')
+@section('meta_description', 'Kenali atlet renang berprestasi Nugroho Aquatic Club, Sangatta, Kutai Timur, beserta rekor waktu dan prestasinya.')
 
 @section('content')
 

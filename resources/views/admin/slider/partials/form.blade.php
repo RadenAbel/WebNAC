@@ -56,46 +56,6 @@
     </div>
 
     <div class="col-lg-7">
-        <div class="nac-admin-form-section">
-            <div class="nac-admin-form-section__head">
-                <span class="nac-admin-form-section__icon"><i class="bi bi-card-text"></i></span>
-                <div>
-                    <p class="nac-admin-form-section__title">Konten Slide</p>
-                    <p class="nac-admin-form-section__desc">Teks yang tampil di atas foto/video</p>
-                </div>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label">Judul</label>
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
-                        value="{{ old('title', $slider->title) }}" placeholder="Setiap tarikan napas, setiap detik berarti.">
-                    @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-12">
-                    <label class="form-label">Subjudul</label>
-                    <textarea name="subtitle" rows="2" class="form-control @error('subtitle') is-invalid @enderror"
-                        placeholder="Kolam renang standar kompetisi dengan pelatih bersertifikat nasional.">{{ old('subtitle', $slider->subtitle) }}</textarea>
-                    @error('subtitle') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Teks Tombol</label>
-                    <input type="text" name="button_text" class="form-control @error('button_text') is-invalid @enderror"
-                        value="{{ old('button_text', $slider->button_text) }}" placeholder="Daftar Latihan">
-                    @error('button_text') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Link Tombol</label>
-                    <input type="text" name="button_url" class="form-control @error('button_url') is-invalid @enderror"
-                        value="{{ old('button_url', $slider->button_url) }}" placeholder="#biaya atau https://...">
-                    @error('button_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-            </div>
-        </div>
-
         <div class="nac-admin-form-section mb-0">
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-sliders"></i></span>

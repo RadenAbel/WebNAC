@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Nugroho Aquatic Club — Kolam Renang Premium')
-@section('meta_description', 'Fasilitas renang premium di Surabaya dengan pelatih bersertifikat untuk atlet junior hingga senior.')
+@section('title', 'Nugroho Aquatic Club — Klub Renang di Sangatta, Kutai Timur')
+@section('meta_description', 'Klub dan sekolah renang di Sangatta Utara, Kutai Timur. Latihan di Everglade Aquatic Center bersama pelatih bersertifikat, dari pemula hingga atlet kompetisi.')
 
 @section('content')
 
@@ -71,7 +71,7 @@
                 </p>
                 <div class="d-flex flex-wrap gap-3 mt-4">
                     <a href="#biaya" class="btn nac-btn nac-btn--primary btn-lg">Daftar Latihan</a>
-                    <a href="{{ route('team.index') }}" class="btn nac-btn nac-btn--outline btn-lg">Kenali Tim Kami</a>
+                    <a href="{{ route('team.athletes') }}" class="btn nac-btn nac-btn--outline btn-lg">Kenali Tim Kami</a>
                 </div>
             </div>
 

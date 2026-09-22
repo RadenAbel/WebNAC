@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\FlushesPublicCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ManagementMember extends Model
 {
-    use HasFactory;
+    use HasFactory, FlushesPublicCache;
 
     protected $fillable = [
         'name',

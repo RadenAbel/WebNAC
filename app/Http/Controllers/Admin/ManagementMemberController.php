@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreManagementMemberRequest;
 use App\Http\Requests\Admin\UpdateManagementMemberRequest;
@@ -28,7 +29,7 @@ class ManagementMemberController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
-        $data['photo'] = $request->file('photo')->store('management', 'public');
+        $data['photo'] = ImageOptimizer::store($request->file('photo'), 'management');
 
         ManagementMember::create($data);
 
@@ -51,7 +52,7 @@ class ManagementMemberController extends Controller
             if ($management->photo) {
                 Storage::disk('public')->delete($management->photo);
             }
-            $data['photo'] = $request->file('photo')->store('management', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'management');
         }
 
         $management->update($data);

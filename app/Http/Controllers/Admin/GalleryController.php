@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreGalleryRequest;
 use App\Http\Requests\Admin\UpdateGalleryRequest;
@@ -30,7 +31,7 @@ class GalleryController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($data['type'] === 'photo' && $request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('galleries', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'galleries');
         } else {
             $data['image'] = null; // type video tidak butuh upload gambar (pakai thumbnail YouTube)
         }
@@ -62,7 +63,7 @@ class GalleryController extends Controller
             if ($gallery->image) {
                 Storage::disk('public')->delete($gallery->image);
             }
-            $data['image'] = $request->file('image')->store('galleries', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'galleries');
         }
 
         $gallery->update($data);

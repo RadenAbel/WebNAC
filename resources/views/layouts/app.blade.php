@@ -5,48 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {{-- ============ SEO DASAR ============ --}}
-    <title>@yield('title', 'Nugroho Aquatic Club — Kolam Renang Premium di Kutai Timur')</title>
-    <meta name="description" content="@yield('meta_description', 'Nugroho Aquatic Club — fasilitas renang premium di Kutai Timur dengan pelatih bersertifikat, untuk atlet junior hingga senior.')">
+    {{-- Judul & deskripsi bawaan (config/seo.php) dipakai kalau halaman tidak
+         mengisi @section('title') / @section('meta_description') sendiri. --}}
+    <title>@yield('title', config('seo.default_title'))</title>
+    <meta name="description" content="@yield('meta_description', config('seo.default_description'))">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <link rel="canonical" href="@yield('canonical_url', url()->current())">
+    @if (config('seo.google_site_verification'))
+        <meta name="google-site-verification" content="{{ config('seo.google_site_verification') }}">
+    @endif
 
-    {{-- ============ OPEN GRAPH (Facebook, WhatsApp, dll) ============ --}}
+    {{-- ============ OPEN GRAPH (tampilan saat link dibagikan di WhatsApp, Facebook, dll) ============
+         Otomatis mengikuti judul & deskripsi halaman kalau og_title/og_description tidak diisi. --}}
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Nugroho Aquatic Club">
+    <meta property="og:site_name" content="{{ config('seo.club_name') }}">
     <meta property="og:locale" content="id_ID">
-    <meta property="og:title" content="@yield('og_title', 'Nugroho Aquatic Club — Kolam Renang Premium di Kutai Timur')">
-    <meta property="og:description" content="@yield('og_description', 'Fasilitas renang premium dengan pelatih bersertifikat untuk atlet junior hingga senior.')">
+    <meta property="og:title" content="@yield('og_title', $__env->yieldContent('title', config('seo.default_title')))">
+    <meta property="og:description" content="@yield('og_description', $__env->yieldContent('meta_description', config('seo.default_description')))">
     <meta property="og:url" content="@yield('canonical_url', url()->current())">
     <meta property="og:image" content="@yield('og_image', asset('img/Logo.png'))">
 
     {{-- ============ TWITTER CARD ============ --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('og_title', 'Nugroho Aquatic Club')">
-    <meta name="twitter:description" content="@yield('og_description', 'Fasilitas renang premium dengan pelatih bersertifikat untuk atlet junior hingga senior.')">
+    <meta name="twitter:title" content="@yield('og_title', $__env->yieldContent('title', config('seo.default_title')))">
+    <meta name="twitter:description" content="@yield('og_description', $__env->yieldContent('meta_description', config('seo.default_description')))">
     <meta name="twitter:image" content="@yield('og_image', asset('img/Logo.png'))">
 
     <meta name="theme-color" content="#0A0E14">
     <link rel="icon" href="{{ asset('img/Logo.png') }}" type="image/png">
 
     {{-- ============ STRUCTURED DATA (JSON-LD) ============ --}}
-    {{-- Membantu Google memahami bisnis ini sebagai lokasi olahraga fisik.
-         PENTING: semua tanda "@" di dalam JSON ini SENGAJA ditulis "@@"
-         (mis. "@@context", "@@type"). Kalau ditulis "@context" biasa, Blade
-         akan salah mengira itu directive (@if, dst) dan bikin ParseError
-         "expecting elseif or else or endif" — persis error yang tadi
-         muncul. "@@" adalah cara Blade menulis tanda "@" literal. --}}
+    {{-- Memberi tahu Google: ini klub renang (SportsClub) di Sangatta Utara,
+         Kutai Timur, berlatih di Everglade Aquatic Center, lengkap dengan
+         kontak & akun sosial media dari Pengaturan Situs. Isinya dibuat di
+         App\Support\Seo (bukan ditulis langsung di sini) supaya tanda "@"
+         di JSON tidak bentrok dengan directive Blade. --}}
     <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "SportsActivityLocation",
-        "name": "Nugroho Aquatic Club",
-        "image": "{{ asset('img/Logo.png') }}",
-        "url": "{{ url('/') }}",
-        "address": {
-            "@@type": "PostalAddress",
-            "addressCountry": "ID"
-        }
-    }
+{!! \App\Support\Seo::clubSchema(\App\Models\SiteSetting::current()) !!}
     </script>
 
     {{-- ============ ASET ============ --}}

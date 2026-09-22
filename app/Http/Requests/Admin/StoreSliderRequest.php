@@ -23,10 +23,6 @@ class StoreSliderRequest extends FormRequest
                 'required_if:type,video', 'nullable', 'string', 'max:255',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
             ],
-            'title'       => ['nullable', 'string', 'max:150'],
-            'subtitle'    => ['nullable', 'string', 'max:255'],
-            'button_text' => ['nullable', 'string', 'max:50'],
-            'button_url'  => ['nullable', 'string', 'max:255'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
             'is_active'   => ['nullable', 'boolean'],
         ];

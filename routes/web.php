@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManagementMemberController;
 use App\Http\Controllers\Admin\JoinRequestController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PricingPlanController;
+use App\Http\Controllers\Admin\AccountPasswordController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\Admin\SliderController as AdminSliderController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JoinController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
@@ -55,12 +57,13 @@ Route::get('/acara', [EventController::class, 'index'])
 Route::get('/galeri', [GalleryController::class, 'index'])
     ->name('gallery.index');
 
-Route::get('/acara/{event}', [EventController::class, 'show'])
-    ->name('event.show');
-
 // Halaman pendaftaran "Join Us" — form publik, submit-nya disimpan ke tabel
 // join_requests dan ditinjau admin lewat menu "Pendaftaran" (bukan email
 // langsung lagi — lihat App\Http\Controllers\JoinController & Admin\JoinRequestController).
+// SEO: sitemap & robots.txt untuk Google (lihat SitemapController)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
 Route::get('/join', [JoinController::class, 'create'])->name('join.create');
 Route::post('/join', [JoinController::class, 'store'])
     ->middleware('throttle:5,1') // cegah spam submit bertubi-tubi
@@ -86,9 +89,21 @@ Route::middleware('guest')->prefix('admin')->group(function () {
 });
 
 // Sudah login — akses dashboard & fitur admin lainnya
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+// 'auth.session' (bawaan Laravel): menyimpan sidik password di sesi. Begitu
+// password akun diganti (oleh pemiliknya sendiri atau oleh super admin lewat
+// Kelola Admin), semua sesi lain yang masih memakai password lama otomatis
+// ter-logout di request berikutnya.
+Route::middleware(['auth', 'auth.session'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    // Ganti password akun sendiri — terbuka untuk SEMUA akun yang login
+    // (tidak memakai middleware izin), dibatasi 6 percobaan per menit supaya
+    // kolom "password lama" tidak bisa ditebak-tebak berulang kali.
+    Route::get('/password', [AccountPasswordController::class, 'edit'])->name('password.edit');
+    Route::put('/password', [AccountPasswordController::class, 'update'])
+        ->middleware('throttle:6,1')
+        ->name('password.update');
 
     // ============ Tim (Pelatih/Atlet) — butuh izin 'team' ============
     Route::middleware('permission:team')->group(function () {

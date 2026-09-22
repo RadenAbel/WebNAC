@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSiteSettingRequest;
 use App\Models\SiteSetting;
@@ -34,28 +35,28 @@ class SiteSettingController extends Controller
             if ($setting->logo) {
                 Storage::disk('public')->delete($setting->logo);
             }
-            $data['logo'] = $request->file('logo')->store('settings', 'public');
+            $data['logo'] = ImageOptimizer::store($request->file('logo'), 'settings', 512);
         }
 
         if ($request->hasFile('about_photo')) {
             if ($setting->about_photo) {
                 Storage::disk('public')->delete($setting->about_photo);
             }
-            $data['about_photo'] = $request->file('about_photo')->store('settings', 'public');
+            $data['about_photo'] = ImageOptimizer::store($request->file('about_photo'), 'settings');
         }
 
         if ($request->hasFile('classes_section_photo')) {
             if ($setting->classes_section_photo) {
                 Storage::disk('public')->delete($setting->classes_section_photo);
             }
-            $data['classes_section_photo'] = $request->file('classes_section_photo')->store('settings', 'public');
+            $data['classes_section_photo'] = ImageOptimizer::store($request->file('classes_section_photo'), 'settings');
         }
 
         if ($request->hasFile('pool_section_photo')) {
             if ($setting->pool_section_photo) {
                 Storage::disk('public')->delete($setting->pool_section_photo);
             }
-            $data['pool_section_photo'] = $request->file('pool_section_photo')->store('settings', 'public');
+            $data['pool_section_photo'] = ImageOptimizer::store($request->file('pool_section_photo'), 'settings');
         }
 
         if ($data['gallery_header_type'] === 'video') {
@@ -67,7 +68,7 @@ class SiteSettingController extends Controller
             if ($setting->gallery_header_photo) {
                 Storage::disk('public')->delete($setting->gallery_header_photo);
             }
-            $data['gallery_header_photo'] = $request->file('gallery_header_photo')->store('settings', 'public');
+            $data['gallery_header_photo'] = ImageOptimizer::store($request->file('gallery_header_photo'), 'settings');
         }
 
         if ($data['event_header_type'] === 'video') {
@@ -79,7 +80,7 @@ class SiteSettingController extends Controller
             if ($setting->event_header_photo) {
                 Storage::disk('public')->delete($setting->event_header_photo);
             }
-            $data['event_header_photo'] = $request->file('event_header_photo')->store('settings', 'public');
+            $data['event_header_photo'] = ImageOptimizer::store($request->file('event_header_photo'), 'settings');
         }
 
         if ($data['team_header_type'] === 'video') {
@@ -91,7 +92,7 @@ class SiteSettingController extends Controller
             if ($setting->team_header_photo) {
                 Storage::disk('public')->delete($setting->team_header_photo);
             }
-            $data['team_header_photo'] = $request->file('team_header_photo')->store('settings', 'public');
+            $data['team_header_photo'] = ImageOptimizer::store($request->file('team_header_photo'), 'settings');
         }
 
         if ($data['join_header_type'] === 'video') {
@@ -103,7 +104,7 @@ class SiteSettingController extends Controller
             if ($setting->join_header_photo) {
                 Storage::disk('public')->delete($setting->join_header_photo);
             }
-            $data['join_header_photo'] = $request->file('join_header_photo')->store('settings', 'public');
+            $data['join_header_photo'] = ImageOptimizer::store($request->file('join_header_photo'), 'settings');
         }
 
         $setting->update($data);

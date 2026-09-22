@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Pelatih — Nugroho Aquatic Club')
-@section('meta_description', 'Kenali pelatih bersertifikat Nugroho Aquatic Club.')
+@section('title', 'Pelatih Renang — Nugroho Aquatic Club Sangatta')
+@section('meta_description', 'Kenali pelatih renang bersertifikat Nugroho Aquatic Club yang melatih di Everglade Aquatic Center, Sangatta, Kutai Timur.')
 
 @section('content')
 

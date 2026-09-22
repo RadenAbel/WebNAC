@@ -4,7 +4,7 @@
     $roleLabel = $member->role === 'pelatih' ? 'Pelatih' : 'Atlet';
 
     // Route halaman "Our Team" sesuai routes/web.php kamu.
-    $teamUrl    = route('team.index');
+    $teamUrl    = $member->role === 'pelatih' ? route('team.coaches') : route('team.athletes');
     $sectionUrl = $teamUrl . ($member->role === 'pelatih' ? '#pelatih' : '#atlet');
 
     // ============================================================
@@ -21,21 +21,17 @@
     $firstName = $nameParts[0] ?? $member->name;
     $lastName  = count($nameParts) > 1 ? implode(' ', array_slice($nameParts, 1)) : null;
 
-    $origin         = $member->hometown ?? 'Surabaya, Jawa Timur';
     $specialization = $member->category ?? ($member->role === 'pelatih' ? 'Pelatih Kepala' : 'Gaya Bebas');
 
     // Tabel "Rekor Waktu Terbaik"
-    $personalBests = $member->personal_bests ?? [
-        ['event' => '50m Gaya Bebas',      'time' => '25.10',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
-        ['event' => '100m Gaya Bebas',     'time' => '54.32',   'pool_length' => '50m', 'age' => 17, 'competition' => 'Kejurnas Renang 2024', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '12/08/2024'],
-        ['event' => '50m Gaya Punggung',   'time' => '27.85',   'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
-        ['event' => '100m Gaya Kupu-Kupu', 'time' => '59.40',   'pool_length' => '25m', 'age' => 16, 'competition' => 'POPDA Jawa Timur 2023', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '05/03/2023'],
-        ['event' => '200m Gaya Ganti',     'time' => '2:12.67', 'pool_length' => '50m', 'age' => 15, 'competition' => 'Kejurda Jawa Timur 2022', 'country_code' => 'id', 'country' => 'Indonesia', 'date' => '20/11/2022'],
-    ];
+    $personalBests = $member->personal_bests ?? [];
 @endphp
 
 @section('title', $member->name . ' — ' . $roleLabel . ' Nugroho Aquatic Club')
-@section('meta_description', 'Profil ' . $roleLabel . ' ' . $member->name . ' di Nugroho Aquatic Club.')
+@section('meta_description', 'Profil ' . $roleLabel . ' ' . $member->name . ' di Nugroho Aquatic Club, klub renang di Sangatta, Kutai Timur.')
+@if (!empty($member->photo_url))
+    @section('og_image', $member->photo_url)
+@endif
 
 @section('content')
 
@@ -182,10 +178,10 @@
                                 </div>
                             @endif
                         </div>
+                        </div>{{-- /.nac-profile-detail-item Sosial Media --}}
                     @endif
-                </div>
-            </div>
-            </div>
+                </div>{{-- /.nac-profile-card__col kanan --}}
+            </div>{{-- /.nac-profile-card__row --}}
 
             <ul class="nav nac-profile-tabs" id="profileTab" role="tablist">
                 @if($member->role === 'atlet')
@@ -231,6 +227,7 @@
             <div class="tab-pane fade show active" id="tab-rekor" role="tabpanel" aria-labelledby="tab-rekor-btn">
                 <h2 class="nac-section__title mb-4" data-aos="fade-up">Rekor Waktu Terbaik</h2>
 
+                @if(count($personalBests))
                 <div class="nac-rekor-table-wrap" data-aos="fade-up" data-aos-delay="80">
                     <table class="nac-rekor-table">
                         <thead>
@@ -268,6 +265,9 @@
                     </table>
                     <p class="nac-rekor-table__note">*Usia atlet pada saat kompetisi berlangsung.</p>
                 </div>
+                @else
+                    <p class="nac-muted text-center py-5">Belum ada rekor waktu yang diinput untuk atlet ini.</p>
+                @endif
             </div>
 
             {{-- ---------- TAB: PRESTASI ---------- --}}
@@ -275,14 +275,10 @@
                 <h2 class="nac-section__title mb-4" data-aos="fade-up">Pencapaian &amp; Penghargaan</h2>
 
                 @php
-                    $achievements = (!empty($member->achievements) && count($member->achievements)) ? $member->achievements : [
-                        ['title' => 'Juara 1 Kejurnas Renang', 'year' => '2024', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Juara 2 POPDA Jawa Timur', 'year' => '2023', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Juara 3 Kejurda Jawa Timur', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => 'id', 'country' => 'Indonesia'],
-                        ['title' => 'Atlet Terbaik Klub', 'year' => '2022', 'event_date' => null, 'description' => null, 'country_code' => null, 'country' => null],
-                    ];
+                    $achievements = $member->achievements ?? [];
                 @endphp
 
+                @if(count($achievements))
                 <div class="nac-achievement-table-wrap" data-aos="fade-up">
                     <table class="nac-achievement-table">
                         <thead>
@@ -328,6 +324,9 @@
                         </tbody>
                     </table>
                 </div>
+                @else
+                    <p class="nac-muted text-center py-5">Belum ada prestasi yang diinput untuk atlet ini.</p>
+                @endif
             </div>
             @endif
 

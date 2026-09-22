@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Tentang Kami — Nugroho Aquatic Club')
-@section('meta_description', 'Kenali lebih dekat Nugroho Aquatic Club: profil klub, fasilitas kolam, dan kelas-kelas NAC Swim School.')
+@section('title', 'Tentang Kami — Nugroho Aquatic Club, Klub Renang Sangatta')
+@section('meta_description', 'Profil Nugroho Aquatic Club: klub renang di Sangatta Utara, Kutai Timur, berlatih di Everglade Aquatic Center. Kenali kelas NAC Swim School dan tim kami.')
 
 @section('content')
 

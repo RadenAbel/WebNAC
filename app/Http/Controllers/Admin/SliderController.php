@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreSliderRequest;
 use App\Http\Requests\Admin\UpdateSliderRequest;
@@ -30,7 +31,7 @@ class SliderController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($data['type'] === 'photo' && $request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('sliders', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'sliders');
         } else {
             $data['image'] = null;
         }
@@ -61,7 +62,7 @@ class SliderController extends Controller
             if ($slider->image) {
                 Storage::disk('public')->delete($slider->image);
             }
-            $data['image'] = $request->file('image')->store('sliders', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'sliders');
         }
 
         $slider->update($data);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\ImageOptimizer;
 use App\Http\Requests\StoreJoinRequest;
 use App\Models\JoinRequest;
 use App\Models\SiteSetting;
@@ -22,7 +23,7 @@ class JoinController extends Controller
         $data = $request->safe()->except('website');
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('join-requests', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'join-requests');
         }
 
         JoinRequest::create($data);

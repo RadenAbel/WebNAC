@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class SiteSetting extends Model
 {
     use HasFactory;
+
+    private const CURRENT_CACHE_KEY = 'site_setting.current';
+
+    /** Hasil current() yang sudah diambil di request ini (hindari ambil ulang berkali-kali). */
+    protected static ?self $currentMemo = null;
 
     protected $fillable = [
         'site_name',
@@ -210,8 +216,47 @@ class SiteSetting extends Model
      */
     public static function current(): self
     {
-        return static::query()->firstOrCreate([], [
-            'site_name' => 'Nugroho Aquatic Center',
-        ]);
+        // Lapis 1: sudah diambil di request yang sama (navbar, footer, dan
+        // controller memanggil ini berkali-kali per halaman) — pakai lagi.
+        if (static::$currentMemo) {
+            return static::$currentMemo;
+        }
+
+        // Lapis 2: cache (file) — database cuma disentuh sekali sampai admin
+        // menyimpan perubahan (cache otomatis dihapus, lihat booted()).
+        //
+        // PENTING: yang disimpan ke cache cuma DATA MENTAH (array), bukan objek
+        // model. Laravel versi baru secara default menolak membaca objek PHP
+        // dari cache demi keamanan (config cache.serializable_classes = false)
+        // — objek model yang di-cache akan kembali sebagai
+        // __PHP_Incomplete_Class. Model dibangun ulang dari array di bawah.
+        $attributes = Cache::get(self::CURRENT_CACHE_KEY);
+
+        if (! is_array($attributes)) {
+            $attributes = static::query()->firstOrCreate([], [
+                'site_name' => 'Nugroho Aquatic Club',
+            ])->getAttributes();
+
+            Cache::forever(self::CURRENT_CACHE_KEY, $attributes);
+        }
+
+        return static::$currentMemo = (new static)->newFromBuilder($attributes);
+    }
+
+    /**
+     * Hapus cache pengaturan situs. Dipanggil otomatis setiap kali data
+     * pengaturan disimpan/dihapus, jadi perubahan dari admin langsung
+     * terlihat di situs publik tanpa perlu clear cache manual.
+     */
+    public static function flushCurrentCache(): void
+    {
+        static::$currentMemo = null;
+        Cache::forget(self::CURRENT_CACHE_KEY);
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => static::flushCurrentCache());
+        static::deleted(fn () => static::flushCurrentCache());
     }
 }

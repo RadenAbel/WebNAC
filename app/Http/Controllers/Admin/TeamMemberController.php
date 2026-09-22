@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTeamMemberRequest;
 use App\Http\Requests\Admin\UpdateTeamMemberRequest;
@@ -49,7 +50,7 @@ class TeamMemberController extends Controller
         $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('team', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'team');
         }
 
         $member = TeamMember::create($data);
@@ -84,7 +85,7 @@ class TeamMemberController extends Controller
             if ($teamMember->photo) {
                 Storage::disk('public')->delete($teamMember->photo);
             }
-            $data['photo'] = $request->file('photo')->store('team', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'team');
         }
 
         $teamMember->update($data);

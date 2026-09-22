@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\FlushesPublicCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,7 +10,7 @@ use App\Models\Concerns\HasYoutubeVideo;
 
 class Gallery extends Model
 {
-    use HasFactory, HasYoutubeVideo;
+    use HasFactory, HasYoutubeVideo, FlushesPublicCache;
 
     protected $fillable = [
         'image',

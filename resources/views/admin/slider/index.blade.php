@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                         <th style="width:100px;">Foto</th>
-                        <th>Judul</th>
+                        <th>Urutan</th>
                         <th style="width:100px;">Jenis</th>
                         <th class="text-center" style="width:100px;">Status</th>
                         <th class="text-end" style="width:120px;">Aksi</th>
@@ -47,10 +47,10 @@
                     @foreach ($sliders as $slider)
                         <tr>
                             <td>
-                                <img src="{{ $slider->image_url }}" alt="{{ $slider->title }}"
+                                <img src="{{ $slider->image_url }}" alt="Background slider {{ $slider->sort_order }}"
                                     style="width:80px; height:45px; object-fit:cover; border-radius:6px;">
                             </td>
-                            <td class="fw-bold">{{ $slider->title ?? '(tanpa judul)' }}</td>
+                            <td class="fw-bold">Background #{{ $slider->sort_order }}</td>
                             <td>
                                 @if ($slider->type === 'video')
                                     <span class="badge bg-info-subtle text-info-emphasis"><i class="bi bi-youtube"></i> Video</span>

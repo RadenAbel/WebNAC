@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\PublicCache;
 use App\Models\SiteSetting;
 use App\Models\TeamMember;
 
@@ -13,7 +14,7 @@ class TeamController extends Controller
     public function athletes()
     {
         $setting = SiteSetting::current();
-        $athletes = TeamMember::active()->atlet()->get();
+        $athletes = PublicCache::models('team.athletes', TeamMember::class, fn () => TeamMember::active()->atlet()->get());
 
         return view('team.athletes', compact('setting', 'athletes'));
     }
@@ -24,7 +25,7 @@ class TeamController extends Controller
     public function coaches()
     {
         $setting = SiteSetting::current();
-        $coaches = TeamMember::active()->pelatih()->get();
+        $coaches = PublicCache::models('team.coaches', TeamMember::class, fn () => TeamMember::active()->pelatih()->get());
 
         return view('team.coaches', compact('setting', 'coaches'));
     }
@@ -57,9 +58,6 @@ class TeamController extends Controller
                 'description'  => $achievement->description,
                 'country_code' => $achievement->country ? strtolower($achievement->country) : null,
                 'country'      => $achievement->country_name,
-                'gold'         => $achievement->total_gold,
-                'silver'       => $achievement->total_silver,
-                'bronze'       => $achievement->total_bronze,
             ])->values()->all()
         );
 

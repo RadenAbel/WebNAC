@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreEventRequest;
 use App\Http\Requests\Admin\UpdateEventRequest;
@@ -28,7 +29,7 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
-        $data['photo'] = $request->file('photo')->store('events', 'public');
+        $data['photo'] = ImageOptimizer::store($request->file('photo'), 'events');
         $data['pdf_report'] = $request->file('pdf_report')->store('events/reports', 'public');
 
         Event::create($data);
@@ -52,7 +53,7 @@ class EventController extends Controller
             if ($event->photo) {
                 Storage::disk('public')->delete($event->photo);
             }
-            $data['photo'] = $request->file('photo')->store('events', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'events');
         }
 
         if ($request->hasFile('pdf_report')) {

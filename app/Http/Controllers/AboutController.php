@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\PublicCache;
 use App\Models\SiteSetting;
 use App\Models\ManagementMember;
 use App\Models\TeamMember;
@@ -15,13 +16,18 @@ class AboutController extends Controller
     {
         $setting = SiteSetting::current();
 
-        $totalAthletes = TeamMember::active()->atlet()->count();
-        $totalCoaches  = TeamMember::active()->pelatih()->count();
+        $totals = PublicCache::remember('about.totals', fn () => [
+            'athletes' => TeamMember::active()->atlet()->count(),
+            'coaches'  => TeamMember::active()->pelatih()->count(),
+            'medals'   => (int) TeamMember::active()->sum('total_medals'),
+        ]);
+        $totalAthletes = $totals['athletes'];
+        $totalCoaches  = $totals['coaches'];
 
         // Total medali sekarang murni dari kolom `total_medals` yang diisi
         // manual per anggota tim (Rekor Waktu & Pencapaian sudah tidak
         // mencatat medali lagi, jadi tidak perlu dihitung dari situ).
-        $totalMedals = TeamMember::active()->sum('total_medals');
+        $totalMedals = $totals['medals'];
 
         $aboutStats = [
             ['num' => $totalAthletes, 'label' => 'Atlet Aktif', 'icon' => 'fa-person-swimming'],
@@ -32,7 +38,7 @@ class AboutController extends Controller
         // Tim Manajemen — kalau admin belum isi data sama sekali (fresh
         // install), kirim null biar blade otomatis pakai dummy fallback-nya
         // sendiri ($managementTeam ?? [dummy]).
-        $managementMembers = ManagementMember::active()->get();
+        $managementMembers = PublicCache::models('about.management', ManagementMember::class, fn () => ManagementMember::active()->get());
         $managementTeam = $managementMembers->isNotEmpty() ? $managementMembers : null;
 
         return view('about.index', compact('setting', 'aboutStats', 'managementTeam'));

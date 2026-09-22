@@ -369,6 +369,14 @@ body {
   align-items: center;
   gap: 0.6rem;
 }
+.nac-admin-topbar__user {
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--adm-radius-sm);
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  transition: background 0.15s ease;
+}
+.nac-admin-topbar__user:hover { background: rgba(10, 14, 20, 0.05); color: inherit; }
 .nac-admin-topbar__avatar {
   width: 34px;
   height: 34px;
