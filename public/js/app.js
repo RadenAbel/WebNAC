@@ -137,4 +137,35 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.replaceWith(iframe);
         });
     });
+
+    // ============ Fasilitas (halaman Tentang Kami) ============
+    // Klik salah satu fasilitas di daftar kiri → foto & penjelasan di
+    // kanan berganti. Di tablet/HP daftarnya bisa digeser ke samping,
+    // jadi tombol yang aktif ikut digeser ke tengah supaya tetap terlihat.
+    document.querySelectorAll('[data-facility-showcase]').forEach(function (box) {
+        var tabs = box.querySelectorAll('[data-facility-tab]');
+        var panels = box.querySelectorAll('[data-facility-panel]');
+
+        function show(index) {
+            tabs.forEach(function (tab) {
+                var active = tab.getAttribute('data-facility-tab') === String(index);
+                tab.classList.toggle('is-active', active);
+                tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                if (active && tab.scrollIntoView && window.innerWidth < 992) {
+                    tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            });
+            panels.forEach(function (panel) {
+                var active = panel.getAttribute('data-facility-panel') === String(index);
+                panel.classList.toggle('is-active', active);
+                panel.hidden = !active;
+            });
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                show(tab.getAttribute('data-facility-tab'));
+            });
+        });
+    });
 });
