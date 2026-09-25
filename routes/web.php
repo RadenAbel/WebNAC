@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManagementMemberController;
 use App\Http\Controllers\Admin\JoinRequestController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PricingPlanController;
+use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\AccountPasswordController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
@@ -48,7 +49,9 @@ Route::get('/our-team/atlet', [TeamController::class, 'athletes'])
 Route::get('/our-team/pelatih', [TeamController::class, 'coaches'])
     ->name('team.coaches');
 
-Route::get('/our-team/{teamMember}', [TeamController::class, 'show'])
+// {slug} = alamat berbentuk nama, mis. /our-team/javiero-jesaya-lengkong.
+// Alamat lama berbentuk angka (/our-team/12) otomatis dialihkan (301).
+Route::get('/our-team/{slug}', [TeamController::class, 'show'])
     ->name('team.show');
 
 Route::get('/acara', [EventController::class, 'index'])
@@ -172,6 +175,11 @@ Route::middleware(['auth', 'auth.session'])->prefix('admin')->name('admin.')->gr
     // CRUD Hasil Pertandingan — butuh izin 'events'
     Route::middleware('permission:events')->group(function () {
         Route::resource('events', AdminEventController::class)->except(['show']);
+    });
+
+    // CRUD Fasilitas (halaman Tentang Kami) — butuh izin 'facilities'
+    Route::middleware('permission:facilities')->group(function () {
+        Route::resource('facilities', FacilityController::class)->except(['show']);
     });
 
     // CRUD Biaya Pendaftaran — butuh izin 'pricing'

@@ -6,9 +6,6 @@
 @section('content')
 
 {{-- ============ HEADER HALAMAN ============ --}}
-{{-- Background pakai foto profil klub yang sama dengan yang diisi admin
-     (Pengaturan Situs > Tentang > Foto). Kalau admin belum upload apa-apa,
-     otomatis fallback ke foto placeholder. --}}
 <section class="nac-page-header nac-page-header--photo"
     style="background-image: url('{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-swim-header/1600/700' }}');">
     <div class="container text-center" data-aos="fade-up">
@@ -31,20 +28,13 @@
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
-                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Junior, Elite, Swim Class A &amp; B</li>
+                    <li><i class="fa-solid fa-layer-group"></i> Kurikulum bertingkat: Novato, Avance, Campeo'n</li>
                     <li><i class="fa-solid fa-water"></i> Kolam, 2 lintasan</li>
                 </ul>
             </div>
 
             <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
                 @php
-                    // ============================================================
-                    // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy], sama
-                    // seperti section lain di halaman ini. Begitu controller kirim
-                    // $aboutStats asli (mis. dihitung dari TeamMember::atlet()->count(),
-                    // dst — datanya sudah ada semua di model, tinggal dihitung di
-                    // AboutController), blade ini otomatis pakai angka aslinya.
-                    // ============================================================
                     $aboutStats = $aboutStats ?? [
                         ['num' => 20, 'label' => 'Atlet Aktif', 'icon' => 'fa-person-swimming'],
                         ['num' => 5,  'label' => 'Pelatih Bersertifikat', 'icon' => 'fa-user-graduate'],
@@ -82,7 +72,7 @@
 </section>
 
 {{-- ============ TIM MANAJEMEN ============ --}}
-<section class="nac-section nac-mgmt-section" id="manajemen">
+<section class="nac-section nac-mgmt-section nac-section--decorated nac-dot-pattern" id="manajemen">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Tim Manajemen</span>
@@ -90,15 +80,6 @@
         </div>
 
         @php
-            // ============================================================
-            // DUMMY / FALLBACK DATA — pola: $variable ?? [dummy], sama
-            // seperti section lain di halaman ini. Begitu controller kirim
-            // $managementTeam asli (dari tabel management_members), blade
-            // ini otomatis pakai data itu tanpa perlu diubah lagi.
-            //
-            // 'full_bio' berisi HTML (persis format yang dihasilkan editor
-            // Quill di admin) — makanya di-render pakai {!! !!}, bukan {{ }}.
-            // ============================================================
             $managementTeam = $managementTeam ?? [
                 [
                     'name'      => 'Bambang Nugroho',
@@ -168,38 +149,109 @@
 </section>
 
 {{-- ============ FASILITAS ============ --}}
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="fasilitas">
+@if ($facilities->isNotEmpty())
+<section class="nac-section" id="fasilitas">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Fasilitas</span>
-            <h2 class="nac-section__title">Dirancang untuk performa, bukan sekadar kolam.</h2>
+            <h2 class="nac-section__title">Fasilitas unggulan penunjang latihan</h2>
         </div>
 
-        <div class="row g-4 mt-3">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-water"></i></div>
-                    <h5>Kolam Standar Kompetisi</h5>
-                    <p>2 lintasan sepanjang 50 meter dengan sistem sirkulasi air dan pencahayaan bawah air.</p>
-                </div>
+        <div class="nac-facility-showcase mt-4" data-facility-showcase data-aos="fade-up">
+            {{-- Kiri: daftar fasilitas --}}
+            <div class="nac-facility-showcase__list" role="tablist" aria-label="Daftar fasilitas">
+                @foreach ($facilities as $i => $facility)
+                    <button type="button"
+                        class="nac-facility-showcase__tab {{ $i === 0 ? 'is-active' : '' }}"
+                        role="tab"
+                        id="facility-tab-{{ $facility->id }}"
+                        aria-controls="facility-panel-{{ $facility->id }}"
+                        aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                        data-facility-tab="{{ $i }}">
+                        <span class="nac-facility-showcase__thumb">
+                            @if ($facility->photo_url)
+                                <img src="{{ $facility->photo_url }}" alt="" loading="lazy">
+                            @else
+                                <i class="fa-solid fa-image"></i>
+                            @endif
+                        </span>
+                        <span class="nac-facility-showcase__tab-name">{{ $facility->name }}</span>
+                    </button>
+                @endforeach
             </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-stopwatch"></i></div>
-                    <h5>Sistem Timing Elektronik</h5>
-                    <p>Pencatatan waktu otomatis untuk latihan interval dan simulasi kejuaraan.</p>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="nac-facility-card">
-                    <div class="nac-facility-card__icon"><i class="bi bi-heart-pulse"></i></div>
-                    <h5>Food &amp; Drink</h5>
-                    <p>Area bersantai untuk mengisi perut dan menghilangkan dahaga.</p>
-                </div>
+
+            {{-- Tengah (foto) + kanan (penjelasan) --}}
+            <div class="nac-facility-showcase__stage">
+                @foreach ($facilities as $i => $facility)
+                    <div class="nac-facility-showcase__panel {{ $i === 0 ? 'is-active' : '' }}"
+                        role="tabpanel"
+                        id="facility-panel-{{ $facility->id }}"
+                        aria-labelledby="facility-tab-{{ $facility->id }}"
+                        data-facility-panel="{{ $i }}"
+                        @if ($i !== 0) hidden @endif>
+                        <div class="nac-facility-showcase__photo">
+                            @if ($facility->photo_url)
+                                <img src="{{ $facility->photo_url }}" alt="{{ $facility->name }} — Nugroho Aquatic Club" loading="lazy">
+                            @else
+                                <div class="nac-facility-showcase__photo-empty">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span>Foto belum tersedia</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="nac-facility-showcase__info">
+                            <h3 class="nac-facility-showcase__name">{{ $facility->name }}</h3>
+                            @if ($facility->description)
+                                <p class="nac-facility-showcase__desc">{!! nl2br(e($facility->description)) !!}</p>
+                            @endif
+                            @if (count($facility->highlight_list))
+                                <ul class="nac-facility-showcase__points">
+                                    @foreach ($facility->highlight_list as $point)
+                                        <li><i class="fa-solid fa-check"></i> {{ $point }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
 </section>
+
+<script>
+(function () {
+    document.querySelectorAll('[data-facility-showcase]').forEach(function (box) {
+        var tabs = box.querySelectorAll('[data-facility-tab]');
+        var panels = box.querySelectorAll('[data-facility-panel]');
+
+        function show(index) {
+            tabs.forEach(function (tab) {
+                var active = tab.getAttribute('data-facility-tab') === String(index);
+                tab.classList.toggle('is-active', active);
+                tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                // Di HP daftar bisa digeser ke samping — pastikan tombol aktif terlihat
+                if (active && tab.scrollIntoView && window.innerWidth < 992) {
+                    tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            });
+            panels.forEach(function (panel) {
+                var active = panel.getAttribute('data-facility-panel') === String(index);
+                panel.classList.toggle('is-active', active);
+                panel.hidden = !active;
+            });
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                show(tab.getAttribute('data-facility-tab'));
+            });
+        });
+    });
+})();
+</script>
+@endif
 
 {{-- ============ KELAS & CATATAN NAC SWIM SCHOOL (dipindah dari Join Us) ============ --}}
 <section class="nac-section nac-about-classes-section nac-section--photo-bg" id="kelas"

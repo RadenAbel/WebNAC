@@ -72,15 +72,39 @@
                     </a>
                 @endif
                 @if(auth()->user()->canAccess('team'))
-                    <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}" title="Tim (Pelatih/Atlet)">
-                        <i class="bi bi-people"></i>
-                        <span class="nac-admin-nav__label">Tim (Pelatih/Atlet)</span>
-                    </a>
+                    @php
+                        $teamNavActive = request()->routeIs('admin.team.*');
+                        $teamNavRole = (request('role') === 'pelatih' || optional(request()->route('teamMember'))->role === 'pelatih') ? 'pelatih' : 'atlet';
+                    @endphp
+                    <div class="nac-admin-nav__dropdown {{ $teamNavActive ? 'is-open' : '' }}" data-nav-dropdown>
+                        <button type="button" class="nac-admin-nav__item nac-admin-nav__toggle {{ $teamNavActive ? 'is-active' : '' }}"
+                            data-nav-dropdown-toggle aria-expanded="{{ $teamNavActive ? 'true' : 'false' }}" title="Tim">
+                            <i class="bi bi-people"></i>
+                            <span class="nac-admin-nav__label">Tim</span>
+                            <i class="bi bi-chevron-down nac-admin-nav__chevron"></i>
+                        </button>
+                        <div class="nac-admin-nav__sub">
+                            <a href="{{ route('admin.team.index', ['role' => 'atlet']) }}" class="{{ $teamNavActive && $teamNavRole === 'atlet' ? 'active' : '' }}" title="Atlet">
+                                <i class="bi bi-trophy"></i>
+                                <span class="nac-admin-nav__label">Atlet</span>
+                            </a>
+                            <a href="{{ route('admin.team.index', ['role' => 'pelatih']) }}" class="{{ $teamNavActive && $teamNavRole === 'pelatih' ? 'active' : '' }}" title="Pelatih">
+                                <i class="bi bi-person-workspace"></i>
+                                <span class="nac-admin-nav__label">Pelatih</span>
+                            </a>
+                        </div>
+                    </div>
                 @endif
                 @if(auth()->user()->canAccess('management'))
                     <a href="{{ route('admin.management.index') }}" class="{{ request()->routeIs('admin.management.*') ? 'active' : '' }}" title="Tim Manajemen">
                         <i class="bi bi-person-badge"></i>
                         <span class="nac-admin-nav__label">Tim Manajemen</span>
+                    </a>
+                @endif
+                @if(auth()->user()->canAccess('facilities'))
+                    <a href="{{ route('admin.facilities.index') }}" class="{{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}" title="Fasilitas">
+                        <i class="bi bi-building"></i>
+                        <span class="nac-admin-nav__label">Fasilitas</span>
                     </a>
                 @endif
                 @if(auth()->user()->canAccess('join-requests'))
@@ -219,6 +243,16 @@
             });
         </script>
     @endif
+    <script>
+        // Buka/tutup menu dropdown di sidebar (mis. Tim > Atlet / Pelatih)
+        document.querySelectorAll('[data-nav-dropdown-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var box = btn.closest('[data-nav-dropdown]');
+                var open = box.classList.toggle('is-open');
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

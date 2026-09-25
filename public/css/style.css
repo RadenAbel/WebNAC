@@ -4324,3 +4324,198 @@ select.nac-join-input::-ms-expand {
 @media (max-width: 575.98px) {
   .nac-about-classes-section .nac-join-info { padding: 0; }
 }
+
+/* ==========================================================================
+   FASILITAS (halaman Tentang Kami) — satu kartu putih menyatu:
+   daftar fasilitas (thumbnail + nama) di kiri, foto besar full-bleed di
+   tengah, penjelasan di kanan. Klik item di kiri untuk berganti.
+   Di tablet/HP: daftar jadi deretan kartu kecil yang bisa digeser ke
+   samping, foto di atas, teks di bawah.
+   ========================================================================== */
+.nac-facility-showcase {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  height: clamp(420px, 36vw, 500px);
+  background: var(--nac-white);
+  border-radius: var(--nac-radius);
+  box-shadow: var(--nac-shadow);
+  overflow: hidden;
+}
+
+/* ---- Kiri: daftar fasilitas ---- */
+.nac-facility-showcase__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem 0.85rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  min-height: 0;
+}
+.nac-facility-showcase__tab {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0;
+  background: var(--nac-white);
+  border: 1.5px solid #e9edf0;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  color: var(--nac-graphite);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.nac-facility-showcase__tab:hover {
+  border-color: rgba(30, 111, 168, 0.35);
+}
+.nac-facility-showcase__tab.is-active {
+  border-color: var(--nac-deep-aqua);
+  box-shadow: 0 10px 22px -14px rgba(30, 111, 168, 0.6);
+  color: var(--nac-ink);
+}
+.nac-facility-showcase__tab:focus-visible {
+  outline: 3px solid var(--nac-aqua);
+  outline-offset: 2px;
+}
+.nac-facility-showcase__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--nac-mist);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nac-steel);
+  overflow: hidden;
+}
+.nac-facility-showcase__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.nac-facility-showcase__tab-name {
+  display: block;
+  padding: 0.55rem 0.6rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+/* ---- Tengah + kanan: foto & penjelasan ---- */
+.nac-facility-showcase__stage {
+  min-height: 0;
+  height: 100%;
+}
+.nac-facility-showcase__panel.is-active {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  height: 100%;
+  animation: nacFacilityIn 0.35s ease;
+}
+@keyframes nacFacilityIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.nac-facility-showcase__photo {
+  height: 100%;
+  background: var(--nac-mist);
+  overflow: hidden;
+}
+.nac-facility-showcase__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.nac-facility-showcase__photo-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: var(--nac-steel);
+  font-size: 0.85rem;
+}
+.nac-facility-showcase__photo-empty i { font-size: 2rem; }
+
+.nac-facility-showcase__info {
+  padding: 1.75rem 1.75rem 1.75rem 1.5rem;
+  overflow-y: auto; /* deskripsi panjang tetap bisa dibaca tanpa merusak kartu */
+  min-height: 0;
+}
+.nac-facility-showcase__name {
+  font-family: var(--nac-font-display);
+  font-size: 1.5rem;
+  color: var(--nac-ink);
+  margin-bottom: 0.5rem;
+}
+.nac-facility-showcase__desc {
+  color: var(--nac-steel);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.nac-facility-showcase__points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.nac-facility-showcase__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  color: var(--nac-graphite);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.nac-facility-showcase__points i {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nac-aqua-soft);
+  color: var(--nac-deep-aqua);
+  font-size: 0.85rem;
+  margin-top: -0.1rem;
+}
+
+/* Tablet & HP */
+@media (max-width: 991.98px) {
+  .nac-facility-showcase {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+  .nac-facility-showcase__list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.85rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .nac-facility-showcase__list::-webkit-scrollbar { display: none; }
+  .nac-facility-showcase__tab {
+    width: 150px;
+    flex: 0 0 150px;
+    scroll-snap-align: start;
+  }
+  .nac-facility-showcase__panel.is-active { grid-template-columns: minmax(0, 1fr); }
+  .nac-facility-showcase__photo { aspect-ratio: 16 / 10; height: auto; }
+  .nac-facility-showcase__info { padding: 1.5rem 1.25rem; overflow: visible; }
+  .nac-facility-showcase__name { font-size: 1.3rem; }
+}
+@media (max-width: 575.98px) {
+  .nac-facility-showcase__tab { width: 128px; flex-basis: 128px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nac-facility-showcase__panel.is-active { animation: none; }
+}

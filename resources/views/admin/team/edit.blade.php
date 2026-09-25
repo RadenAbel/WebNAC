@@ -5,7 +5,7 @@
 @section('admin_content')
 
     <div class="mb-4">
-        <a href="{{ route('admin.team.index') }}" class="nac-admin-back-btn">
+        <a href="{{ route('admin.team.index', ['role' => $member->role ?: 'atlet']) }}" class="nac-admin-back-btn">
             <span class="nac-admin-back-btn__icon"><i class="bi bi-arrow-left"></i></span> Kembali ke daftar tim
         </a>
         <h1 class="h4 fw-bold mt-2 mb-1">Edit: {{ $member->name }}</h1>

@@ -14,29 +14,50 @@ use Illuminate\Support\Facades\Storage;
 class TeamMemberController extends Controller
 {
     /**
-     * Daftar semua anggota tim, bisa difilter per peran lewat ?role=pelatih|atlet
+     * Data Atlet dan data Pelatih dikelola terpisah (menu dropdown di
+     * sidebar). Peran dibaca dari ?role=atlet|pelatih, bawaannya atlet.
      */
+    private function roleFrom(Request $request): string
+    {
+        return $request->get('role') === 'pelatih' ? 'pelatih' : 'atlet';
+    }
+
     public function index(Request $request)
     {
-        $query = TeamMember::query()->orderBy('sort_order')->orderBy('name');
+        $role = $this->roleFrom($request);
 
-        if ($request->filled('role') && in_array($request->role, ['pelatih', 'atlet'])) {
-            $query->where('role', $request->role);
-        }
-
-        $members = $query->paginate(10)->withQueryString();
+        $members = TeamMember::query()
+            ->where('role', $role)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.team.index', [
             'members'    => $members,
-            'activeRole' => $request->get('role', 'semua'),
+            'activeRole' => $role,
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return view('admin.team.create', [
-            'member' => new TeamMember(),
+            'member' => new TeamMember(['role' => $this->roleFrom($request)]),
         ]);
+    }
+
+    /**
+     * Field yang hanya berlaku untuk atlet (Kategori, Asal Sekolah)
+     * dikosongkan kalau datanya milik pelatih.
+     */
+    private function normalizeByRole(array $data): array
+    {
+        if (($data['role'] ?? null) === 'pelatih') {
+            $data['category'] = null;
+            $data['school_name'] = null;
+        }
+
+        return $data;
     }
 
     public function store(StoreTeamMemberRequest $request)
@@ -53,7 +74,7 @@ class TeamMemberController extends Controller
             $data['photo'] = ImageOptimizer::store($request->file('photo'), 'team');
         }
 
-        $member = TeamMember::create($data);
+        $member = TeamMember::create($this->normalizeByRole($data));
 
         return redirect()
             ->route('admin.team.edit', $member)
@@ -88,7 +109,7 @@ class TeamMemberController extends Controller
             $data['photo'] = ImageOptimizer::store($request->file('photo'), 'team');
         }
 
-        $teamMember->update($data);
+        $teamMember->update($this->normalizeByRole($data));
 
         return redirect()
             ->route('admin.team.edit', $teamMember)
@@ -104,10 +125,11 @@ class TeamMemberController extends Controller
         }
 
         $name = $teamMember->name;
+        $role = $teamMember->role;
         $teamMember->delete();
 
         return redirect()
-            ->route('admin.team.index')
+            ->route('admin.team.index', ['role' => $role])
             ->with('status', "Anggota tim \"{$name}\" berhasil dihapus.");
     }
 }

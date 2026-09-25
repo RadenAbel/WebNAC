@@ -34,9 +34,22 @@ class TeamController extends Controller
      * Halaman profil detail satu anggota tim (dipakai baik untuk atlet
      * maupun pelatih — kontennya menyesuaikan lewat $member->role di view).
      */
-    public function show(TeamMember $teamMember)
+    public function show(string $slug)
     {
-        abort_unless($teamMember->is_active, 404);
+        $teamMember = TeamMember::where('slug', $slug)->first();
+
+        // Alamat lama berbentuk angka (/our-team/12) — yang mungkin sudah
+        // terlanjur dibagikan atau tercatat di Google — dialihkan permanen
+        // (301) ke alamat baru berbentuk nama, jadi tidak ada link yang rusak.
+        if (! $teamMember && ctype_digit($slug)) {
+            $legacy = TeamMember::find($slug);
+
+            if ($legacy && $legacy->is_active && $legacy->slug) {
+                return redirect()->route('team.show', $legacy->slug, 301);
+            }
+        }
+
+        abort_unless($teamMember && $teamMember->is_active, 404);
 
         // Load relasi sekali di awal — dipakai berulang kali oleh accessor
         // medal_stats & personal_bests di model (menghindari N+1 query).

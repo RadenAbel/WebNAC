@@ -22,6 +22,7 @@ class StoreTeamMemberRequest extends FormRequest
             'photo_is_cutout' => ['nullable', 'boolean'],
             'role'   => ['required', 'in:pelatih,atlet'],
             'category' => ['nullable', 'string', 'in:Novato,Avance,Campeón'],
+            'school_name' => ['nullable', 'string', 'max:150'], // khusus atlet
             'swim_style'   => ['nullable', 'array'],
             'swim_style.*' => ['string', 'in:Gaya Bebas,Gaya Dada,Gaya Punggung,Gaya Kupu-Kupu,Gaya Ganti (Individual Medley),Serba Bisa (All-Round)'],
             'age'    => ['nullable', 'integer', 'min:1', 'max:100'],
@@ -40,7 +41,6 @@ class StoreTeamMemberRequest extends FormRequest
             'origin_city'        => ['nullable', 'string', 'max:100'],
             'years_experience'   => ['nullable', 'integer', 'min:0', 'max:80'],
             'total_medals'       => ['nullable', 'integer', 'min:0'],
-            'total_achievements' => ['nullable', 'integer', 'min:0'],
 
             'bio'        => ['nullable', 'string', 'max:2000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\PublicCache;
 use App\Models\SiteSetting;
+use App\Models\Facility;
 use App\Models\ManagementMember;
 use App\Models\TeamMember;
 
@@ -41,6 +42,10 @@ class AboutController extends Controller
         $managementMembers = PublicCache::models('about.management', ManagementMember::class, fn () => ManagementMember::active()->get());
         $managementTeam = $managementMembers->isNotEmpty() ? $managementMembers : null;
 
-        return view('about.index', compact('setting', 'aboutStats', 'managementTeam'));
+        // Fasilitas (dikelola di Admin → Fasilitas). Bagian Fasilitas di
+        // halaman hanya muncul kalau ada minimal satu fasilitas aktif.
+        $facilities = PublicCache::models('about.facilities', Facility::class, fn () => Facility::active()->ordered()->get());
+
+        return view('about.index', compact('setting', 'aboutStats', 'managementTeam', 'facilities'));
     }
 }

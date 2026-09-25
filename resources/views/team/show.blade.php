@@ -142,6 +142,12 @@
                         <span class="nac-profile-detail-item__label">Status di Klub</span>
                         <span class="nac-profile-detail-item__value">{{ $specialization }}</span>
                     </div>
+                    @if($member->role === 'atlet' && !empty($member->school_name))
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Asal Sekolah</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->school_name }}</span>
+                        </div>
+                    @endif
 
                     @if(!empty($member->whatsapp) || !empty($member->instagram_url) || !empty($member->facebook_url) || !empty($member->tiktok_url) || !empty($member->email))
                         <div class="nac-profile-detail-item">

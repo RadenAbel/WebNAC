@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use App\Models\Concerns\FlushesPublicCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,11 +30,11 @@ class TeamMember extends Model
         'join_date',
         'role',
         'category',
+        'school_name',
         'swim_style',
         'origin_city',
         'years_experience',
         'total_medals',
-        'total_achievements',
         'bio',
         'sort_order',
         'is_active',
@@ -49,7 +50,6 @@ class TeamMember extends Model
         'weight_kg'          => 'integer',
         'years_experience'   => 'integer',
         'total_medals'       => 'integer',
-        'total_achievements' => 'integer',
         'sort_order'         => 'integer',
     ];
 
@@ -206,6 +206,38 @@ class TeamMember extends Model
         })->values()->all();
     }
 
+
+    /**
+     * Slug = alamat profil publik (mis. /our-team/javiero-jesaya-lengkong).
+     * Dibuat otomatis saat anggota ditambahkan dan diperbarui kalau namanya
+     * diganti. Alamat lama berbentuk angka (/our-team/12) tetap dialihkan ke
+     * alamat baru oleh TeamController::show().
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (TeamMember $member) {
+            if (! $member->slug || $member->isDirty('name')) {
+                $member->slug = static::uniqueSlug($member->name, $member->id);
+            }
+        });
+    }
+
+    public static function uniqueSlug(?string $name, ?int $ignoreId = null): string
+    {
+        $base = Str::slug((string) $name) ?: 'anggota';
+        $slug = $base;
+        $i = 2;
+
+        // 'atlet' & 'pelatih' dipakai alamat halaman daftar tim
+        while (in_array($slug, ['atlet', 'pelatih'], true) || static::where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = "{$base}-{$i}";
+            $i++;
+        }
+
+        return $slug;
+    }
     /**
      * Scope: hanya pelatih
      */

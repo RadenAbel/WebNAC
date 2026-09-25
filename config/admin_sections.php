@@ -23,6 +23,7 @@ return [
     'pricing'       => 'Biaya Pendaftaran',
     'team'          => 'Tim (Pelatih/Atlet)',
     'management'    => 'Tim Manajemen',
+    'facilities'    => 'Fasilitas',
     'join-requests' => 'Pendaftaran',
     'settings'      => 'Pengaturan Situs',
 ];

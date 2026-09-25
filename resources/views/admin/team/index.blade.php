@@ -1,41 +1,33 @@
 @extends('admin.layouts.app')
 
-@section('admin_title', 'Tim')
+@section('admin_title', $activeRole === 'pelatih' ? 'Data Pelatih' : 'Data Atlet')
 
 @section('admin_content')
 
+    @php $roleName = $activeRole === 'pelatih' ? 'Pelatih' : 'Atlet'; @endphp
+
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
-            <h1 class="h4 mb-1">Tim (Pelatih &amp; Atlet)</h1>
+            <h1 class="h4 mb-1">Data {{ $roleName }}</h1>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">
-                Kelola profil, rekor waktu, dan pencapaian pelatih &amp; atlet.
+                {{ $activeRole === 'pelatih' ? 'Kelola profil dan lisensi pelatih.' : 'Kelola profil, rekor waktu, dan prestasi atlet.' }}
             </p>
         </div>
-        <a href="{{ route('admin.team.create') }}" class="btn nac-admin-btn">
-            <i class="bi bi-plus-lg"></i> Tambah Anggota
+        <a href="{{ route('admin.team.create', ['role' => $activeRole]) }}" class="btn nac-admin-btn">
+            <i class="bi bi-plus-lg"></i> Tambah {{ $roleName }}
         </a>
     </div>
 
     @include('admin.partials.toast')
-
-    {{-- Filter peran --}}
-    <div class="btn-group mb-3" role="group">
-        <a href="{{ route('admin.team.index') }}"
-            class="btn btn-sm {{ $activeRole === 'semua' ? 'btn-dark' : 'btn-outline-secondary' }}">Semua</a>
-        <a href="{{ route('admin.team.index', ['role' => 'pelatih']) }}"
-            class="btn btn-sm {{ $activeRole === 'pelatih' ? 'btn-dark' : 'btn-outline-secondary' }}">Pelatih</a>
-        <a href="{{ route('admin.team.index', ['role' => 'atlet']) }}"
-            class="btn btn-sm {{ $activeRole === 'atlet' ? 'btn-dark' : 'btn-outline-secondary' }}">Atlet</a>
-    </div>
 
     <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
         @if ($members->isEmpty())
             <div class="nac-admin-empty">
                 <div class="nac-admin-empty__icon"><i class="bi bi-people"></i></div>
                 <p class="nac-admin-empty__title">Belum ada data</p>
-                <p class="nac-admin-empty__desc">Tambahkan pelatih atau atlet pertama untuk mulai.</p>
-                <a href="{{ route('admin.team.create') }}" class="btn nac-admin-btn">
-                    <i class="bi bi-plus-lg"></i> Tambah Anggota
+                <p class="nac-admin-empty__desc">Tambahkan {{ strtolower($roleName) }} pertama untuk mulai.</p>
+                <a href="{{ route('admin.team.create', ['role' => $activeRole]) }}" class="btn nac-admin-btn">
+                    <i class="bi bi-plus-lg"></i> Tambah {{ $roleName }}
                 </a>
             </div>
         @else
@@ -105,9 +97,9 @@
                 <div class="nac-admin-empty">
                     <div class="nac-admin-empty__icon"><i class="bi bi-people"></i></div>
                     <p class="nac-admin-empty__title">Belum ada data</p>
-                    <p class="nac-admin-empty__desc">Tambahkan pelatih atau atlet pertama untuk mulai.</p>
-                    <a href="{{ route('admin.team.create') }}" class="btn nac-admin-btn">
-                        <i class="bi bi-plus-lg"></i> Tambah Anggota
+                    <p class="nac-admin-empty__desc">Tambahkan {{ strtolower($roleName) }} pertama untuk mulai.</p>
+                    <a href="{{ route('admin.team.create', ['role' => $activeRole]) }}" class="btn nac-admin-btn">
+                        <i class="bi bi-plus-lg"></i> Tambah {{ $roleName }}
                     </a>
                 </div>
             </div>

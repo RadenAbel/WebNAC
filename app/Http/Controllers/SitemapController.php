@@ -26,9 +26,9 @@ class SitemapController extends Controller
                 ['loc' => route('gallery.index'), 'changefreq' => 'weekly',  'priority' => '0.6'],
             ];
 
-            foreach (TeamMember::active()->get(['id', 'updated_at']) as $member) {
+            foreach (TeamMember::active()->whereNotNull('slug')->get(['id', 'slug', 'updated_at']) as $member) {
                 $urls[] = [
-                    'loc'        => route('team.show', $member),
+                    'loc'        => route('team.show', $member->slug),
                     'lastmod'    => $member->updated_at?->toAtomString(),
                     'changefreq' => 'monthly',
                     'priority'   => '0.6',

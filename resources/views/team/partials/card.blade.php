@@ -2,10 +2,10 @@
     $isCoach   = $member->role === 'pelatih';
     $roleLabel = $isCoach ? 'Pelatih' : 'Atlet';
 
-    // Mengarah ke route('team.show', ...) — sesuai routes/web.php kamu
-    // (path: /our-team/{teamMember}). Route model binding pakai id, jadi
-    // $member->id selalu aman dipakai di sini.
-    $detailUrl = $member->url ?? route('team.show', $member->id);
+    // Alamat profil berbentuk nama (slug), mis. /our-team/javiero-jesaya-lengkong.
+    // Cadangan ke id cuma untuk jaga-jaga kalau slug belum terisi — alamat
+    // berbentuk angka itu otomatis dialihkan ke alamat nama oleh TeamController.
+    $detailUrl = $member->url ?? route('team.show', $member->slug ?: $member->id);
 @endphp
 
 <a href="{{ $detailUrl }}" class="nac-team-card" aria-label="Lihat profil {{ $member->name }} ({{ $roleLabel }})">

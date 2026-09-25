@@ -1,3 +1,8 @@
+@php
+    // Peran form ini: dari data yang sedang diedit, atau dari menu yang dibuka (?role=)
+    $formRole = old('role', $member->role ?: (request('role') === 'pelatih' ? 'pelatih' : 'atlet'));
+@endphp
+
 @csrf
 
 <div class="row g-4">
@@ -128,16 +133,10 @@
                     @error('join_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Peran <span class="text-danger">*</span></label>
-                    <select name="role" class="form-select @error('role') is-invalid @enderror" required>
-                        <option value="">— Pilih —</option>
-                        <option value="pelatih" {{ old('role', $member->role) === 'pelatih' ? 'selected' : '' }}>Pelatih</option>
-                        <option value="atlet" {{ old('role', $member->role) === 'atlet' ? 'selected' : '' }}>Atlet</option>
-                    </select>
-                    @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
+                {{-- Peran ditentukan dari menu yang dibuka (Atlet / Pelatih), tidak dipilih manual --}}
+                <input type="hidden" name="role" value="{{ $formRole }}">
 
+                @if ($formRole === 'atlet')
                 <div class="col-md-6">
                     <label class="form-label">Kategori</label>
                     <select name="category" class="form-select @error('category') is-invalid @enderror">
@@ -147,6 +146,31 @@
                         <option value="Campeón" {{ old('category', $member->category) === 'Campeón' ? 'selected' : '' }}>Campeón</option>
                     </select>
                     @error('category') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Asal Sekolah</label>
+                    <input type="text" name="school_name" class="form-control @error('school_name') is-invalid @enderror"
+                        value="{{ old('school_name', $member->school_name) }}" placeholder="SD Negeri 001 Sangatta Utara">
+                    @error('school_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Tampil di halaman profil atlet, di bawah "Status di Klub".</small>
+                </div>
+                @endif
+
+                <div class="col-md-6">
+                    <label class="form-label">Gaya Spesialis</label>
+                    <div class="border rounded-3 p-3" style="background:#fafbfc;">
+                        @php $selectedStyles = old('swim_style', $member->swim_style_array ?? []); @endphp
+                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
+                            <div class="form-check">
+                                <input type="checkbox" name="swim_style[]" value="{{ $style }}" class="form-check-input" id="style{{ $loop->index }}"
+                                    {{ in_array($style, $selectedStyles) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="style{{ $loop->index }}" style="font-size:0.88rem;">{{ $style }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <small class="text-secondary">Bisa pilih lebih dari satu.</small>
+                    @error('swim_style') <div class="text-danger" style="font-size:0.8rem;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
@@ -172,29 +196,6 @@
                     @error('total_medals') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Total Prestasi</label>
-                    <input type="number" name="total_achievements" min="0"
-                        class="form-control @error('total_achievements') is-invalid @enderror"
-                        value="{{ old('total_achievements', $member->total_achievements ?? 0) }}">
-                    @error('total_achievements') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Gaya Spesialis</label>
-                    <div class="border rounded-3 p-3" style="background:#fafbfc;">
-                        @php $selectedStyles = old('swim_style', $member->swim_style_array ?? []); @endphp
-                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
-                            <div class="form-check">
-                                <input type="checkbox" name="swim_style[]" value="{{ $style }}" class="form-check-input" id="style{{ $loop->index }}"
-                                    {{ in_array($style, $selectedStyles) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="style{{ $loop->index }}" style="font-size:0.88rem;">{{ $style }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                    <small class="text-secondary">Bisa pilih lebih dari satu.</small>
-                    @error('swim_style') <div class="text-danger" style="font-size:0.8rem;">{{ $message }}</div> @enderror
-                </div>
             </div>
         </div>
 

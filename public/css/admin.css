@@ -180,7 +180,7 @@ body {
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow-y: auto;
+  overflow: hidden; /* yang menggulir cuma daftar menu, lihat .nac-admin-nav */
 }
 
 .nac-admin-sidebar__brand {
@@ -226,7 +226,23 @@ body {
   flex-direction: column;
   gap: 0.15rem;
   flex-grow: 1;
+  /* Hanya daftar menu yang bisa digulir — logo (brand) tetap di atas dan
+     tombol Keluar tetap di bawah. Scrollbar disembunyikan, tapi menu tetap
+     bisa digulir pakai roda mouse, touchpad, atau sentuhan. */
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* Edge lama */
 }
+.nac-admin-nav::-webkit-scrollbar { display: none; } /* Chrome, Edge, Safari */
+/* WAJIB: item menu tidak boleh menyusut. Tanpa ini, begitu tinggi daftar
+   menu dibatasi, browser memampatkan semua item supaya muat (menu jadi
+   terjepit) alih-alih memunculkan area yang bisa digulir. */
+.nac-admin-nav > *,
+.nac-admin-nav__sub > * { flex-shrink: 0; }
+.nac-admin-sidebar__brand,
+.nac-admin-sidebar__footer { flex-shrink: 0; }
 
 .nac-admin-nav a,
 .nac-admin-nav__item {
@@ -1160,6 +1176,10 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   }
   .nac-admin-nav {
     flex-direction: column;
+    /* Matikan pindah-baris dari tata letak menu horizontal di atas — kalau
+       tidak, menu yang tidak muat dilempar ke kolom kedua di kanan, bukan
+       bisa digulir. */
+    flex-wrap: nowrap;
   }
   .nac-admin-nav__group {
     display: block;
@@ -1382,3 +1402,42 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   background-position: center;
   vertical-align: middle;
 }
+
+/* ==========================================================================
+   DROPDOWN MENU SIDEBAR (Tim > Atlet / Pelatih)
+   Tombol induk memakai class .nac-admin-nav__item, jadi gaya dasar, mode
+   sidebar diciutkan, dan tampilan HP otomatis sama dengan menu lain.
+   ========================================================================== */
+.nac-admin-nav__toggle {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+.nac-admin-nav__toggle:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--adm-white);
+}
+.nac-admin-nav__toggle.is-active { color: var(--adm-aqua); }
+.nac-admin-nav__toggle .nac-admin-nav__chevron {
+  margin-left: auto;
+  width: auto;
+  font-size: 0.72rem;
+  transition: transform 0.2s ease;
+}
+.nac-admin-nav__dropdown.is-open .nac-admin-nav__chevron { transform: rotate(180deg); }
+.nac-admin-nav__sub {
+  display: none;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.15rem;
+  padding-left: 1.1rem;
+}
+.nac-admin-nav__dropdown.is-open .nac-admin-nav__sub { display: flex; }
+
+/* Sidebar diciutkan (ikon saja): tombol induk disembunyikan, ikon Atlet &
+   Pelatih langsung tampil supaya tetap bisa diklik tanpa membuka dropdown. */
+body.nac-sidebar-collapsed .nac-admin-nav__toggle { display: none; }
+body.nac-sidebar-collapsed .nac-admin-nav__sub { display: flex; padding-left: 0; margin-top: 0; }
