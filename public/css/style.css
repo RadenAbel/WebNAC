@@ -16,9 +16,9 @@
   --nac-gradient-hero: linear-gradient(160deg, #0A0E14 0%, #0F2438 45%, #144C74 75%, #1E6FA8 100%);
   --nac-gradient-accent: linear-gradient(90deg, var(--nac-aqua) 0%, var(--nac-deep-aqua) 100%);
 
-  --nac-font-display: 'Archivo Black', 'Arial Black', sans-serif;
-  --nac-font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --nac-font-mono: 'Roboto Mono', monospace;
+  --nac-font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nac-font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nac-font-mono: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --nac-radius: 16px;
   --nac-shadow: 0 20px 50px -20px rgba(10, 14, 20, 0.35);
@@ -205,13 +205,21 @@ a { text-decoration: none; }
   display: none; /* matikan caret bawaan Bootstrap — ketiban efek underline ::after milik nav-link, jadi tak pernah kelihatan */
 }
 .nac-dropdown-caret {
+  display: inline-block; /* wajib: rotasi (transform) tidak berlaku di elemen inline */
   font-size: 0.7rem;
   margin-left: 0.3rem;
   transition: transform 0.2s ease;
   vertical-align: 0.05em;
 }
-.nac-dropdown-toggle[aria-expanded="true"] .nac-dropdown-caret {
+.nac-dropdown-toggle[aria-expanded="true"] .nac-dropdown-caret,
+.nac-dropdown-toggle.show .nac-dropdown-caret {
   transform: rotate(180deg);
+}
+/* Cincin fokus biru bawaan Bootstrap di judul menu dropdown: disembunyikan
+   untuk klik/sorot mouse, tetap tampil saat berpindah pakai keyboard (Tab). */
+.navbar-nav .nac-dropdown-toggle:focus:not(:focus-visible) {
+  box-shadow: none;
+  outline: none;
 }
 
 /* ---------- Dropdown "Our Team" (Atlet/Pelatih) ---------- */
@@ -300,7 +308,7 @@ a { text-decoration: none; }
   padding: 1rem 0;
 }
 .nac-join-card__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   color: var(--nac-ink);
   margin: 0.5rem 0 0;
@@ -419,7 +427,7 @@ select.nac-join-input::-ms-expand {
   .nac-join-info { padding: 1.75rem 1.25rem; }
 }
 .nac-join-info__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.5rem, 3vw, 2rem);
   color: var(--nac-ink);
   margin-bottom: 1rem;
@@ -531,7 +539,7 @@ select.nac-join-input::-ms-expand {
   justify-content: center;
   width: 140px;
   height: 140px;
-  border-radius: 50%;
+  border-radius: 16px; /* kotak (sebelumnya bulat) */
   border: 2px dashed #dfe4e8;
   background: var(--nac-mist);
   overflow: hidden;
@@ -792,7 +800,7 @@ select.nac-join-input::-ms-expand {
 }
 .nac-dot-pattern > .container { position: relative; z-index: 1; }
 .nac-hero__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.08;
   margin-bottom: 1.25rem;
@@ -980,7 +988,7 @@ select.nac-join-input::-ms-expand {
   max-width: 40rem;
 }
 .nac-section__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.6rem, 3.2vw, 2.3rem);
   color: var(--nac-ink);
 }
@@ -1410,7 +1418,7 @@ select.nac-join-input::-ms-expand {
 }
 .nac-page-header .nac-breadcrumb { justify-content: center; margin-bottom: 1.75rem; }
 .nac-page-header__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2rem, 4.5vw, 3rem);
   margin-bottom: 0.75rem;
 }
@@ -1900,7 +1908,7 @@ select.nac-join-input::-ms-expand {
   padding: 3rem 2.5rem;
 }
 .nac-pool-highlight__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.6rem, 3vw, 2.35rem);
   color: var(--nac-white);
   margin-bottom: 1.1rem;
@@ -2721,7 +2729,7 @@ select.nac-join-input::-ms-expand {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .nac-footer__map-title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.4rem, 2.6vw, 1.9rem);
   color: var(--nac-white);
   margin-bottom: 0.75rem;
@@ -2872,7 +2880,7 @@ select.nac-join-input::-ms-expand {
 .nac-eyebrow--light { color: var(--nac-aqua); }
 
 .nac-profile-name {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2rem, 4.2vw, 3rem);
   line-height: 1.1;
   margin: 0.5rem 0 0.75rem;
@@ -3043,7 +3051,7 @@ select.nac-join-input::-ms-expand {
   padding: 4.5rem 0;
 }
 .nac-cta-band__title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(1.5rem, 3vw, 2.1rem);
   margin-bottom: 0.75rem;
 }
@@ -3292,7 +3300,7 @@ select.nac-join-input::-ms-expand {
 
 .nac-profile-card__info { min-width: 0; }
 .nac-profile-card__name {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   line-height: 1.05;
   color: var(--nac-ink);
@@ -3405,7 +3413,7 @@ select.nac-join-input::-ms-expand {
 }
 .nac-medal-total-num {
   display: block;
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2.4rem, 3.2vw, 3rem);
   color: var(--nac-ink);
   line-height: 1.15;
@@ -3851,7 +3859,7 @@ select.nac-join-input::-ms-expand {
 }
 .nac-desc-offcanvas .offcanvas-header { padding: 1.75rem 1.75rem 0.5rem; }
 .nac-desc-offcanvas .offcanvas-title {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: 1.4rem;
 }
 .nac-desc-offcanvas .offcanvas-body { padding: 1rem 1.75rem 1.75rem; }
@@ -3992,7 +4000,7 @@ select.nac-join-input::-ms-expand {
   margin-bottom: 0;
 }
 .nac-event-month__label {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: 1.5rem;
   color: var(--nac-ink);
   margin: 0 0 1.25rem;
@@ -4447,7 +4455,7 @@ select.nac-join-input::-ms-expand {
   min-height: 0;
 }
 .nac-facility-showcase__name {
-  font-family: var(--nac-font-display);
+  font-family: var(--nac-font-display); font-weight: 800;
   font-size: 1.5rem;
   color: var(--nac-ink);
   margin-bottom: 0.5rem;
@@ -4518,4 +4526,167 @@ select.nac-join-input::-ms-expand {
 }
 @media (prefers-reduced-motion: reduce) {
   .nac-facility-showcase__panel.is-active { animation: none; }
+}
+
+/* ==========================================================================
+   KELAS NAC SWIM SCHOOL (halaman Tentang Kami) — gaya "Shared Care" eys.care:
+   judul & pengantar di kiri tetap diam saat digulir, kartu kelas di kanan
+   menumpuk satu per satu. Kartu terakhir = Catatan Penting.
+   ========================================================================== */
+.nac-classes-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+.nac-classes-stack__intro .nac-join-info__lead { margin-bottom: 0; }
+.nac-classes-stack__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.nac-classes-stack__card {
+  background: var(--nac-white);
+  border-radius: var(--nac-radius);
+  padding: 2rem 2rem 2.1rem;
+  box-shadow: 0 -10px 30px -12px rgba(10, 14, 20, 0.35), 0 24px 48px -24px rgba(10, 14, 20, 0.55);
+}
+.nac-classes-stack__card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+.nac-classes-stack__step {
+  font-family: var(--nac-font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(10, 14, 20, 0.18);
+}
+/* Badge di dalam kartu putih: warna disesuaikan (aturan lama untuk section
+   berfoto membuat badge transparan putih — tidak terbaca di atas kartu putih). */
+.nac-section--photo-bg .nac-classes-stack__card .nac-join-class__badge {
+  background: rgba(127, 216, 255, 0.18);
+  color: var(--nac-deep-aqua);
+  margin-bottom: 0;
+}
+.nac-classes-stack__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--nac-ink);
+  margin-bottom: 0.6rem;
+}
+.nac-classes-stack__desc {
+  color: var(--nac-steel);
+  line-height: 1.75;
+  margin-bottom: 0;
+}
+
+/* Kartu Catatan Penting */
+.nac-classes-stack__card--notes {
+  border-left: 5px solid var(--nac-gold);
+}
+.nac-classes-stack__notes-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(240, 180, 41, 0.16);
+  color: var(--nac-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+.nac-classes-stack__card--notes .nac-classes-stack__desc { margin-bottom: 0.9rem; }
+.nac-classes-stack__notes {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--nac-graphite);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+.nac-classes-stack__notes li + li { margin-top: 0.5rem; }
+
+/* Desktop: efek sticky & tumpukan kartu */
+@media (min-width: 992px) {
+  .nac-classes-stack__intro {
+    position: sticky;
+    top: 7rem; /* di bawah navbar yang melayang */
+  }
+  .nac-classes-stack__card {
+    position: sticky;
+    /* tiap kartu berhenti sedikit lebih bawah dari kartu sebelumnya,
+       sehingga tepi atas kartu-kartu sebelumnya tetap terlihat bertumpuk */
+    top: calc(7rem + var(--stack-index, 0) * 1.25rem);
+  }
+}
+
+/* Tablet & HP: satu kolom biasa, tanpa efek sticky */
+@media (max-width: 991.98px) {
+  .nac-classes-stack { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .nac-classes-stack__card { padding: 1.6rem 1.4rem 1.7rem; }
+  .nac-classes-stack__title { font-size: 1.2rem; }
+}
+
+/* ==========================================================================
+   BIAYA PENDAFTARAN (Beranda) — tampil sebagai teks biasa, bukan kartu.
+   Tiap paket dipisah garis tipis: garis kiri di desktop, garis atas di HP.
+   ========================================================================== */
+.nac-price-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 2rem;
+}
+.nac-price-text h5 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--nac-ink);
+  margin-bottom: 0.35rem;
+}
+.nac-price-text__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nac-deep-aqua);
+  margin-bottom: 0.5rem;
+}
+.nac-price-text .nac-price-card__price { margin: 0.75rem 0 1rem; }
+.nac-price-text .nac-price-card__list { margin-bottom: 0; }
+@media (min-width: 992px) {
+  .nac-price-text-col:first-child .nac-price-text { padding-left: 0; }
+  .nac-price-text-col:last-child .nac-price-text { padding-right: 0; }
+  .nac-price-text-col + .nac-price-text-col .nac-price-text {
+    border-left: 1px solid rgba(10, 14, 20, 0.12);
+  }
+}
+@media (max-width: 991.98px) {
+  .nac-price-text { padding: 1.75rem 0; }
+  .nac-price-text-col:first-child .nac-price-text { padding-top: 0; }
+  .nac-price-text-col + .nac-price-text-col .nac-price-text {
+    border-top: 1px solid rgba(10, 14, 20, 0.12);
+  }
+}
+
+/* Tombol "Kirim Pendaftaran" (form Join Us) — awalnya putih (dengan
+   garis tepi supaya tetap terlihat di atas latar terang), berubah biru
+   saat disorot. */
+.nac-join-submit.nac-btn--primary {
+  background: var(--nac-white);
+  color: var(--nac-ink);
+  border: 1.5px solid rgba(10, 14, 20, 0.15);
+}
+.nac-join-submit.nac-btn--primary:hover,
+.nac-join-submit.nac-btn--primary:focus-visible {
+  background: var(--nac-deep-aqua);
+  color: var(--nac-white);
+  border-color: var(--nac-deep-aqua);
+  box-shadow: 0 12px 24px -10px rgba(30, 111, 168, 0.55);
 }

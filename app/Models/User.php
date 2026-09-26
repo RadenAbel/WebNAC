@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password', 'role', 'permissions'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'two_factor_secret', 'two_factor_recovery_codes'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -28,6 +28,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'permissions' => 'array',
+            // Rahasia 2FA & kode pemulihan disimpan terenkripsi (pakai APP_KEY)
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted:array',
+            'two_factor_confirmed_at' => 'datetime',
+            'two_factor_last_used' => 'integer',
         ];
     }
 
@@ -64,5 +69,14 @@ class User extends Authenticatable
         }
 
         return in_array($section, $this->permissions);
+    }
+
+    /**
+     * Verifikasi dua langkah dianggap aktif hanya kalau sudah dikonfirmasi
+     * (admin berhasil memasukkan kode pertama dari aplikasinya).
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return ! empty($this->two_factor_secret) && ! is_null($this->two_factor_confirmed_at);
     }
 }

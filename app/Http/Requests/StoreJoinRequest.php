@@ -21,7 +21,7 @@ class StoreJoinRequest extends FormRequest
             // total 9-13 digit setelah kode awal — nolak asal-asalan kayak "123" atau teks acak.
             'whatsapp'   => ['required', 'string', 'max:20', 'regex:/^(\+?62|0)8[0-9]{8,12}$/'],
             'category'   => ['required', 'string', 'max:100'],
-            'photo'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'], // maks 2MB
+            'photo'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'], // maks 8MB (otomatis dikompres)
 
             // Honeypot anti-bot: field ini SENGAJA disembunyikan lewat CSS di
             // form (bukan type="hidden", karena bot spam biasanya sudah pintar
@@ -45,7 +45,7 @@ class StoreJoinRequest extends FormRequest
             'category.required'   => 'Silakan pilih kategori kelas yang diminati.',
             'photo.image'         => 'File harus berupa gambar.',
             'photo.mimes'         => 'Format foto harus JPG, PNG, atau WEBP.',
-            'photo.max'           => 'Ukuran foto maksimal 2MB.',
+            'photo.max'           => 'Ukuran foto maksimal 8MB.',
             'website.prohibited'  => 'Terjadi kesalahan saat mengirim formulir. Silakan coba lagi.',
         ];
     }

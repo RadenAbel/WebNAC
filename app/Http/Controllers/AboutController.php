@@ -6,6 +6,8 @@ use App\Support\PublicCache;
 use App\Models\SiteSetting;
 use App\Models\Facility;
 use App\Models\ManagementMember;
+use App\Models\PricingPlan;
+use App\Models\Schedule;
 use App\Models\TeamMember;
 
 class AboutController extends Controller
@@ -46,6 +48,10 @@ class AboutController extends Controller
         // halaman hanya muncul kalau ada minimal satu fasilitas aktif.
         $facilities = PublicCache::models('about.facilities', Facility::class, fn () => Facility::active()->ordered()->get());
 
-        return view('about.index', compact('setting', 'aboutStats', 'managementTeam', 'facilities'));
+        // Biaya pendaftaran & jadwal latihan (dipindah dari Beranda)
+        $pricingPlans = PublicCache::models('about.pricing', PricingPlan::class, fn () => PricingPlan::active()->ordered()->get());
+        $schedules    = PublicCache::models('about.schedules', Schedule::class, fn () => Schedule::active()->get());
+
+        return view('about.index', compact('setting', 'aboutStats', 'managementTeam', 'facilities', 'pricingPlans', 'schedules'));
     }
 }

@@ -15,7 +15,7 @@ class StoreGalleryRequest extends FormRequest
     {
         return [
             'type'       => ['required', 'in:photo,video'],
-            'image'      => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'image'      => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'youtube_url' => [
                 'required_if:type,video', 'nullable', 'string', 'max:255',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',
@@ -33,7 +33,7 @@ class StoreGalleryRequest extends FormRequest
             'image.required_if'  => 'Foto galeri wajib diupload untuk jenis Foto.',
             'image.image'     => 'File harus berupa gambar.',
             'image.mimes'     => 'Format foto harus JPG, PNG, atau WEBP.',
-            'image.max'       => 'Ukuran foto maksimal 3MB.',
+            'image.max'       => 'Ukuran foto maksimal 8MB.',
             'youtube_url.required_if' => 'Link YouTube wajib diisi untuk jenis Video.',
             'youtube_url.regex'       => 'Link harus berupa URL YouTube yang valid (youtube.com atau youtu.be).',
         ];

@@ -11,24 +11,30 @@
         </button>
 
         <div class="collapse navbar-collapse" id="nacNavbarNav">
-            <ul class="navbar-nav mx-lg-auto align-items-lg-center gap-lg-1">
+            <ul class="navbar-nav ms-lg-auto me-lg-3 align-items-lg-center gap-lg-1">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#tentang">Tentang</a>
+                    <a class="nav-link" href="{{ route('home') }}#tentang">Siapa Kami</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#galeri">Galeri</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#biaya">Biaya</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#jadwal">Jadwal</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">Hasil</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nac-dropdown-toggle {{ request()->routeIs('gallery.*', 'event.*') ? 'active' : '' }}" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Galeri <i class="bi bi-chevron-down nac-dropdown-caret"></i>
+                    </a>
+                    <ul class="dropdown-menu nac-navbar__dropdown">
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}" href="{{ route('gallery.index') }}">
+                                <i class="bi bi-images me-2"></i>Foto &amp; Video
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">
+                                <i class="bi bi-trophy me-2"></i>Hasil Pertandingan
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle nac-dropdown-toggle {{ request()->routeIs('team.*') ? 'active' : '' }}" href="#" role="button"

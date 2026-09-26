@@ -16,7 +16,7 @@
         // ============================================================
         $heroStats = $heroStats ?? [
             ['icon' => 'fa-water',          'num' => '2',   'unit' => null, 'label' => 'Lintasan'],
-            ['icon' => 'fa-ruler-combined',  'num' => '50',  'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
+            ['icon' => 'fa-ruler-combined',  'num' => '25',  'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
             ['icon' => 'fa-certificate',     'num' => '3',   'unit' => null, 'label' => 'Pelatih Bersertifikat'],
             ['icon' => 'fa-users',           'num' => '20+', 'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
         ];
@@ -70,7 +70,7 @@
                     Dari langkah pertama di air hingga catatan waktu terbaikmu di lintasan.
                 </p>
                 <div class="d-flex flex-wrap gap-3 mt-4">
-                    <a href="#biaya" class="btn nac-btn nac-btn--primary btn-lg">Daftar Latihan</a>
+                    <a href="{{ route('about.index') }}#biaya" class="btn nac-btn nac-btn--primary btn-lg">Biaya Pendaftaran</a>
                     <a href="{{ route('team.athletes') }}" class="btn nac-btn nac-btn--outline btn-lg">Kenali Tim Kami</a>
                 </div>
             </div>
@@ -218,129 +218,6 @@
                 <button type="button" class="nac-gallery__arrow nac-gallery__arrow--next" data-gallery-next aria-label="Foto berikutnya">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ============ BIAYA PENDAFTARAN ============ --}}
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="biaya">
-    <div class="container">
-        <div class="nac-section__head" data-aos="fade-up">
-            <span class="nac-eyebrow">Biaya Pendaftaran</span>
-            <h2 class="nac-section__title">Pilih program sesuai levelmu.</h2>
-        </div>
-
-        <div class="row g-4 mt-3 justify-content-center">
-            @forelse ($pricingPlans as $i => $plan)
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ $i * 75 }}">
-                    <div class="nac-price-card @if($plan->is_highlighted) nac-price-card--highlight @endif">
-                        @if($plan->is_highlighted)
-                            <span class="nac-price-card__tag">Paling Diminati</span>
-                        @endif
-                        <h5>{{ $plan->title }}</h5>
-                        @if($plan->description)
-                            <p class="nac-price-card__desc">{{ $plan->description }}</p>
-                        @endif
-
-                        @if($plan->has_discount)
-                            <div class="nac-price-card__price-row">
-                                <span class="nac-price-card__price-old">{{ $plan->price_label }}</span>
-                                <span class="nac-price-card__discount-badge">-{{ $plan->discount_percent }}%</span>
-                            </div>
-                            <div class="nac-price-card__price">{{ $plan->discounted_price_label }}<span>/bulan</span></div>
-                        @else
-                            <div class="nac-price-card__price">{{ $plan->price_label }}<span>/bulan</span></div>
-                        @endif
-
-                        @if(count($plan->feature_list))
-                            <ul class="nac-price-card__list">
-                                @foreach($plan->feature_list as $feature)
-                                    <li><i class="fa-solid fa-check"></i> {{ $feature }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                <p class="text-center nac-muted">Belum ada paket harga yang ditampilkan.</p>
-            @endforelse
-        </div>
-    </div>
-</section>
-
-{{-- ============ JADWAL ============ --}}
-<section class="nac-section nac-section--photo-bg" id="jadwal" style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)), url('{{ $setting->classes_section_photo_url ?? 'https://picsum.photos/seed/nac-classes-bg/1920/1080' }}');">
-    <div class="container">
-        <div class="nac-section__head nac-fade-in">
-            <span class="nac-eyebrow">Jadwal Latihan</span>
-            <h2 class="nac-section__title">Atur waktu latihanmu.</h2>
-            <p class="nac-lead">Pilih kategori sesuai levelmu, lalu catat hari dan jamnya.</p>
-        </div>
-
-        @php
-            // Pemetaan ikon per kategori — cocokkan dengan nama kategori yang
-            // kamu pakai di tabel schedules. Tidak ketemu? otomatis pakai fa-water.
-            $scheduleIcon = function (string $category): string {
-                $c = strtolower($category);
-                return match(true) {
-                    str_contains($c, 'junior')  => 'fa-child-reaching',
-                    str_contains($c, 'senior')  => 'fa-person-swimming',
-                    str_contains($c, 'class a') || str_contains($c, 'kelas a') => 'fa-medal',
-                    str_contains($c, 'class b') || str_contains($c, 'kelas b') => 'fa-stopwatch',
-                    default => 'fa-water',
-                };
-            };
-        @endphp
-
-        <div class="nac-schedule-table-wrap mt-4 nac-fade-in nac-fade-in--delay">
-            <div class="table-responsive">
-                <table class="nac-schedule-table mb-0">
-                    <thead>
-                        <tr>
-                            <th>Kategori</th>
-                            <th>Hari</th>
-                            <th>Jam</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($schedules as $schedule)
-                            @php
-                                // Pecah "Senin, Rabu, Jumat" jadi badge per hari. Format
-                                // rentang seperti "Senin - Jumat" sengaja tidak dipecah.
-                                $days = array_values(array_filter(array_map('trim', preg_split('/[,\/]+/', $schedule->days_label))));
-                            @endphp
-                            <tr>
-                                <td data-label="Kategori">
-                                    <span class="nac-schedule-table__cat">
-                                        <span class="nac-schedule-table__icon">
-                                            <i class="fa-solid {{ $scheduleIcon($schedule->category) }}"></i>
-                                        </span>
-                                        {{ $schedule->category }}
-                                    </span>
-                                </td>
-                                <td data-label="Hari">
-                                    <div class="nac-schedule-table__days">
-                                        @foreach($days as $day)
-                                            <span class="nac-schedule-table__day">{{ $day }}</span>
-                                        @endforeach
-                                    </div>
-                                </td>
-                                <td data-label="Jam">
-                                    <span class="nac-schedule-table__time">
-                                        <i class="fa-regular fa-clock"></i> {{ $schedule->time_label }}
-                                    </span>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-secondary py-4">
-                                    Jadwal belum tersedia.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

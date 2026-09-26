@@ -13,7 +13,7 @@
                 <span class="nac-admin-form-section__icon"><i class="bi bi-image"></i></span>
                 <div>
                     <p class="nac-admin-form-section__title">Foto Profil</p>
-                    <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 2MB</p>
+                    <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 8MB (otomatis dikompres)</p>
                 </div>
             </div>
 
@@ -158,6 +158,22 @@
                 @endif
 
                 <div class="col-md-6">
+                    <label class="form-label">Gaya Spesialis</label>
+                    <div class="border rounded-3 p-3" style="background:#fafbfc;">
+                        @php $selectedStyles = old('swim_style', $member->swim_style_array ?? []); @endphp
+                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
+                            <div class="form-check">
+                                <input type="checkbox" name="swim_style[]" value="{{ $style }}" class="form-check-input" id="style{{ $loop->index }}"
+                                    {{ in_array($style, $selectedStyles) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="style{{ $loop->index }}" style="font-size:0.88rem;">{{ $style }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <small class="text-secondary">Bisa pilih lebih dari satu.</small>
+                    @error('swim_style') <div class="text-danger" style="font-size:0.8rem;">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
                     <label class="form-label">Asal Kota</label>
                     <input type="text" name="origin_city" class="form-control @error('origin_city') is-invalid @enderror"
                         value="{{ old('origin_city', $member->origin_city) }}" placeholder="Surabaya">
@@ -178,22 +194,6 @@
                         class="form-control @error('total_medals') is-invalid @enderror"
                         value="{{ old('total_medals', $member->total_medals ?? 0) }}">
                     @error('total_medals') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Gaya Spesialis</label>
-                    <div class="border rounded-3 p-3" style="background:#fafbfc;">
-                        @php $selectedStyles = old('swim_style', $member->swim_style_array ?? []); @endphp
-                        @foreach (['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-Kupu', 'Gaya Ganti (Individual Medley)', 'Serba Bisa (All-Round)'] as $style)
-                            <div class="form-check">
-                                <input type="checkbox" name="swim_style[]" value="{{ $style }}" class="form-check-input" id="style{{ $loop->index }}"
-                                    {{ in_array($style, $selectedStyles) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="style{{ $loop->index }}" style="font-size:0.88rem;">{{ $style }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                    <small class="text-secondary">Bisa pilih lebih dari satu.</small>
-                    @error('swim_style') <div class="text-danger" style="font-size:0.8rem;">{{ $message }}</div> @enderror
                 </div>
 
             </div>

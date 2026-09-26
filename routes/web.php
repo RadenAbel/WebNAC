@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\AccountPasswordController;
+use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Admin\ScheduleController as AdminScheduleController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\Admin\SliderController as AdminSliderController;
@@ -89,6 +90,13 @@ Route::middleware('guest')->prefix('admin')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'login'])
         ->middleware('throttle:5,1')
         ->name('admin.login.attempt');
+
+    // Langkah kedua login untuk akun yang memakai verifikasi dua langkah
+    Route::get('/login/two-factor', [AdminAuthController::class, 'showTwoFactorChallenge'])
+        ->name('admin.two-factor.challenge');
+    Route::post('/login/two-factor', [AdminAuthController::class, 'verifyTwoFactorChallenge'])
+        ->middleware('throttle:5,1')
+        ->name('admin.two-factor.verify');
 });
 
 // Sudah login — akses dashboard & fitur admin lainnya
@@ -107,6 +115,14 @@ Route::middleware(['auth', 'auth.session'])->prefix('admin')->name('admin.')->gr
     Route::put('/password', [AccountPasswordController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('password.update');
+
+    // Verifikasi dua langkah (2FA) akun sendiri — terbuka untuk semua akun
+    Route::get('/two-factor', [TwoFactorController::class, 'show'])->name('two-factor.show');
+    Route::middleware('throttle:6,1')->group(function () {
+        Route::post('/two-factor', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm');
+        Route::post('/two-factor/recovery-codes', [TwoFactorController::class, 'regenerateRecoveryCodes'])->name('two-factor.recovery-codes');
+        Route::delete('/two-factor', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    });
 
     // ============ Tim (Pelatih/Atlet) — butuh izin 'team' ============
     Route::middleware('permission:team')->group(function () {
@@ -212,5 +228,8 @@ Route::middleware(['auth', 'auth.session'])->prefix('admin')->name('admin.')->gr
         // Kelola Akun Admin — resource penuh KECUALI show (tidak perlu
         // halaman detail terpisah, cukup index + form edit).
         Route::resource('users', AdminUserController::class)->except(['show']);
+        // Reset 2FA akun lain (mis. admin kehilangan HP & kode pemulihan)
+        Route::delete('users/{user}/two-factor', [AdminUserController::class, 'resetTwoFactor'])
+            ->name('users.two-factor.reset');
     });
 });

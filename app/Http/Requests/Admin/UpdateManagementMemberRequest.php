@@ -9,7 +9,7 @@ class UpdateManagementMemberRequest extends StoreManagementMemberRequest
         $rules = parent::rules();
 
         // Saat update, foto boleh tidak diupload ulang (pakai foto lama)
-        $rules['photo'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'];
+        $rules['photo'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'];
 
         return $rules;
     }

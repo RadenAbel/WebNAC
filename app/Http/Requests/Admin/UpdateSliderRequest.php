@@ -9,7 +9,7 @@ class UpdateSliderRequest extends StoreSliderRequest
         $rules = parent::rules();
 
         // Saat update, foto boleh tidak diupload ulang (pakai foto lama)
-        $rules['image'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'];
+        $rules['image'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'];
 
         return $rules;
     }

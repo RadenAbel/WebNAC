@@ -33,7 +33,7 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--adm-graphite);
   -webkit-font-smoothing: antialiased;
 }
@@ -82,7 +82,7 @@ body {
 .nac-admin-login-mark {
   background: var(--adm-gradient);
   color: var(--adm-ink);
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
   font-size: 1.3rem;
   width: 68px;
   height: 68px;
@@ -135,6 +135,31 @@ body {
 .nac-admin-login-input-group:focus-within .input-group-text {
   border-color: var(--adm-deep-aqua);
   color: var(--adm-deep-aqua);
+}
+
+/* Tombol mata di input password halaman login — input di tengahnya jadi
+   tanpa sudut membulat, sudut kanan pindah ke tombol ini. */
+.nac-admin-login-input-group .form-control:not(:last-child) {
+  border-right: none;
+  border-radius: 0;
+}
+.nac-admin-login-eye {
+  background: var(--adm-white);
+  border: 1.5px solid var(--adm-border);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  color: var(--adm-steel);
+  padding: 0 0.85rem;
+}
+.nac-admin-login-eye:hover { color: var(--adm-ink); }
+.nac-admin-login-input-group:focus-within .nac-admin-login-eye { border-color: var(--adm-deep-aqua); }
+
+/* Kolom kode 6 digit di halaman verifikasi dua langkah */
+.nac-admin-otp-input {
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.35em;
+  text-align: center;
 }
 
 .nac-admin-login-remember {
@@ -199,7 +224,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
   font-size: 0.72rem;
   color: var(--adm-ink);
 }
@@ -450,7 +475,7 @@ body {
   margin-bottom: 0.6rem;
 }
 .nac-admin-stat-card__num {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 1.9rem;
   font-weight: 600;
   color: var(--adm-ink);

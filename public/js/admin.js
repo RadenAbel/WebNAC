@@ -185,3 +185,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// ============ Ikon mata di input password (semua halaman admin) ============
+// Tombol dengan atribut data-toggle-password="id-input" menampilkan /
+// menyembunyikan isi input password. Pakai event delegation supaya
+// otomatis berlaku juga untuk input yang ditambahkan belakangan.
+document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-toggle-password]');
+    if (!btn) return;
+    var input = document.getElementById(btn.getAttribute('data-toggle-password'));
+    if (!input) return;
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+    var icon = btn.querySelector('i');
+    if (icon) icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+});

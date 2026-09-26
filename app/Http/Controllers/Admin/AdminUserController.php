@@ -85,4 +85,23 @@ class AdminUserController extends Controller
             ->route('admin.users.index')
             ->with('status', "Akun {$name} berhasil dihapus.");
     }
+
+    /**
+     * Matikan verifikasi dua langkah akun lain — untuk admin yang kehilangan
+     * HP sekaligus kode pemulihannya. Admin itu bisa login dengan email &
+     * password saja, lalu mengaktifkan 2FA lagi dari HP barunya.
+     */
+    public function resetTwoFactor(User $user)
+    {
+        $user->forceFill([
+            'two_factor_secret'         => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at'   => null,
+            'two_factor_last_used'      => null,
+        ])->save();
+
+        return redirect()
+            ->route('admin.users.edit', $user)
+            ->with('status', "Verifikasi dua langkah untuk {$user->name} sudah direset.");
+    }
 }

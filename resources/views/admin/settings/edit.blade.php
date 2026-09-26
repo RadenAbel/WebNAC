@@ -39,7 +39,7 @@
                             onchange="document.getElementById('logoPreview').src = window.URL.createObjectURL(this.files[0])">
                         @error('logo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         <small class="text-secondary d-block mt-1" style="font-size:0.76rem;">
-                            Persegi disarankan. Maks 1MB.
+                            Persegi disarankan. Maks 4MB.
                         </small>
                     </div>
                 </div>

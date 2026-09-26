@@ -7,7 +7,7 @@
                 <span class="nac-admin-form-section__icon"><i class="bi bi-image"></i></span>
                 <div>
                     <p class="nac-admin-form-section__title">Foto Hasil Pertandingan @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
-                    <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 3MB</p>
+                    <p class="nac-admin-form-section__desc">JPG/PNG/WEBP, maks 8MB (otomatis dikompres)</p>
                 </div>
             </div>
 

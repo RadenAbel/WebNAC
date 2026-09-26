@@ -168,4 +168,59 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    // ============ Dropdown navbar terbuka saat disorot kursor ============
+    // Khusus layar desktop yang memakai mouse. Di HP/tablet (layar sentuh)
+    // tetap buka-tutup dengan ketukan seperti biasa.
+    var hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 992px)');
+
+    if (typeof bootstrap !== 'undefined') {
+        var navDropdowns = [];
+
+        document.querySelectorAll('.navbar-nav .dropdown').forEach(function (item) {
+            var toggle = item.querySelector('[data-bs-toggle="dropdown"]');
+            if (!toggle) return;
+
+            var dropdown = bootstrap.Dropdown.getOrCreateInstance(toggle);
+            var closeTimer = null;
+            navDropdowns.push({ item: item, dropdown: dropdown, cancel: function () { clearTimeout(closeTimer); } });
+
+            item.addEventListener('mouseenter', function () {
+                if (!hoverQuery.matches) return;
+                clearTimeout(closeTimer);
+                // Tutup dropdown lain SEKETIKA (tanpa jeda) supaya tidak
+                // terlihat menumpuk saat pindah dari satu menu ke menu lain.
+                navDropdowns.forEach(function (other) {
+                    if (other.item !== item) {
+                        other.cancel();
+                        other.dropdown.hide();
+                    }
+                });
+                dropdown.show();
+                // Bootstrap memberi fokus ke judul menu saat dropdown dibuka,
+                // yang memunculkan garis biru (cincin fokus). Untuk pengguna
+                // mouse tidak diperlukan, jadi fokusnya dilepas.
+                toggle.blur();
+            });
+
+            // Jeda sangat singkat sebelum menutup — memberi waktu kursor melewati
+            // celah kecil antara judul menu dan kotak dropdown di bawahnya.
+            item.addEventListener('mouseleave', function () {
+                if (!hoverQuery.matches) return;
+                closeTimer = setTimeout(function () { dropdown.hide(); }, 120);
+            });
+
+            // Di desktop, klik judul menu tidak lagi menutup dropdown yang sudah
+            // terbuka karena disorot (supaya tidak 'berkedip' saat diklik).
+            toggle.addEventListener('click', function (e) {
+                if (!hoverQuery.matches) return;
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.show();
+                // e.detail > 0 = klik mouse. Kalau dibuka lewat keyboard (Enter),
+                // fokus & cincinnya dibiarkan supaya pengguna keyboard tahu posisinya.
+                if (e.detail > 0) toggle.blur();
+            }, true);
+        });
+    }
 });

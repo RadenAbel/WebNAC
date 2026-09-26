@@ -23,7 +23,7 @@
 
             {{-- ---------- Panel: Foto ---------- --}}
             <div id="photoPanel" style="{{ $isVideo ? 'display:none;' : '' }}">
-                <p class="nac-admin-form-section__desc mb-2">Rasio 16:9 disarankan, maks 3MB</p>
+                <p class="nac-admin-form-section__desc mb-2">Rasio 16:9 disarankan, maks 8MB (otomatis dikompres)</p>
                 <div class="nac-admin-dropzone" data-dropzone>
                     <img
                         src="{{ $slider->exists && $slider->image ? $slider->image_url : '' }}"

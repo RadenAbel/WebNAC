@@ -74,18 +74,3 @@
     </div>
 
 @endsection
-
-@push('scripts')
-<script>
-    document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var input = document.getElementById(btn.getAttribute('data-toggle-password'));
-            var icon = btn.querySelector('i');
-            if (!input) return;
-            var show = input.type === 'password';
-            input.type = show ? 'text' : 'password';
-            icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
-        });
-    });
-</script>
-@endpush

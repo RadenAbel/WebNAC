@@ -20,8 +20,11 @@
             Password
             @if($user->exists) <span class="text-secondary fw-normal">(kosongkan kalau tidak diubah)</span> @else <span class="text-danger">*</span> @endif
         </label>
-        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
-        @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        <div class="input-group has-validation">
+            <input type="password" name="password" id="userPassword" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
+            <button type="button" class="btn btn-outline-secondary" data-toggle-password="userPassword" aria-label="Tampilkan/sembunyikan password"><i class="bi bi-eye"></i></button>
+            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
     </div>
 
     <div class="col-md-6">
@@ -29,7 +32,10 @@
             Konfirmasi Password
             @if(!$user->exists) <span class="text-danger">*</span> @endif
         </label>
-        <input type="password" name="password_confirmation" class="form-control" autocomplete="new-password">
+        <div class="input-group">
+            <input type="password" name="password_confirmation" id="userPasswordConfirm" class="form-control" autocomplete="new-password">
+            <button type="button" class="btn btn-outline-secondary" data-toggle-password="userPasswordConfirm" aria-label="Tampilkan/sembunyikan konfirmasi password"><i class="bi bi-eye"></i></button>
+        </div>
     </div>
 
     <div class="col-md-6">

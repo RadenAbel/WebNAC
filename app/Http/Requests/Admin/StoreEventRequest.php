@@ -15,7 +15,7 @@ class StoreEventRequest extends FormRequest
     {
         return [
             'title'       => ['required', 'string', 'max:200'],
-            'photo'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'photo'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'event_date'  => ['required', 'date'],
             'description' => ['nullable', 'string', 'max:2000'],
             'pdf_report'  => ['required', 'file', 'mimes:pdf', 'max:10240'], // maks 10MB
@@ -30,7 +30,7 @@ class StoreEventRequest extends FormRequest
             'title.required'      => 'Nama acara wajib diisi.',
             'photo.required'      => 'Foto acara wajib diupload.',
             'photo.mimes'         => 'Format foto harus JPG, PNG, atau WEBP.',
-            'photo.max'           => 'Ukuran foto maksimal 3MB.',
+            'photo.max'           => 'Ukuran foto maksimal 8MB.',
             'event_date.required' => 'Tanggal acara wajib diisi.',
             'pdf_report.required' => 'Laporan PDF wajib diupload.',
             'pdf_report.mimes'    => 'Laporan harus berformat PDF.',

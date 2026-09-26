@@ -18,7 +18,7 @@ class StoreManagementMemberRequest extends FormRequest
             'position'   => ['required', 'string', 'max:150'],
             // Wajib saat tambah baru; di UpdateManagementMemberRequest
             // di-override jadi 'nullable' (foto lama boleh dipertahankan).
-            'photo'      => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'photo'      => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'short_bio'  => ['nullable', 'string', 'max:500'],
             'full_bio'   => ['nullable', 'string', 'max:20000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
@@ -34,7 +34,7 @@ class StoreManagementMemberRequest extends FormRequest
             'photo.required'    => 'Foto wajib diupload.',
             'photo.image'       => 'File harus berupa gambar.',
             'photo.mimes'       => 'Format foto harus JPG, PNG, atau WEBP.',
-            'photo.max'         => 'Ukuran foto maksimal 3MB.',
+            'photo.max'         => 'Ukuran foto maksimal 8MB.',
         ];
     }
 }

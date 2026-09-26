@@ -18,7 +18,7 @@ class StoreTeamMemberRequest extends FormRequest
     {
         return [
             'name'   => ['required', 'string', 'max:255'],
-            'photo'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'], // maks 2MB
+            'photo'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'], // maks 8MB (otomatis dikompres)
             'photo_is_cutout' => ['nullable', 'boolean'],
             'role'   => ['required', 'in:pelatih,atlet'],
             'category' => ['nullable', 'string', 'in:Novato,Avance,Campeón'],
@@ -60,7 +60,7 @@ class StoreTeamMemberRequest extends FormRequest
             'weight_kg.max'   => 'Berat badan tidak valid.',
             'photo.image'     => 'File harus berupa gambar.',
             'photo.mimes'     => 'Format foto harus JPG, PNG, atau WEBP.',
-            'photo.max'       => 'Ukuran foto maksimal 2MB.',
+            'photo.max'       => 'Ukuran foto maksimal 8MB.',
             'birth_date.before_or_equal' => 'Tanggal lahir tidak boleh di masa depan.',
             'join_date.before_or_equal'  => 'Tanggal bergabung tidak boleh di masa depan.',
             'instagram_url.max' => 'Username Instagram maksimal 100 karakter.',

@@ -23,7 +23,7 @@
 
             {{-- ---------- Panel: Foto ---------- --}}
             <div id="photoPanel" style="{{ $isVideo ? 'display:none;' : '' }}">
-                <p class="nac-admin-form-section__desc mb-2">JPG/PNG/WEBP, maks 3MB</p>
+                <p class="nac-admin-form-section__desc mb-2">JPG/PNG/WEBP, maks 8MB (otomatis dikompres)</p>
                 <div class="nac-admin-dropzone" data-dropzone>
                     <img
                         src="{{ $gallery->exists && $gallery->image ? $gallery->image_url : '' }}"

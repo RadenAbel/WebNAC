@@ -72,7 +72,7 @@
                                            class="nac-join-photo-upload__input @error('photo') is-invalid @enderror"
                                            onchange="nacPreviewJoinPhoto(this)">
                                 </div>
-                                <small class="nac-join-hint d-block">JPG/PNG/WEBP, maks 2MB (opsional — boleh menyusul).</small>
+                                <small class="nac-join-hint d-block">JPG/PNG/WEBP, maks 8MB (opsional — boleh menyusul).</small>
                                 @error('photo') <div class="nac-join-error">{{ $message }}</div> @enderror
                             </div>
 

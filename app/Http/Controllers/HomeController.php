@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Support\PublicCache;
 use App\Models\Gallery;
-use App\Models\PricingPlan;
-use App\Models\Schedule;
 use App\Models\SiteSetting;
 use App\Models\Slider;
 use App\Models\TeamMember;
@@ -41,7 +39,7 @@ class HomeController extends Controller
 
         $heroStats = [
             ['icon' => 'fa-water',          'num' => '2',  'unit' => null, 'label' => 'Lintasan'],
-            ['icon' => 'fa-ruler-combined', 'num' => '50', 'unit' => 'm',  'label' => 'Panjang Kolam Utama'],
+            ['icon' => 'fa-ruler-combined', 'num' => '25m × 10m', 'unit' => null, 'label' => 'Ukuran Kolam Utama'],
             ['icon' => 'fa-certificate',    'num' => (string) $teamCounts['coaches'], 'unit' => null, 'label' => 'Pelatih Bersertifikat'],
             ['icon' => 'fa-users',          'num' => (string) $teamCounts['athletes'],   'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
         ];
@@ -57,19 +55,11 @@ class HomeController extends Controller
             ];
         })->values()->all());
 
-        // ============ JADWAL ============
-        $schedules = PublicCache::models('home.schedules', Schedule::class, fn () => Schedule::active()->get());
-
-        // ============ BIAYA PENDAFTARAN ============
-        $pricingPlans = PublicCache::models('home.pricing', PricingPlan::class, fn () => PricingPlan::active()->ordered()->get());
-
         return view('home', compact(
             'setting',
             'heroPhotos',
             'heroStats',
-            'galleryItems',
-            'schedules',
-            'pricingPlans'
+            'galleryItems'
         ));
     }
 }

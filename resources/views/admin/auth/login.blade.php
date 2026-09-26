@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Login Admin — Nugroho Aquatic Center</title>
+    <title>Login Admin — Nugroho Aquatic Club</title>
     <link rel="icon" href="{{ asset('img/Logo.png') }}" type="image/png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 <body class="nac-admin-login-body">
@@ -25,7 +25,7 @@
         </div>
 
         <h1>Selamat datang kembali</h1>
-        <p>Masuk untuk mengelola konten <strong>Nugroho Aquatic Center</strong>.</p>
+        <p>Masuk untuk mengelola konten <strong>Nugroho Aquatic Club</strong>.</p>
 
         @if ($errors->any())
             <div class="alert alert-danger py-2 px-3 small mb-3 d-flex align-items-center gap-2">
@@ -75,6 +75,9 @@
                         placeholder="••••••••"
                         required
                         autocomplete="current-password">
+                    <button type="button" class="nac-admin-login-eye" data-toggle-password="password" aria-label="Tampilkan/sembunyikan password">
+                        <i class="bi bi-eye"></i>
+                    </button>
                 </div>
             </div>
 
@@ -95,5 +98,18 @@
         </a>
     </div>
 
+    <script>
+        // Ikon mata di input password (halaman login tidak memuat admin.js)
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-toggle-password]');
+            if (!btn) return;
+            var input = document.getElementById(btn.getAttribute('data-toggle-password'));
+            if (!input) return;
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+            btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+        });
+    </script>
 </body>
 </html>
