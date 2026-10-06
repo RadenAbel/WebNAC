@@ -3,27 +3,15 @@
 @php
     $roleLabel = $member->role === 'pelatih' ? 'Pelatih' : 'Atlet';
 
-    // Route halaman "Our Team" sesuai routes/web.php kamu.
     $teamUrl    = $member->role === 'pelatih' ? route('team.coaches') : route('team.athletes');
     $sectionUrl = $teamUrl . ($member->role === 'pelatih' ? '#pelatih' : '#atlet');
 
-    // ============================================================
-    // DUMMY / FALLBACK DATA
-    // ------------------------------------------------------------
-    // Semua field di bawah pakai pola: $member->field ?? dummy.
-    // Begitu kolomnya sudah tersedia di tabel/model (mis. lewat
-    // migration & controller), blade ini otomatis pakai data asli
-    // tanpa perlu diutak-atik lagi.
-    // ============================================================
-
-    // Nama dipecah supaya bisa ditampilkan gaya "Nama kecil / BELAKANG besar"
     $nameParts = preg_split('/\s+/', trim($member->name));
     $firstName = $nameParts[0] ?? $member->name;
     $lastName  = count($nameParts) > 1 ? implode(' ', array_slice($nameParts, 1)) : null;
 
-    $specialization = $member->category ?? ($member->role === 'pelatih' ? 'Pelatih Kepala' : 'Gaya Bebas');
+    $specialization = $member->category ?? '-';
 
-    // Tabel "Rekor Waktu Terbaik"
     $personalBests = $member->personal_bests ?? [];
 @endphp
 
@@ -33,24 +21,17 @@
     @section('og_image', $member->photo_url)
 @endif
 
+@push('vendor-styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+@endpush
+
 @section('content')
 
-{{-- ============ TOPBAR (breadcrumb, tetap gelap sesuai brand) ============ --}}
 <section class="nac-profile-topbar">
     <div class="container">
-        <!-- <nav class="nac-breadcrumb" aria-label="Breadcrumb" data-aos="fade-right">
-            <a href="{{ url('/') }}">Beranda</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="{{ $teamUrl }}">Our Team</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="{{ $sectionUrl }}">{{ $roleLabel }}</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span aria-current="page">{{ $member->name }}</span>
-        </nav> -->
     </div>
 </section>
 
-{{-- ============ KARTU PROFIL (terang, gaya "athlete profile") ============ --}}
 <section class="nac-profile-card-wrap">
     <div class="container">
         <div class="nac-profile-card nac-profile-card--v2" data-aos="fade-up">
@@ -58,8 +39,6 @@
 
             <div class="nac-profile-card__row">
                 @if(!empty($member->photo_url) && $member->photo_is_cutout)
-                    {{-- Foto sudah background transparan (PNG cutout) — tampil "3D"
-                         mengambang keluar dari batas kartu, tanpa bingkai kotak. --}}
                     <div class="nac-profile-card__photo-cutout">
                         <img src="{{ $member->photo_url }}"
                              alt="Foto {{ $member->name }}"
@@ -98,7 +77,7 @@
                     <div class="nac-profile-detail-item-pair">
                         <div class="nac-profile-detail-item">
                             <span class="nac-profile-detail-item__label">Umur</span>
-                            <span class="nac-profile-detail-item__value">{{ $member->age ? $member->age . ' Tahun' : '-' }}</span>
+                            <span class="nac-profile-detail-item__value">{{ $member->age ? $member->age . ' ' . 'Tahun' : '-' }}</span>
                         </div>
                         <div class="nac-profile-detail-item">
                             <span class="nac-profile-detail-item__label">Gender</span>
@@ -138,9 +117,17 @@
                         <span class="nac-profile-detail-item__label">Tanggal Bergabung</span>
                         <span class="nac-profile-detail-item__value">{{ $member->join_date_label ?? '-' }}</span>
                     </div>
-                    <div class="nac-profile-detail-item">
-                        <span class="nac-profile-detail-item__label">Status di Klub</span>
-                        <span class="nac-profile-detail-item__value">{{ $specialization }}</span>
+                    <div class="nac-profile-detail-item-pair">
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Kategori</span>
+                            <span class="nac-profile-detail-item__value">{{ $specialization }}</span>
+                        </div>
+                        <div class="nac-profile-detail-item">
+                            <span class="nac-profile-detail-item__label">Status</span>
+                            <span class="nac-status-badge {{ $member->is_member_active ? 'nac-status-badge--active' : 'nac-status-badge--inactive' }}">
+                                <span class="nac-status-badge__dot" aria-hidden="true"></span>{{ $member->member_status_label }}
+                            </span>
+                        </div>
                     </div>
                     @if($member->role === 'atlet' && !empty($member->school_name))
                         <div class="nac-profile-detail-item">
@@ -184,10 +171,10 @@
                                 </div>
                             @endif
                         </div>
-                        </div>{{-- /.nac-profile-detail-item Sosial Media --}}
+                        </div>
                     @endif
-                </div>{{-- /.nac-profile-card__col kanan --}}
-            </div>{{-- /.nac-profile-card__row --}}
+                </div>
+            </div>
 
             <ul class="nav nac-profile-tabs" id="profileTab" role="tablist">
                 @if($member->role === 'atlet')
@@ -207,7 +194,6 @@
     </div>
 </section>
 
-{{-- ============ PANEL GESER: DESKRIPSI ATLET/PELATIH (dari kiri layar) ============ --}}
 <div class="offcanvas offcanvas-start nac-desc-offcanvas" tabindex="-1" id="atletDescOffcanvas" aria-labelledby="atletDescOffcanvasLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="atletDescOffcanvasLabel">Mengenal {{ $member->name }}</h5>
@@ -215,7 +201,7 @@
     </div>
     <div class="offcanvas-body">
         <p class="nac-lead">
-            {{ $member->bio ?? ($member->name . ' bergabung bersama Nugroho Aquatic Club dan aktif berlatih serta berkompetisi di berbagai ajang renang tingkat daerah maupun nasional. Profil lengkap akan diperbarui secara berkala.') }}
+            {{ $member->bio }}
         </p>
         @if(!empty($member->tagline))
             <p class="nac-profile-card__tagline">&ldquo;{{ $member->tagline }}&rdquo;</p>
@@ -223,13 +209,11 @@
     </div>
 </div>
 
-{{-- ============ ISI TAB ============ --}}
 <section class="nac-section nac-section--tint nac-profile-tabsection">
     <div class="container">
         <div class="tab-content" id="profileTabContent">
 
             @if($member->role === 'atlet')
-            {{-- ---------- TAB: REKOR WAKTU TERBAIK ---------- --}}
             <div class="tab-pane fade show active" id="tab-rekor" role="tabpanel" aria-labelledby="tab-rekor-btn">
                 <h2 class="nac-section__title mb-4" data-aos="fade-up">Rekor Waktu Terbaik</h2>
 
@@ -276,9 +260,8 @@
                 @endif
             </div>
 
-            {{-- ---------- TAB: PRESTASI ---------- --}}
             <div class="tab-pane fade" id="tab-prestasi" role="tabpanel" aria-labelledby="tab-prestasi-btn">
-                <h2 class="nac-section__title mb-4" data-aos="fade-up">Pencapaian &amp; Penghargaan</h2>
+                <h2 class="nac-section__title mb-4" data-aos="fade-up">Pencapaian & Penghargaan</h2>
 
                 @php
                     $achievements = $member->achievements ?? [];
@@ -290,7 +273,7 @@
                         <thead>
                             <tr>
                                 <th style="width:56px;">No</th>
-                                <th>Prestasi &amp; Penghargaan</th>
+                                <th>Prestasi & Penghargaan</th>
                                 <th style="width:110px;">Tanggal</th>
                                 <th style="width:130px;">Negara</th>
                                 <th>Keterangan</th>
@@ -337,9 +320,8 @@
             @endif
 
             @if($member->role === 'pelatih')
-            {{-- ---------- TAB: LISENSI & SERTIFIKASI ---------- --}}
             <div class="tab-pane fade show active" id="tab-lisensi" role="tabpanel" aria-labelledby="tab-lisensi-btn">
-                <h2 class="nac-section__title mb-4" data-aos="fade-up">Lisensi &amp; Sertifikasi</h2>
+                <h2 class="nac-section__title mb-4" data-aos="fade-up">Lisensi & Sertifikasi</h2>
 
                 @if($member->licenses->count())
                     <div class="nac-achievement-table-wrap" data-aos="fade-up">
@@ -392,7 +374,6 @@
             </div>
             @endif
 
-            {{-- ---------- TAB: PROFIL ---------- --}}
         </div>
     </div>
 </section>

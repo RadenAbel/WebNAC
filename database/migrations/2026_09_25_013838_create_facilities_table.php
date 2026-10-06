@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            // Poin keunggulan, 1 baris = 1 poin (opsional)
             $table->text('highlights')->nullable();
             $table->string('photo')->nullable();
             $table->unsignedInteger('sort_order')->default(0);

@@ -15,7 +15,7 @@ class StoreGalleryRequest extends FormRequest
     {
         return [
             'type'       => ['required', 'in:photo,video'],
-            'image'      => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'image'      => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'youtube_url' => [
                 'required_if:type,video', 'nullable', 'string', 'max:255',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',

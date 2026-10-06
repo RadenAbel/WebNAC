@@ -7,34 +7,17 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 
-/**
- * Mengecilkan & mengompres foto yang diupload sebelum disimpan:
- * - diperkecil supaya sisi terpanjangnya maksimal $maxDimension piksel
- *   (foto yang sudah kecil tidak diperbesar),
- * - diubah ke format WebP (jauh lebih ringan dari JPG/PNG, tetap
- *   mendukung background transparan untuk foto cutout & logo),
- * - orientasi foto HP diperbaiki (tidak miring/terbalik),
- * - data EXIF ikut terbuang, termasuk lokasi GPS tempat foto diambil.
- *
- * Hanya memakai GD bawaan PHP (tanpa package tambahan). Kalau GD tidak
- * aktif, formatnya tidak didukung (mis. GIF animasi), atau terjadi error
- * apa pun, file ASLI tetap disimpan seperti biasa — upload tidak pernah
- * gagal gara-gara proses kompresi ini.
- */
 class ImageOptimizer
 {
-    /**
-     * Simpan foto ke disk 'public' di dalam $directory, kembalikan path-nya
-     * (sama seperti $file->store($directory, 'public')).
-     */
     public static function store(
         UploadedFile $file,
         string $directory,
         int $maxDimension = 1600,
-        int $quality = 80
+        int $quality = 80,
+        string $disk = 'public'
     ): string {
         try {
-            $path = static::optimize($file, $directory, $maxDimension, $quality);
+            $path = static::optimize($file, $directory, $maxDimension, $quality, $disk);
 
             if ($path) {
                 return $path;
@@ -43,10 +26,10 @@ class ImageOptimizer
             report($e);
         }
 
-        return $file->store($directory, 'public');
+        return $file->store($directory, $disk);
     }
 
-    protected static function optimize(UploadedFile $file, string $directory, int $maxDimension, int $quality): ?string
+    protected static function optimize(UploadedFile $file, string $directory, int $maxDimension, int $quality, string $disk = 'public'): ?string
     {
         if (! extension_loaded('gd') || ! function_exists('imagewebp')) {
             return null;
@@ -61,7 +44,7 @@ class ImageOptimizer
             'image/jpeg' => @imagecreatefromjpeg($realPath),
             'image/png'  => @imagecreatefrompng($realPath),
             'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($realPath) : false,
-            default      => false, // GIF (bisa animasi), SVG, dll — simpan apa adanya
+            default      => false,
         };
 
         if (! $source) {
@@ -78,8 +61,6 @@ class ImageOptimizer
         $newWidth  = max(1, (int) round($width * $scale));
         $newHeight = max(1, (int) round($height * $scale));
 
-        // Kanvas baru dengan dukungan transparansi — supaya foto cutout (PNG
-        // tanpa background) & logo tetap transparan setelah jadi WebP.
         $canvas = imagecreatetruecolor($newWidth, $newHeight);
         imagealphablending($canvas, false);
         imagesavealpha($canvas, true);
@@ -96,23 +77,16 @@ class ImageOptimizer
             return null;
         }
 
-        // Foto yang sudah kecil & sudah terkompres kadang malah jadi lebih
-        // besar setelah dikonversi — kalau begitu, simpan yang asli saja.
         if ($scale === 1 && strlen($binary) >= $file->getSize()) {
             return null;
         }
 
         $path = trim($directory, '/') . '/' . Str::random(40) . '.webp';
-        Storage::disk('public')->put($path, $binary);
+        Storage::disk($disk)->put($path, $binary);
 
         return $path;
     }
 
-    /**
-     * Foto dari HP sering tersimpan "miring" dan cuma ditandai lewat data
-     * EXIF (Orientation). Karena EXIF dibuang saat konversi, rotasinya
-     * diterapkan langsung ke gambar supaya tampil tegak.
-     */
     protected static function fixOrientation($image, string $path)
     {
         if (! function_exists('exif_read_data')) {
@@ -138,11 +112,6 @@ class ImageOptimizer
         return $rotated ?: $image;
     }
 
-    /**
-     * Foto HP resolusi tinggi (mis. 4000x3000) butuh memori ±100 MB saat
-     * diproses. Naikkan batas memori sementara kalau pengaturan PHP-nya
-     * lebih kecil dari itu (tidak menurunkan kalau sudah lebih besar).
-     */
     protected static function ensureMemoryLimit(): void
     {
         $current = ini_get('memory_limit');

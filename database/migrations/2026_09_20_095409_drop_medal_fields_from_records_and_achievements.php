@@ -8,8 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Rekor waktu tidak lagi mencatat medali per rekor — jumlah medali
-        // sekarang cukup satu angka manual (kolom total_medals di team_members).
         Schema::table('team_member_records', function (Blueprint $table) {
             $table->dropColumn('medal');
         });

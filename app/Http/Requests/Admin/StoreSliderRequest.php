@@ -15,10 +15,7 @@ class StoreSliderRequest extends FormRequest
     {
         return [
             'type'        => ['required', 'in:photo,video'],
-            // Wajib saat tambah baru KHUSUS type=photo, tapi di UpdateSliderRequest
-            // kita override jadi 'nullable' (lihat class itu) karena saat edit,
-            // foto lama boleh dipertahankan tanpa upload ulang.
-            'image'       => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'image'       => ['required_if:type,photo', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'youtube_url' => [
                 'required_if:type,video', 'nullable', 'string', 'max:255',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/',

@@ -8,9 +8,7 @@ class UpdateEventRequest extends StoreEventRequest
     {
         $rules = parent::rules();
 
-        // Saat update, foto & PDF boleh tidak diupload ulang (pakai file lama)
-        $rules['photo']      = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'];
-        $rules['pdf_report'] = ['nullable', 'file', 'mimes:pdf', 'max:10240'];
+        $rules['photo'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'];
 
         return $rules;
     }

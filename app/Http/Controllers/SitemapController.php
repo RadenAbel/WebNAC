@@ -7,12 +7,6 @@ use App\Support\PublicCache;
 
 class SitemapController extends Controller
 {
-    /**
-     * /sitemap.xml — daftar semua halaman publik untuk Google. Profil atlet/
-     * pelatih dan hasil pertandingan ikut otomatis. Di-cache lewat
-     * PublicCache, jadi otomatis diperbarui setiap admin menambah/mengubah
-     * data (tidak perlu dibuat ulang manual).
-     */
     public function index()
     {
         $xml = PublicCache::remember('sitemap', function () {
@@ -25,6 +19,15 @@ class SitemapController extends Controller
                 ['loc' => route('event.index'),   'changefreq' => 'weekly',  'priority' => '0.8'],
                 ['loc' => route('gallery.index'), 'changefreq' => 'weekly',  'priority' => '0.6'],
             ];
+
+            foreach (\App\Models\Event::active()->whereNotNull('slug')->get(['id', 'slug', 'updated_at']) as $event) {
+                $urls[] = [
+                    'loc'        => route('event.show', $event->slug),
+                    'lastmod'    => $event->updated_at?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority'   => '0.6',
+                ];
+            }
 
             foreach (TeamMember::active()->whereNotNull('slug')->get(['id', 'slug', 'updated_at']) as $member) {
                 $urls[] = [
@@ -55,12 +58,6 @@ class SitemapController extends Controller
         return response($xml, 200)->header('Content-Type', 'application/xml; charset=UTF-8');
     }
 
-    /**
-     * /robots.txt — dibuat dinamis supaya alamat sitemap otomatis mengikuti
-     * domain yang dipakai (APP_URL), tidak perlu diedit manual saat online.
-     * PENTING: hapus file public/robots.txt bawaan Laravel, karena kalau file
-     * itu ada, web server menampilkannya dan route ini tidak pernah terpanggil.
-     */
     public function robots()
     {
         $body = implode("\n", [

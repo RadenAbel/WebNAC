@@ -6,6 +6,7 @@ use App\Models\Concerns\FlushesPublicCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Mews\Purifier\Casts\CleanHtml;
 
 class ManagementMember extends Model
 {
@@ -24,6 +25,7 @@ class ManagementMember extends Model
     protected $casts = [
         'is_active'  => 'boolean',
         'sort_order' => 'integer',
+        'full_bio'   => CleanHtml::class . ':rich_text',
     ];
 
     public function getPhotoUrlAttribute(): ?string

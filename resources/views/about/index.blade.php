@@ -5,9 +5,8 @@
 
 @section('content')
 
-{{-- ============ HEADER HALAMAN ============ --}}
 <section class="nac-page-header nac-page-header--photo"
-    style="background-image: url('{{ $setting->about_photo_url ?? 'https://picsum.photos/seed/nac-swim-header/1600/700' }}');">
+    @if($setting->about_photo_url) style="background-image: url('{{ $setting->about_photo_url }}');"@endif>
     <div class="container text-center" data-aos="fade-up">
         <h1 class="nac-page-header__title">Lebih dari sekadar tempat berenang.</h1>
         <p class="nac-page-header__desc">
@@ -16,15 +15,14 @@
     </div>
 </section>
 
-{{-- ============ PROFIL KLUB ============ --}}
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="profil">
+<section class="nac-section nac-section--decorated nac-section--tint" id="profil">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
                 <span class="nac-eyebrow">Profil Kami</span>
-                <h2 class="nac-section__title">{{ $setting->about_title ?? 'Lebih dari sekadar tempat berenang.' }}</h2>
+                <h2 class="nac-section__title">{{ $setting->about_title }}</h2>
                 <p class="nac-lead">
-                    {!! $setting->about_description ?? '<p>Sejak berdiri, Nugroho Aquatic Club menjadi tempat lahirnya atlet renang dari tingkat daerah hingga nasional. Kami percaya setiap perenang — dari yang baru mengenal air hingga yang mengejar rekor pribadi — berhak mendapat bimbingan yang sama seriusnya.</p>' !!}
+                    {!! $setting->about_description !!}
                 </p>
                 <ul class="nac-check-list">
                     <li><i class="fa-solid fa-certificate"></i> Pelatih bersertifikat nasional</li>
@@ -34,13 +32,6 @@
             </div>
 
             <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
-                @php
-                    $aboutStats = $aboutStats ?? [
-                        ['num' => 20, 'label' => 'Atlet Aktif', 'icon' => 'fa-person-swimming'],
-                        ['num' => 5,  'label' => 'Pelatih Bersertifikat', 'icon' => 'fa-user-graduate'],
-                        ['num' => 120, 'label' => 'Total Medali', 'icon' => 'fa-medal'],
-                    ];
-                @endphp
                 <div class="nac-about-stats">
                     @foreach($aboutStats as $stat)
                         <div class="nac-about-stats__item">
@@ -55,15 +46,14 @@
     </div>
 </section>
 
-{{-- ============ KOLAM LATIHAN — EVERGLADE AQUATIC CENTER ============ --}}
 <section class="nac-section">
     <div class="container">
         <div class="nac-pool-highlight" data-aos="fade-up"
-            style="background-image: linear-gradient(90deg, rgba(10, 14, 20, 0.85) 0%, rgba(10, 14, 20, 0.6) 45%, rgba(10, 14, 20, 0.25) 100%), url('{{ $setting->pool_section_photo_url ?? 'https://picsum.photos/seed/nac-everglade-pool/1600/900' }}');">
+            style="background-image: linear-gradient(90deg, rgba(10, 14, 20, 0.85) 0%, rgba(10, 14, 20, 0.6) 45%, rgba(10, 14, 20, 0.25) 100%)@if($setting->pool_section_photo_url), url('{{ $setting->pool_section_photo_url }}')@endif;">
             <div class="nac-pool-highlight__content">
-                <h2 class="nac-pool-highlight__title">{{ $setting->pool_section_title ?? 'Berlatih di Everglade Aquatic Center' }}</h2>
+                <h2 class="nac-pool-highlight__title">{{ $setting->pool_section_title }}</h2>
                 <p class="nac-pool-highlight__desc">
-                    {{ $setting->pool_section_description ?? 'Nugroho Aquatic Club menjalankan seluruh program latihannya di Everglade Aquatic Center — fasilitas yang memiliki dua kolam renang untuk mendukung latihan dari tingkat pemula Swim School hingga persiapan atlet menuju kejuaraan. Detail ukuran dan kedalaman tiap kolam akan segera kami lengkapi.' }}
+                    {{ $setting->pool_section_description }}
                 </p>
             </div>
             <span class="nac-pool-highlight__caption">Foto: Everglade Aquatic Center</span>
@@ -71,17 +61,15 @@
     </div>
 </section>
 
-{{-- ============ FASILITAS ============ --}}
 @if ($facilities->isNotEmpty())
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="fasilitas">
+<section class="nac-section nac-section--decorated nac-section--tint" id="fasilitas">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Fasilitas</span>
-            <h2 class="nac-section__title">Fasilitas unggulan penunjang latihan</h2>
+            <h2 class="nac-section__title">Fasilitas unggulan</h2>
         </div>
 
         <div class="nac-facility-showcase mt-4" data-facility-showcase data-aos="fade-up">
-            {{-- Kiri: daftar fasilitas --}}
             <div class="nac-facility-showcase__list" role="tablist" aria-label="Daftar fasilitas">
                 @foreach ($facilities as $i => $facility)
                     <button type="button"
@@ -103,7 +91,6 @@
                 @endforeach
             </div>
 
-            {{-- Tengah (foto) + kanan (penjelasan) --}}
             <div class="nac-facility-showcase__stage">
                 @foreach ($facilities as $i => $facility)
                     <div class="nac-facility-showcase__panel {{ $i === 0 ? 'is-active' : '' }}"
@@ -128,10 +115,20 @@
                             @if ($facility->description)
                                 <p class="nac-facility-showcase__desc">{!! nl2br(e($facility->description)) !!}</p>
                             @endif
-                            @if (count($facility->highlight_list))
+                            @if (count($facility->highlight_items))
                                 <ul class="nac-facility-showcase__points">
-                                    @foreach ($facility->highlight_list as $point)
-                                        <li><i class="fa-solid fa-check"></i> {{ $point }}</li>
+                                    @foreach ($facility->highlight_items as $point)
+                                        <li>
+                                            <span class="nac-facility-showcase__point-icon"><i class="{{ $point['icon'] }}"></i></span>
+                                            <div>
+                                                @if ($point['title'] !== '')
+                                                    <h4 class="nac-facility-showcase__point-title">{{ $point['title'] }}</h4>
+                                                @endif
+                                                @if ($point['text'])
+                                                    <p class="nac-facility-showcase__point-text">{{ $point['text'] }}</p>
+                                                @endif
+                                            </div>
+                                        </li>
                                     @endforeach
                                 </ul>
                             @endif
@@ -144,97 +141,78 @@
 </section>
 @endif
 
-{{-- ============ TIM MANAJEMEN ============ --}}
+@if($managementTeam->isNotEmpty())
 <section class="nac-section nac-mgmt-section" id="manajemen">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Tim Manajemen</span>
-            <h2 class="nac-section__title">Leadership Team</h2>
+            <h2 class="nac-section__title">Leadership Teams</h2>
         </div>
 
-        @php
-            $managementTeam = $managementTeam ?? [
-                [
-                    'name'      => 'Bambang Nugroho',
-                    'position'  => 'Ketua Umum & Pendiri',
-                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-1/500/620',
-                    'short_bio' => 'Bambang Nugroho mendirikan Nugroho Aquatic Club pada 2010 dengan visi mencetak atlet renang berkelas nasional dari Kutai Timur.',
-                    'full_bio'  => '<p>Bambang Nugroho lahir di Surabaya, 12 Mei 1975. Ia mendirikan Nugroho Aquatic Club pada tahun 2010, berawal dari satu kolam latihan kecil dengan 15 murid, hingga kini berkembang menjadi salah satu klub renang terkemuka di Kutai Timur.</p><p>Sebelum mendirikan NAC, Bambang merupakan mantan atlet renang nasional yang aktif berkompetisi di berbagai kejuaraan tingkat <strong>PON</strong> dan <strong>SEA Games</strong> pada era 1995-2003, dengan spesialisasi nomor gaya bebas dan gaya ganti.</p><p>Di bawah kepemimpinannya, NAC telah melahirkan lebih dari 50 atlet yang berkompetisi di tingkat provinsi dan nasional, serta menjalin kerja sama dengan berbagai sekolah dan instansi olahraga daerah.</p>',
-                ],
-                [
-                    'name'      => 'Siti Rahmawati',
-                    'position'  => 'Direktur Program Latihan',
-                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-2/500/620',
-                    'short_bio' => 'Siti mengepalai penyusunan kurikulum latihan NAC, dari kelas pemula Swim School hingga program atlet Elite.',
-                    'full_bio'  => '<p>Siti Rahmawati bergabung dengan Nugroho Aquatic Club sejak 2013 sebagai pelatih kepala, sebelum dipercaya menjabat Direktur Program Latihan pada 2019. Ia memegang lisensi pelatih renang tingkat nasional dari <strong>PRSI</strong>.</p><p>Siti bertanggung jawab merancang kurikulum bertingkat NAC — mulai dari Swim School A &amp; B untuk pemula, hingga program intensif Junior dan Elite bagi calon atlet kompetisi.</p><p>Ia juga aktif menjadi pembicara pada berbagai pelatihan pelatih renang tingkat daerah dan terlibat dalam penyusunan standar keselamatan kolam renang untuk klub-klub di Kutai Timur.</p>',
-                ],
-                [
-                    'name'      => 'Andi Wijaya',
-                    'position'  => 'Manajer Operasional & Fasilitas',
-                    'photo_url' => 'https://picsum.photos/seed/nac-mgmt-3/500/620',
-                    'short_bio' => 'Andi memastikan fasilitas kolam, peralatan, dan operasional harian NAC berjalan sesuai standar kompetisi.',
-                    'full_bio'  => '<p>Andi Wijaya menangani seluruh aspek operasional Nugroho Aquatic Club sejak 2016, termasuk perawatan kolam, sistem sirkulasi air, dan kelengkapan alat timing elektronik.</p><p>Berlatar belakang teknik mesin, Andi memastikan setiap fasilitas NAC memenuhi standar keselamatan dan kompetisi yang berlaku, termasuk kalibrasi rutin sistem pencatatan waktu otomatis.</p><p>Ia juga mengoordinasikan jadwal penggunaan kolam antara kelas Swim School, latihan atlet, dan acara/kejuaraan yang diselenggarakan di lokasi NAC.</p>',
-                ],
-            ];
-        @endphp
-
-        <div class="nac-mgmt-list mt-4">
+        <div class="nac-board" data-board>
             @foreach($managementTeam as $i => $member)
-                <div class="nac-mgmt-card" data-aos="fade-up" data-aos-delay="{{ $i * 80 }}">
-                    <div class="nac-mgmt-card__photo">
-                        <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}" loading="lazy">
+                @php
+                    $boardId = \Illuminate\Support\Str::slug($member['name']) ?: 'anggota-' . $i;
+                @endphp
+
+                <article class="nac-board-card" id="{{ $boardId }}" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 70 }}">
+                    <div class="nac-board-card__photo">
+                        @if (!empty($member['photo_url']))
+                            <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}" loading="lazy">
+                        @else
+                            <span class="nac-board-photo-empty"><i class="fa-solid fa-user"></i></span>
+                        @endif
                     </div>
-                    <div class="nac-mgmt-card__body">
-                        <h3 class="nac-mgmt-card__name">{{ $member['name'] }}</h3>
-                        <span class="nac-mgmt-card__position">{{ $member['position'] }}</span>
-                        <p class="nac-mgmt-card__bio">{{ $member['short_bio'] }}</p>
-                        <button type="button" class="nac-mgmt-card__more" data-bs-toggle="modal" data-bs-target="#mgmtModal{{ $i }}">
-                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                    <h3 class="nac-board-card__name">{{ $member['name'] }}</h3>
+                    <p class="nac-board-card__position">{{ $member['position'] }}</p>
+                    <button type="button" class="nac-board-card__more" data-board-open="{{ $boardId }}"
+                        aria-controls="board-drawer-{{ $boardId }}" aria-expanded="false">
+                        Selengkapnya
+                    </button>
+                </article>
+
+                <div class="nac-board-drawer" id="board-drawer-{{ $boardId }}" data-board-drawer="{{ $boardId }}"
+                    role="dialog" aria-modal="true" aria-labelledby="board-name-{{ $boardId }}" hidden>
+                    <div class="nac-board-drawer__head">
+                        <div class="nac-board-drawer__photo">
+                            @if (!empty($member['photo_url']))
+                                <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}" loading="lazy">
+                            @else
+                                <span class="nac-board-photo-empty"><i class="fa-solid fa-user"></i></span>
+                            @endif
+                        </div>
+                        <div class="nac-board-drawer__heading">
+                            <h3 class="nac-board-drawer__name" id="board-name-{{ $boardId }}">{{ $member['name'] }}</h3>
+                            <p class="nac-board-drawer__position">{{ $member['position'] }}</p>
+                        </div>
+                        <button type="button" class="nac-board-drawer__close" data-board-close aria-label="Tutup">
+                            <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
-                </div>
-
-                {{-- ---------- Modal detail: foto diam, cuma teks yang di-scroll ---------- --}}
-                <div class="modal fade nac-mgmt-modal" id="mgmtModal{{ $i }}" tabindex="-1" aria-labelledby="mgmtModal{{ $i }}Label" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                            <button type="button" class="nac-mgmt-modal__close" data-bs-dismiss="modal" aria-label="Tutup">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                            <div class="nac-mgmt-modal__body">
-                                <div class="nac-mgmt-modal__photo">
-                                    <img src="{{ $member['photo_url'] }}" alt="{{ $member['name'] }}">
-                                </div>
-                                <div class="nac-mgmt-modal__text">
-                                    <h3 id="mgmtModal{{ $i }}Label">{{ $member['name'] }}</h3>
-                                    <span class="nac-mgmt-modal__position">{{ $member['position'] }}</span>
-                                    <div class="nac-mgmt-modal__scroll">
-                                        {!! $member['full_bio'] ?? '' !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="nac-board-drawer__bio">
+                        @if (!empty($member['full_bio']))
+                            {!! $member['full_bio'] !!}
+                        @elseif (!empty($member['short_bio']))
+                            <p>{{ $member['short_bio'] }}</p>
+                        @endif
                     </div>
                 </div>
             @endforeach
         </div>
+        <div class="nac-board-backdrop" data-board-backdrop hidden></div>
     </div>
 </section>
+@endif
 
-{{-- ============ KELAS & CATATAN NAC SWIM SCHOOL (dipindah dari Join Us) ============ --}}
 <section class="nac-section nac-about-classes-section nac-section--photo-bg" id="kelas"
-    style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)), url('{{ $setting->classes_section_photo_url ?? 'https://picsum.photos/seed/nac-classes-bg/1920/1080' }}');">
+    style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88))@if($setting->classes_section_photo_url), url('{{ $setting->classes_section_photo_url }}')@endif;">
     <div class="container">
-        {{-- Kiri: judul & pengantar tetap diam (sticky) saat digulir,
-             kanan: kartu kelas menumpuk satu per satu (desktop). --}}
         <div class="nac-classes-stack">
             <div class="nac-classes-stack__intro" data-aos="fade-up">
                 <span class="nac-eyebrow">Kelas NAC Swim School</span>
                 <h2 class="nac-join-info__title">Kelas Apa Aja Sih yang Ada di Nugroho Swim School?</h2>
                 <p class="nac-join-info__lead">
-                    Nugroho Aquatic Club Swimming School — atau yang dapat disingkat <strong>NAC Swim School</strong> —
-                    adalah sekolah renang yang berlokasi di Kecamatan Sangatta Utara, Kutai Timur, dengan tempat
-                    latihan di Everglade Aquatic Center. NAC Swim School memiliki beberapa kelas yang tersedia:
+                    Nugroho Aquatic Club Swimming School — atau yang dapat disingkat <strong>NAC Swim School</strong> — adalah sekolah renang yang berlokasi di Kecamatan Sangatta Utara, Kutai Timur, dengan tempat latihan di Everglade Aquatic Center. NAC Swim School memiliki beberapa kelas yang tersedia:
                 </p>
             </div>
 
@@ -278,12 +256,11 @@
     </div>
 </section>
 
-{{-- ============ BIAYA PENDAFTARAN ============ --}}
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="biaya">
+<section class="nac-section nac-section--decorated nac-section--tint" id="biaya">
     <div class="container">
         <div class="nac-section__head" data-aos="fade-up">
             <span class="nac-eyebrow">Biaya Pendaftaran</span>
-            <h2 class="nac-section__title">Pilih program sesuai levelmu.</h2>
+            <h2 class="nac-section__title">Pilih program sesuai levelmu</h2>
         </div>
 
         <div class="row g-0 mt-4 nac-price-text-row">
@@ -324,18 +301,15 @@
     </div>
 </section>
 
-{{-- ============ JADWAL ============ --}}
-<section class="nac-section nac-section--photo-bg" id="jadwal" style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)), url('{{ $setting->classes_section_photo_url ?? 'https://picsum.photos/seed/nac-classes-bg/1920/1080' }}');">
+<section class="nac-section nac-section--photo-bg nac-section--static-bg" id="jadwal" style="background-image: linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88))@if($setting->pool_section_photo_url), url('{{ $setting->pool_section_photo_url }}')@endif;">
     <div class="container">
         <div class="nac-section__head nac-fade-in">
             <span class="nac-eyebrow">Jadwal Latihan</span>
-            <h2 class="nac-section__title">Atur waktu latihanmu.</h2>
-            <p class="nac-lead">Pilih kategori sesuai levelmu, lalu catat hari dan jamnya.</p>
+            <h2 class="nac-section__title">Atur waktu latihanmu</h2>
+            <p class="nac-lead">Pilih kategori sesuai levelmu, lalu catat hari dan jamnya</p>
         </div>
 
         @php
-            // Pemetaan ikon per kategori — cocokkan dengan nama kategori yang
-            // kamu pakai di tabel schedules. Tidak ketemu? otomatis pakai fa-water.
             $scheduleIcon = function (string $category): string {
                 $c = strtolower($category);
                 return match(true) {
@@ -361,8 +335,6 @@
                     <tbody>
                         @forelse ($schedules as $schedule)
                             @php
-                                // Pecah "Senin, Rabu, Jumat" jadi badge per hari. Format
-                                // rentang seperti "Senin - Jumat" sengaja tidak dipecah.
                                 $days = array_values(array_filter(array_map('trim', preg_split('/[,\/]+/', $schedule->days_label))));
                             @endphp
                             <tr>

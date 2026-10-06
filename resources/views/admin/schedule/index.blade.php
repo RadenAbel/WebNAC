@@ -73,7 +73,6 @@
         @endif
     </div>
 
-    {{-- ============ VERSI KARTU (khusus mobile) ============ --}}
     <div class="d-md-none">
         @if ($schedules->isEmpty())
             <div class="bg-white border rounded-3">

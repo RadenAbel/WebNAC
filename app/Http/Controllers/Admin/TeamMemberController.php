@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class TeamMemberController extends Controller
 {
-    /**
-     * Data Atlet dan data Pelatih dikelola terpisah (menu dropdown di
-     * sidebar). Peran dibaca dari ?role=atlet|pelatih, bawaannya atlet.
-     */
     private function roleFrom(Request $request): string
     {
         return $request->get('role') === 'pelatih' ? 'pelatih' : 'atlet';
@@ -46,10 +42,6 @@ class TeamMemberController extends Controller
         ]);
     }
 
-    /**
-     * Field yang hanya berlaku untuk atlet (Kategori, Asal Sekolah)
-     * dikosongkan kalau datanya milik pelatih.
-     */
     private function normalizeByRole(array $data): array
     {
         if (($data['role'] ?? null) === 'pelatih') {
@@ -83,7 +75,6 @@ class TeamMemberController extends Controller
 
     public function edit(TeamMember $teamMember)
     {
-        // Load relasi rekor, pencapaian, & lisensi sekaligus, biar tidak N+1 query di view
         $teamMember->load(['records', 'achievements', 'licenses']);
 
         return view('admin.team.edit', [
@@ -102,7 +93,6 @@ class TeamMemberController extends Controller
         $data['tiktok_url']    = SocialLinkHelper::toFullUrl($data['tiktok_url'] ?? null, 'tiktok');
 
         if ($request->hasFile('photo')) {
-            // Hapus foto lama dari storage supaya tidak menumpuk file yatim
             if ($teamMember->photo) {
                 Storage::disk('public')->delete($teamMember->photo);
             }
@@ -118,8 +108,6 @@ class TeamMemberController extends Controller
 
     public function destroy(TeamMember $teamMember)
     {
-        // Hapus foto dari storage. Rekor & pencapaian ikut terhapus otomatis
-        // lewat cascadeOnDelete() di migration (tidak perlu dihapus manual).
         if ($teamMember->photo) {
             Storage::disk('public')->delete($teamMember->photo);
         }

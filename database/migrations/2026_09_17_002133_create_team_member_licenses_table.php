@@ -14,12 +14,12 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('title');              // Nama lisensi, mis. "Pelatih Renang Level 1"
-            $table->string('issuer')->nullable();          // Lembaga penerbit, mis. "PRSI"
-            $table->string('license_number')->nullable();  // Nomor lisensi
-            $table->date('issued_date')->nullable();        // Tanggal terbit
-            $table->date('expiry_date')->nullable();        // Tanggal kedaluwarsa
-            $table->string('certificate_file')->nullable(); // Upload sertifikat (PDF/gambar)
+            $table->string('title');
+            $table->string('issuer')->nullable();
+            $table->string('license_number')->nullable();
+            $table->date('issued_date')->nullable();
+            $table->date('expiry_date')->nullable();
+            $table->string('certificate_file')->nullable();
 
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();

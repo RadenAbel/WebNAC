@@ -27,7 +27,7 @@
     </div>
 </section>
 
-<section class="nac-section">
+<section class="nac-section nac-section--decorated nac-dot-pattern">
     <div class="container">
         @if ($galleries->isEmpty())
             <p class="text-center nac-muted">Galeri belum tersedia.</p>
@@ -66,7 +66,6 @@
     </div>
 </section>
 
-{{-- ============ LIGHTBOX PREVIEW FOTO ============ --}}
 <div class="nac-lightbox" id="nacLightbox" aria-hidden="true">
     <button type="button" class="nac-lightbox__close" id="nacLightboxClose" aria-label="Tutup preview foto">
         <i class="fa-solid fa-xmark"></i>

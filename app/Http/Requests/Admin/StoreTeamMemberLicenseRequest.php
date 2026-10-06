@@ -19,7 +19,7 @@ class StoreTeamMemberLicenseRequest extends FormRequest
             'license_number'   => ['nullable', 'string', 'max:100'],
             'issued_date'      => ['nullable', 'date'],
             'expiry_date'      => ['nullable', 'date', 'after_or_equal:issued_date'],
-            'certificate_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'], // maks 5MB
+            'certificate_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
         ];
     }
 

@@ -43,17 +43,24 @@
 
             <div class="row g-3">
                 <div class="col-12">
-                    <label class="form-label">Nama Hasil Pertandingan <span class="text-danger">*</span></label>
+                    <label class="form-label">Nama Kejuaraan <span class="text-danger">*</span></label>
                     <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
                         value="{{ old('title', $event->title) }}" placeholder="Kejuaraan Renang Antar Klub 2026" required>
                     @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Tanggal Hasil Pertandingan <span class="text-danger">*</span></label>
+                    <label class="form-label">Tanggal Kejuaraan <span class="text-danger">*</span></label>
                     <input type="date" name="event_date" class="form-control @error('event_date') is-invalid @enderror"
                         value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}" required>
                     @error('event_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Lokasi / Venue</label>
+                    <input type="text" name="location" class="form-control @error('location') is-invalid @enderror"
+                        value="{{ old('location', $event->location) }}" placeholder="Everglade Aquatic Center, Sangatta">
+                    @error('location') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-12">
@@ -62,30 +69,8 @@
                         placeholder="Ceritakan sedikit tentang acara ini...">{{ old('description', $event->description) }}</textarea>
                     @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
+
             </div>
-        </div>
-
-        <div class="nac-admin-form-section">
-            <div class="nac-admin-form-section__head">
-                <span class="nac-admin-form-section__icon"><i class="bi bi-file-earmark-pdf"></i></span>
-                <div>
-                    <p class="nac-admin-form-section__title">Laporan PDF @if(!$event->exists)<span class="text-danger">*</span>@endif</p>
-                    <p class="nac-admin-form-section__desc">Ditampilkan di halaman "Lihat Detail" publik, maks 10MB</p>
-                </div>
-            </div>
-
-            @if ($event->exists && $event->pdf_url)
-                <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded-3" style="background:var(--adm-mist); font-size:0.85rem;">
-                    <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
-                    <a href="{{ $event->pdf_url }}" target="_blank" class="text-decoration-none fw-bold">Lihat laporan saat ini</a>
-                </div>
-            @endif
-
-            <input type="file" name="pdf_report" accept="application/pdf"
-                class="form-control @error('pdf_report') is-invalid @enderror"
-                {{ $event->exists ? '' : 'required' }}>
-            @error('pdf_report') <div class="invalid-feedback">{{ $message }}</div> @enderror
-            <small class="text-secondary">Kosongkan kalau tidak ingin mengganti laporan.</small>
         </div>
 
         <div class="nac-admin-form-section mb-0">

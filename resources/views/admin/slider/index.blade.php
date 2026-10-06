@@ -31,7 +31,6 @@
 
     @else
 
-        {{-- ============ DESKTOP: tabel (>= 768px) ============ --}}
         <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
             <table class="table align-middle mb-0">
                 <thead>
@@ -83,7 +82,6 @@
             </table>
         </div>
 
-        {{-- ============ MOBILE: tumpukan kartu (< 768px), tap untuk buka semua ============ --}}
         <div class="d-md-none nac-admin-stack-group" data-stack-group>
 
             <div class="nac-admin-stack-deck-wrap">

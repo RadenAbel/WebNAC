@@ -10,11 +10,6 @@ use Illuminate\Validation\Rules\Password;
 
 class AccountPasswordController extends Controller
 {
-    /**
-     * Form ganti password — untuk akun yang SEDANG LOGIN (admin maupun
-     * super admin). Mengganti password akun orang lain tetap lewat menu
-     * Kelola Admin (khusus super admin).
-     */
     public function edit()
     {
         return view('admin.account.password');
@@ -23,8 +18,6 @@ class AccountPasswordController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            // Wajib isi password lama yang benar — supaya orang yang kebetulan
-            // memakai laptop admin yang lupa logout tidak bisa mengambil alih akun.
             'current_password' => ['required', 'current_password'],
             'password' => [
                 'required',
@@ -47,14 +40,9 @@ class AccountPasswordController extends Controller
 
         $user->forceFill([
             'password' => Hash::make($validated['password']),
-            // Ganti token "Ingat saya" — perangkat lain yang login lewat
-            // cookie "Ingat saya" otomatis harus login ulang.
             'remember_token' => Str::random(60),
         ])->save();
 
-        // Perangkat lain yang sedang login otomatis ter-logout berkat
-        // middleware 'auth.session' di grup route admin (lihat routes/web.php).
-        // Sesi di perangkat ini dibuat ulang supaya tetap login dengan aman.
         $request->session()->regenerate();
 
         return redirect()

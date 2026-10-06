@@ -6,9 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Support\TwoFactor;
 use Illuminate\Http\Request;
 
-/**
- * Pengaturan verifikasi dua langkah untuk akun yang sedang login.
- */
 class TwoFactorController extends Controller
 {
     private const PENDING_KEY = 'two_factor.pending_secret';
@@ -24,8 +21,6 @@ class TwoFactorController extends Controller
             ]);
         }
 
-        // Rahasia baru disimpan di sesi dulu — baru masuk database setelah
-        // admin berhasil memasukkan kode pertama dari aplikasinya.
         $secret = $request->session()->get(self::PENDING_KEY);
         if (! $secret) {
             $secret = TwoFactor::generateSecret();

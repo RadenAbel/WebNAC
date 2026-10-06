@@ -18,12 +18,10 @@ class JoinController extends Controller
 
     public function store(StoreJoinRequest $request)
     {
-        // 'website' (honeypot) sengaja tidak ada di $fillable JoinRequest,
-        // jadi walau lolos sejauh sini pun tidak akan pernah ikut tersimpan.
         $data = $request->safe()->except('website');
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'join-requests');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'join-requests', disk: 'local');
         }
 
         JoinRequest::create($data);

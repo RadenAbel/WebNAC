@@ -21,7 +21,6 @@
             </div>
             @error('type') <div class="text-danger mb-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
 
-            {{-- ---------- Panel: Foto ---------- --}}
             <div id="photoPanel" style="{{ $isVideo ? 'display:none;' : '' }}">
                 <p class="nac-admin-form-section__desc mb-2">JPG/PNG/WEBP, maks 8MB (otomatis dikompres)</p>
                 <div class="nac-admin-dropzone" data-dropzone>
@@ -41,7 +40,6 @@
                 @error('image') <div class="text-danger mt-2" style="font-size:0.8rem;">{{ $message }}</div> @enderror
             </div>
 
-            {{-- ---------- Panel: Video ---------- --}}
             <div id="videoPanel" style="{{ $isVideo ? '' : 'display:none;' }}">
                 <label class="form-label">Link YouTube</label>
                 <input type="text" name="youtube_url" class="form-control @error('youtube_url') is-invalid @enderror"

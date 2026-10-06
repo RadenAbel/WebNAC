@@ -14,10 +14,6 @@ class HomeController extends Controller
     {
         $setting = SiteSetting::current();
 
-        // ============ HERO: foto/video slider ============
-        // Slider di admin dipetakan ke bentuk yang dipakai carousel hero.
-        // Kalau admin belum upload slider sama sekali, $heroPhotos otomatis
-        // jadi array kosong — carousel tetap jalan, cuma tampil slide statistik saja.
         $heroPhotos = PublicCache::remember('home.hero', fn () => Slider::active()->get()->map(function ($slider) {
             return [
                 'type'                  => $slider->type,
@@ -27,11 +23,6 @@ class HomeController extends Controller
             ];
         })->values()->all());
 
-        // ============ HERO: statistik ============
-        // Jumlah pelatih & atlet diambil LANGSUNG dari data asli (auto update
-        // begitu admin nambah/hapus anggota tim). Lintasan & panjang kolam
-        // belum ada menu admin-nya, jadi masih nilai tetap di sini — kalau
-        // suatu saat berubah, cukup edit 2 baris ini.
         $teamCounts = PublicCache::remember('home.team_counts', fn () => [
             'coaches'  => TeamMember::active()->pelatih()->count(),
             'athletes' => TeamMember::active()->atlet()->count(),
@@ -44,7 +35,6 @@ class HomeController extends Controller
             ['icon' => 'fa-users',          'num' => (string) $teamCounts['athletes'],   'unit' => null, 'label' => 'Atlet Aktif Berlatih'],
         ];
 
-        // ============ GALERI ============
         $galleryItems = PublicCache::remember('home.gallery', fn () => Gallery::active()->get()->map(function ($item) {
             return [
                 'type'            => $item->type,

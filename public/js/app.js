@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Init AOS (scroll reveal) — durasi & easing dijaga tetap halus, tidak berlebihan
     if (window.AOS) {
         AOS.init({
             duration: 600,
@@ -9,20 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // PENTING: AOS menghitung titik pemicu (kapan elemen dianggap "masuk layar")
-    // saat DOMContentLoaded — padahal foto-foto (galeri, dsb) masih proses loading
-    // dan bikin tinggi halaman berubah setelahnya. Akibatnya, section yang posisinya
-    // di bawah foto (seperti Jadwal) jadi butuh scroll lebih jauh dari seharusnya
-    // sebelum animasinya "nyala" — terutama kentara di layar kecil.
-    // Fix: hitung ulang setelah SEMUA aset (termasuk gambar) selesai dimuat.
     window.addEventListener('load', function () {
         if (window.AOS) {
             AOS.refreshHard();
         }
     });
 
-    // Jaga-jaga: hitung ulang juga saat ukuran layar berubah (mis. rotate HP,
-    // atau resize browser saat testing responsive di desktop).
     var aosResizeTimer;
     window.addEventListener('resize', function () {
         clearTimeout(aosResizeTimer);
@@ -31,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 200);
     });
 
-    // Navbar: tambah background lebih solid saat halaman discroll
     var navbar = document.getElementById('nacNavbar');
     if (navbar) {
         var onScroll = function () {
@@ -45,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         onScroll();
     }
 
-    // Galeri: tombol panah kiri-kanan untuk scroll slider
     var galleryTrack = document.querySelector('[data-gallery-track]');
     if (galleryTrack) {
         var prevBtn = document.querySelector('[data-gallery-prev]');
@@ -53,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var scrollStep = function () {
             var item = galleryTrack.querySelector('.nac-gallery__item');
             var itemWidth = item ? item.offsetWidth : 300;
-            return itemWidth + 20; // lebar item + gap
+            return itemWidth + 20;
         };
 
         if (prevBtn) {
@@ -68,10 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Form pendaftaran (Join Us): tampilkan status loading di tombol saat
-    // form dikirim, karena prosesnya (apalagi kalau ada upload foto) bisa
-    // makan waktu beberapa detik — biar user tahu form sedang diproses,
-    // bukan macet, dan tidak asal klik kirim berkali-kali.
     var joinForm = document.getElementById('joinForm');
     if (joinForm) {
         joinForm.addEventListener('submit', function () {
@@ -83,26 +68,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Statistik dengan animasi hitung naik (mis. jumlah atlet, pelatih,
-    // total medali di halaman Tentang Kami) — angka mulai dari 0 dan naik
-    // ke angka aslinya begitu elemennya pertama kali kelihatan di layar.
-    // Cuma jalan sekali per elemen (tidak diulang tiap discroll bolak-balik).
     var counterEls = document.querySelectorAll('[data-counter]');
     if (counterEls.length && window.IntersectionObserver) {
         var animateCounter = function (el) {
             var target = parseInt(el.getAttribute('data-counter'), 10) || 0;
-            var duration = 1400; // ms
+            var duration = 1400;
             var startTime = null;
 
             function step(timestamp) {
                 if (!startTime) startTime = timestamp;
                 var progress = Math.min((timestamp - startTime) / duration, 1);
-                var eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic, melambat di akhir
+                var eased = 1 - Math.pow(1 - progress, 3);
                 el.textContent = Math.floor(eased * target);
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 } else {
-                    el.textContent = target; // pastikan angka akhirnya presisi, tidak kepotong pembulatan
+                    el.textContent = target;
                 }
             }
             window.requestAnimationFrame(step);
@@ -121,10 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
         counterEls.forEach(function (el) { counterObserver.observe(el); });
     }
 
-    // ============ Klik-untuk-putar video (kartu Galeri, dsb) ============
-    // Thumbnail + tombol play ditampilkan dulu (hemat bandwidth, tidak load
-    // iframe YouTube kalau tidak diklik) — begitu diklik, baru diganti jadi
-    // iframe video yang benar-benar diputar.
     document.querySelectorAll('[data-play-video]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var embedUrl = btn.getAttribute('data-play-video');
@@ -138,10 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Fasilitas (halaman Tentang Kami) ============
-    // Klik salah satu fasilitas di daftar kiri → foto & penjelasan di
-    // kanan berganti. Di tablet/HP daftarnya bisa digeser ke samping,
-    // jadi tombol yang aktif ikut digeser ke tengah supaya tetap terlihat.
     document.querySelectorAll('[data-facility-showcase]').forEach(function (box) {
         var tabs = box.querySelectorAll('[data-facility-tab]');
         var panels = box.querySelectorAll('[data-facility-panel]');
@@ -169,9 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Dropdown navbar terbuka saat disorot kursor ============
-    // Khusus layar desktop yang memakai mouse. Di HP/tablet (layar sentuh)
-    // tetap buka-tutup dengan ketukan seperti biasa.
     var hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 992px)');
 
     if (typeof bootstrap !== 'undefined') {
@@ -188,8 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
             item.addEventListener('mouseenter', function () {
                 if (!hoverQuery.matches) return;
                 clearTimeout(closeTimer);
-                // Tutup dropdown lain SEKETIKA (tanpa jeda) supaya tidak
-                // terlihat menumpuk saat pindah dari satu menu ke menu lain.
                 navDropdowns.forEach(function (other) {
                     if (other.item !== item) {
                         other.cancel();
@@ -197,30 +165,89 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
                 dropdown.show();
-                // Bootstrap memberi fokus ke judul menu saat dropdown dibuka,
-                // yang memunculkan garis biru (cincin fokus). Untuk pengguna
-                // mouse tidak diperlukan, jadi fokusnya dilepas.
                 toggle.blur();
             });
 
-            // Jeda sangat singkat sebelum menutup — memberi waktu kursor melewati
-            // celah kecil antara judul menu dan kotak dropdown di bawahnya.
             item.addEventListener('mouseleave', function () {
                 if (!hoverQuery.matches) return;
                 closeTimer = setTimeout(function () { dropdown.hide(); }, 120);
             });
 
-            // Di desktop, klik judul menu tidak lagi menutup dropdown yang sudah
-            // terbuka karena disorot (supaya tidak 'berkedip' saat diklik).
             toggle.addEventListener('click', function (e) {
                 if (!hoverQuery.matches) return;
                 e.preventDefault();
                 e.stopPropagation();
                 dropdown.show();
-                // e.detail > 0 = klik mouse. Kalau dibuka lewat keyboard (Enter),
-                // fokus & cincinnya dibiarkan supaya pengguna keyboard tahu posisinya.
                 if (e.detail > 0) toggle.blur();
             }, true);
         });
     }
+
+    document.querySelectorAll('[data-board]').forEach(function (board) {
+        var backdrop = board.parentElement.querySelector('[data-board-backdrop]');
+        var openId = null;
+        var lastTrigger = null;
+
+        function drawerFor(id) { return board.querySelector('[data-board-drawer="' + id + '"]'); }
+        function triggerFor(id) { return board.querySelector('[data-board-open="' + id + '"]'); }
+
+        function close(updateHash) {
+            if (!openId) return;
+            var drawer = drawerFor(openId), trigger = triggerFor(openId);
+            if (drawer) { drawer.classList.remove('is-open'); drawer.hidden = true; }
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+            if (backdrop) { backdrop.classList.remove('is-open'); backdrop.hidden = true; }
+            document.body.style.overflow = '';
+            openId = null;
+            if (updateHash && window.history.replaceState) {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+            if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+        }
+
+        function open(id) {
+            var drawer = drawerFor(id);
+            if (!drawer) return;
+            if (openId) close(false);
+
+            drawer.hidden = false;
+            if (backdrop) backdrop.hidden = false;
+            void drawer.offsetWidth;
+            drawer.classList.add('is-open');
+            if (backdrop) backdrop.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+
+            var trigger = triggerFor(id);
+            if (trigger) trigger.setAttribute('aria-expanded', 'true');
+            openId = id;
+            drawer.scrollTop = 0;
+            var closeBtn = drawer.querySelector('[data-board-close]');
+            if (closeBtn) closeBtn.focus();
+
+            if (window.history.replaceState) history.replaceState(null, '', '#' + id);
+        }
+
+        board.querySelectorAll('[data-board-open]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                lastTrigger = btn;
+                open(btn.getAttribute('data-board-open'));
+            });
+        });
+        board.querySelectorAll('[data-board-close]').forEach(function (btn) {
+            btn.addEventListener('click', function () { close(true); });
+        });
+        if (backdrop) backdrop.addEventListener('click', function () { close(true); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && openId) close(true);
+        });
+
+        var hash = decodeURIComponent(window.location.hash.replace('#', ''));
+        if (hash && drawerFor(hash)) {
+            window.addEventListener('load', function () {
+                var card = document.getElementById(hash);
+                if (card) card.scrollIntoView({ block: 'center' });
+                open(hash);
+            });
+        }
+    });
 });

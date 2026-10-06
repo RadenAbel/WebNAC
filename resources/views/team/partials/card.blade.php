@@ -2,9 +2,6 @@
     $isCoach   = $member->role === 'pelatih';
     $roleLabel = $isCoach ? 'Pelatih' : 'Atlet';
 
-    // Alamat profil berbentuk nama (slug), mis. /our-team/javiero-jesaya-lengkong.
-    // Cadangan ke id cuma untuk jaga-jaga kalau slug belum terisi — alamat
-    // berbentuk angka itu otomatis dialihkan ke alamat nama oleh TeamController.
     $detailUrl = $member->url ?? route('team.show', $member->slug ?: $member->id);
 @endphp
 

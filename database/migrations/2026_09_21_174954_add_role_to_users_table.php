@@ -9,8 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // 'admin'       -> akses CRUD konten biasa (Slider, Galeri, Tim, dst)
-            // 'super_admin' -> semua akses 'admin' + Pengaturan Situs + kelola akun admin
             $table->string('role')->default('admin')->after('email');
         });
     }

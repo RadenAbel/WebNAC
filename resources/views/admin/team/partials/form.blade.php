@@ -1,12 +1,10 @@
 @php
-    // Peran form ini: dari data yang sedang diedit, atau dari menu yang dibuka (?role=)
     $formRole = old('role', $member->role ?: (request('role') === 'pelatih' ? 'pelatih' : 'atlet'));
 @endphp
 
 @csrf
 
 <div class="row g-4">
-    {{-- ============ KOLOM KIRI: FOTO ============ --}}
     <div class="col-lg-4">
         <div class="nac-admin-form-section h-100 mb-0">
             <div class="nac-admin-form-section__head">
@@ -49,10 +47,8 @@
         </div>
     </div>
 
-    {{-- ============ KOLOM KANAN: DATA ============ --}}
     <div class="col-lg-8">
 
-        {{-- Data Utama --}}
         <div class="nac-admin-form-section">
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-person-badge"></i></span>
@@ -133,7 +129,6 @@
                     @error('join_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                {{-- Peran ditentukan dari menu yang dibuka (Atlet / Pelatih), tidak dipilih manual --}}
                 <input type="hidden" name="role" value="{{ $formRole }}">
 
                 @if ($formRole === 'atlet')
@@ -153,9 +148,19 @@
                     <input type="text" name="school_name" class="form-control @error('school_name') is-invalid @enderror"
                         value="{{ old('school_name', $member->school_name) }}" placeholder="SD Negeri 001 Sangatta Utara">
                     @error('school_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    <small class="text-secondary">Tampil di halaman profil atlet, di bawah "Status di Klub".</small>
+                    <small class="text-secondary">Tampil di halaman profil atlet, di bawah "Kategori".</small>
                 </div>
                 @endif
+
+                <div class="col-md-6">
+                    <label class="form-label">Status di Klub</label>
+                    <select name="member_status" class="form-select @error('member_status') is-invalid @enderror">
+                        <option value="aktif" {{ old('member_status', $member->member_status ?? 'aktif') === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="tidak_aktif" {{ old('member_status', $member->member_status ?? 'aktif') === 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                    </select>
+                    @error('member_status') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <small class="text-secondary">Tampil sebagai badge hijau/merah di halaman profil.</small>
+                </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Gaya Spesialis</label>
@@ -199,7 +204,6 @@
             </div>
         </div>
 
-        {{-- Kontak & Sosial Media --}}
         <div class="nac-admin-form-section">
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-share"></i></span>
@@ -252,7 +256,6 @@
             </div>
         </div>
 
-        {{-- Bio & Pengaturan Tampil --}}
         <div class="nac-admin-form-section mb-0">
             <div class="nac-admin-form-section__head">
                 <span class="nac-admin-form-section__icon"><i class="bi bi-card-text"></i></span>

@@ -17,7 +17,6 @@
         @csrf
         @method('PUT')
 
-        {{-- ============ IDENTITAS ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-3">Identitas</h2>
 
@@ -65,7 +64,6 @@
             </div>
         </div>
 
-        {{-- ============ KONTAK PERUSAHAAN ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-3">Kontak Perusahaan</h2>
 
@@ -91,7 +89,6 @@
             </div>
         </div>
 
-        {{-- ============ SOSIAL MEDIA PERUSAHAAN ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-3">Sosial Media Perusahaan</h2>
 
@@ -139,7 +136,6 @@
             </div>
         </div>
 
-        {{-- ============ LOKASI & JAM OPERASIONAL ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-3">Lokasi &amp; Jam Operasional</h2>
 
@@ -169,6 +165,7 @@
                         value="{{ old('opening_hours_weekday', $setting->opening_hours_weekday) }}" placeholder="06.00 - 21.00">
                     @error('opening_hours_weekday') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Jam Buka (Sabtu–Minggu)</label>
                     <input type="text" name="opening_hours_weekend"
@@ -176,10 +173,10 @@
                         value="{{ old('opening_hours_weekend', $setting->opening_hours_weekend) }}" placeholder="07.00 - 20.00">
                     @error('opening_hours_weekend') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
+
             </div>
         </div>
 
-        {{-- ============ ABOUT US ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-3">About Us (Section "Tentang Kami")</h2>
 
@@ -211,11 +208,10 @@
                             placeholder="Lebih dari sekadar tempat berenang.">
                         @error('about_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
+
                     <div>
                         <label class="form-label fw-bold">Deskripsi</label>
                         <div id="aboutDescriptionEditor" style="height:220px; background:#fff;" class="@error('about_description') is-invalid @enderror"></div>
-                        {{-- Textarea asli disembunyikan — dipakai buat nyimpen hasil HTML dari
-                             editor, ini yang beneran dikirim ke server saat form disubmit. --}}
                         <textarea name="about_description" id="aboutDescriptionInput" class="d-none">{{ old('about_description', $setting->about_description) }}</textarea>
                         @error('about_description') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         <small class="text-secondary">Di halaman Beranda, cuma 3 paragraf pertama yang ditampilkan (ringkas). Halaman Tentang Kami menampilkan semuanya.</small>
@@ -224,7 +220,6 @@
             </div>
         </div>
 
-        {{-- ============ FOTO BACKGROUND — SECTION KELAS (halaman Tentang Kami) ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Foto Background — Section "Kelas NAC Swim School"</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -255,7 +250,6 @@
             </div>
         </div>
 
-        {{-- ============ FOTO BACKGROUND — SECTION EVERGLADE AQUATIC CENTER ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Foto Background — Section "Everglade Aquatic Center"</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -291,6 +285,7 @@
                             placeholder="Berlatih di Everglade Aquatic Center">
                         @error('pool_section_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
+
                     <div>
                         <label class="form-label fw-bold">Deskripsi</label>
                         <textarea name="pool_section_description" rows="5"
@@ -298,11 +293,58 @@
                             placeholder="Nugroho Aquatic Club menjalankan seluruh program latihannya di Everglade Aquatic Center...">{{ old('pool_section_description', $setting->pool_section_description) }}</textarea>
                         @error('pool_section_description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
+
                 </div>
             </div>
         </div>
 
-        {{-- ============ BACKGROUND — HEADER HALAMAN GALERI ============ --}}
+        <div class="bg-white border rounded-3 p-4 mb-4">
+            <h2 class="h6 fw-bold mb-1">Kartu "Gabung Bersama Kami" — Beranda</h2>
+            <p class="text-secondary mb-3" style="font-size:0.85rem;">
+                Muncul di Beranda, tepat di bawah section Galeri. Tombolnya mengarah ke halaman Join Us.
+            </p>
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <div class="border rounded-3 p-3 text-center" style="background:#fafbfc;">
+                        <img
+                            src="{{ $setting->join_cta_photo ? $setting->join_cta_photo_url : asset('images/default-avatar.jpg') }}"
+                            alt="Preview foto background kartu Gabung Bersama Kami"
+                            id="joinCtaPhotoPreview"
+                            class="rounded-3 mb-2"
+                            style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <input
+                            type="file"
+                            name="join_cta_photo"
+                            accept="image/png, image/jpeg, image/webp"
+                            class="form-control form-control-sm @error('join_cta_photo') is-invalid @enderror"
+                            onchange="document.getElementById('joinCtaPhotoPreview').src = window.URL.createObjectURL(this.files[0])">
+                        @error('join_cta_photo') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                        <p class="text-secondary mt-2 mb-0" style="font-size:0.78rem;">
+                            Disarankan foto suasana latihan/atlet. Tulisan di atasnya berwarna putih.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Judul</label>
+                        <input type="text" name="join_cta_title" class="form-control @error('join_cta_title') is-invalid @enderror"
+                            value="{{ old('join_cta_title', $setting->join_cta_title) }}"
+                            placeholder="Siap jadi bagian dari Nugroho Aquatic Club?">
+                        @error('join_cta_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">Deskripsi</label>
+                        <textarea name="join_cta_description" rows="4"
+                            class="form-control @error('join_cta_description') is-invalid @enderror"
+                            placeholder="Mulai dari pemula hingga atlet kompetisi — daftarkan diri atau putra-putri Anda...">{{ old('join_cta_description', $setting->join_cta_description) }}</textarea>
+                        @error('join_cta_description') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Background — Header Halaman Galeri</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -348,7 +390,6 @@
             </div>
         </div>
 
-        {{-- ============ BACKGROUND — HEADER HALAMAN ACARA ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Background — Header Halaman Acara</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -394,7 +435,6 @@
             </div>
         </div>
 
-        {{-- ============ BACKGROUND — HEADER HALAMAN ATLET & PELATIH ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Background — Header Halaman Atlet &amp; Pelatih</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -440,7 +480,6 @@
             </div>
         </div>
 
-        {{-- ============ BACKGROUND — HEADER HALAMAN JOIN US ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <h2 class="h6 fw-bold mb-1">Background — Header Halaman Join Us</h2>
             <p class="text-secondary mb-3" style="font-size:0.85rem;">
@@ -522,16 +561,14 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script>
-        (function () {
-            var editorEl = document.getElementById('aboutDescriptionEditor');
-            var hiddenInput = document.getElementById('aboutDescriptionInput');
+        function nacSetupAboutEditor(editorId, inputId, placeholder) {
+            var editorEl = document.getElementById(editorId);
+            var hiddenInput = document.getElementById(inputId);
             if (!editorEl || !hiddenInput) return;
 
-            // Toolbar lebih lengkap dari yang di Tim Manajemen — ada heading,
-            // warna teks & warna background, dan perataan (align).
             var quill = new Quill(editorEl, {
                 theme: 'snow',
-                placeholder: 'Tulis deskripsi tentang klub di sini...',
+                placeholder: placeholder,
                 modules: {
                     toolbar: [
                         [{ header: [2, 3, false] }],
@@ -545,21 +582,19 @@
                 },
             });
 
-            // Mode edit: isi editor dengan HTML yang sudah tersimpan sebelumnya
             if (hiddenInput.value.trim() !== '') {
                 quill.clipboard.dangerouslyPasteHTML(hiddenInput.value);
             }
 
-            // Begitu form mau dikirim, salin HTML dari editor ke textarea
-            // tersembunyi dulu — supaya yang benar-benar terkirim ke server
-            // adalah hasil format lengkapnya, bukan textarea yang kosong.
             var form = hiddenInput.closest('form');
             if (form) {
                 form.addEventListener('submit', function () {
-                    hiddenInput.value = quill.root.innerHTML;
+                    hiddenInput.value = quill.getText().trim() === '' ? '' : quill.root.innerHTML;
                 });
             }
-        })();
+        }
+
+        nacSetupAboutEditor('aboutDescriptionEditor', 'aboutDescriptionInput', 'Tulis deskripsi tentang klub di sini...');
     </script>
     @endpush
 

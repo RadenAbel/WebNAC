@@ -14,17 +14,12 @@
                 <span class="badge bg-secondary">Nonaktif</span>
             @endif
             <div>
-                @if ($event->pdf_url)
-                    <a href="{{ $event->pdf_url }}" target="_blank" class="btn btn-sm btn-outline-secondary" title="Lihat PDF">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                    </a>
-                @endif
                 <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-pencil"></i>
                 </a>
                 <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline nac-confirm-delete-form"
-                    data-confirm-title="Hapus acara ini?"
-                    data-confirm-text="Hasil Pertandingan beserta laporan PDF-nya akan terhapus secara permanen.">
+                    data-confirm-title="Hapus Hasil Pertandingan ini?"
+                    data-confirm-text="Kejuaraan beserta seluruh hasil per nomor lombanya akan terhapus secara permanen.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>

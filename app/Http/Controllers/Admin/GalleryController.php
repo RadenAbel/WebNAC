@@ -33,7 +33,7 @@ class GalleryController extends Controller
         if ($data['type'] === 'photo' && $request->hasFile('image')) {
             $data['image'] = ImageOptimizer::store($request->file('image'), 'galleries');
         } else {
-            $data['image'] = null; // type video tidak butuh upload gambar (pakai thumbnail YouTube)
+            $data['image'] = null;
         }
 
         Gallery::create($data);
@@ -54,7 +54,6 @@ class GalleryController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($data['type'] === 'video') {
-            // Pindah ke video: foto lama (kalau ada) sudah tidak dipakai, hapus dari storage.
             if ($gallery->image) {
                 Storage::disk('public')->delete($gallery->image);
             }

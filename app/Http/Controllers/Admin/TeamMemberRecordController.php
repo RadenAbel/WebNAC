@@ -31,8 +31,6 @@ class TeamMemberRecordController extends Controller
 
     public function destroy(TeamMember $teamMember, TeamMemberRecord $record)
     {
-        // Pastikan rekor ini benar milik anggota tim yang dimaksud
-        // (mencegah orang lain menghapus rekor via ID sembarangan di URL)
         abort_unless($record->team_member_id === $teamMember->id, 404);
 
         $record->delete();

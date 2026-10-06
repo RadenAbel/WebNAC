@@ -1,6 +1,3 @@
-/* ==========================================================================
-   NUGROHO AQUATIC CENTER — ADMIN DESIGN SYSTEM
-   ========================================================================== */
 :root {
   --adm-ink: #0B0F17;
   --adm-ink-soft: #121826;
@@ -30,17 +27,18 @@
   --adm-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
   --adm-shadow: 0 8px 24px -12px rgba(15, 23, 42, 0.12);
   --adm-shadow-lg: 0 24px 48px -20px rgba(15, 23, 42, 0.22);
+
+  --bs-font-sans-serif: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --bs-font-monospace: var(--bs-font-sans-serif);
+  --bs-body-font-family: var(--bs-font-sans-serif);
 }
 
 body {
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--adm-graphite);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ==========================================================================
-   LOGIN
-   ========================================================================== */
 .nac-admin-login-body {
   min-height: 100vh;
   display: flex;
@@ -82,7 +80,7 @@ body {
 .nac-admin-login-mark {
   background: var(--adm-gradient);
   color: var(--adm-ink);
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
   font-size: 1.3rem;
   width: 68px;
   height: 68px;
@@ -137,8 +135,6 @@ body {
   color: var(--adm-deep-aqua);
 }
 
-/* Tombol mata di input password halaman login — input di tengahnya jadi
-   tanpa sudut membulat, sudut kanan pindah ke tombol ini. */
 .nac-admin-login-input-group .form-control:not(:last-child) {
   border-right: none;
   border-radius: 0;
@@ -154,9 +150,8 @@ body {
 .nac-admin-login-eye:hover { color: var(--adm-ink); }
 .nac-admin-login-input-group:focus-within .nac-admin-login-eye { border-color: var(--adm-deep-aqua); }
 
-/* Kolom kode 6 digit di halaman verifikasi dua langkah */
 .nac-admin-otp-input {
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 1.15rem;
   letter-spacing: 0.35em;
   text-align: center;
@@ -182,9 +177,6 @@ body {
 }
 .nac-admin-back-link:hover { color: var(--adm-deep-aqua); }
 
-/* ==========================================================================
-   DASHBOARD SHELL — SIDEBAR + TOPBAR
-   ========================================================================== */
 .nac-admin-body {
   background: var(--adm-canvas);
 }
@@ -205,7 +197,7 @@ body {
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow: hidden; /* yang menggulir cuma daftar menu, lihat .nac-admin-nav */
+  overflow: hidden;
 }
 
 .nac-admin-sidebar__brand {
@@ -224,7 +216,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 800;
   font-size: 0.72rem;
   color: var(--adm-ink);
 }
@@ -251,19 +243,13 @@ body {
   flex-direction: column;
   gap: 0.15rem;
   flex-grow: 1;
-  /* Hanya daftar menu yang bisa digulir — logo (brand) tetap di atas dan
-     tombol Keluar tetap di bawah. Scrollbar disembunyikan, tapi menu tetap
-     bisa digulir pakai roda mouse, touchpad, atau sentuhan. */
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;      /* Firefox */
-  -ms-overflow-style: none;   /* Edge lama */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.nac-admin-nav::-webkit-scrollbar { display: none; } /* Chrome, Edge, Safari */
-/* WAJIB: item menu tidak boleh menyusut. Tanpa ini, begitu tinggi daftar
-   menu dibatasi, browser memampatkan semua item supaya muat (menu jadi
-   terjepit) alih-alih memunculkan area yang bisa digulir. */
+.nac-admin-nav::-webkit-scrollbar { display: none; }
 .nac-admin-nav > *,
 .nac-admin-nav__sub > * { flex-shrink: 0; }
 .nac-admin-sidebar__brand,
@@ -447,9 +433,6 @@ body {
   flex-grow: 1;
 }
 
-/* ==========================================================================
-   STAT CARDS (dashboard)
-   ========================================================================== */
 .nac-admin-stat-card {
   background: var(--adm-white);
   border: 1px solid var(--adm-border);
@@ -475,7 +458,7 @@ body {
   margin-bottom: 0.6rem;
 }
 .nac-admin-stat-card__num {
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 1.9rem;
   font-weight: 600;
   color: var(--adm-ink);
@@ -494,27 +477,18 @@ body {
   flex-shrink: 0;
 }
 
-/* ==========================================================================
-   PANEL / "CARD" (bg-white border rounded-3 dipakai konsisten di semua halaman)
-   ========================================================================== */
 .bg-white.border.rounded-3 {
   border-color: var(--adm-border) !important;
   border-radius: var(--adm-radius) !important;
   box-shadow: var(--adm-shadow-sm);
 }
 
-/* ==========================================================================
-   PAGE HEADER (judul halaman + tombol aksi di kanan)
-   ========================================================================== */
 .nac-admin-content h1.h4 {
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--adm-ink);
 }
 
-/* ==========================================================================
-   BUTTONS
-   ========================================================================== */
 .nac-admin-btn {
   display: inline-flex;
   align-items: center;
@@ -569,9 +543,6 @@ body {
   margin-right: 0.35rem;
 }
 
-/* ==========================================================================
-   TABLES
-   ========================================================================== */
 .nac-admin-content .table {
   margin-bottom: 0;
 }
@@ -604,9 +575,6 @@ body {
   box-shadow: var(--adm-shadow-sm);
 }
 
-/* ==========================================================================
-   BADGES
-   ========================================================================== */
 .nac-admin-content .badge {
   font-weight: 700;
   font-size: 0.72rem;
@@ -630,9 +598,6 @@ body {
   color: #9A6700 !important;
 }
 
-/* ==========================================================================
-   FORMS
-   ========================================================================== */
 .nac-admin-content .form-label {
   font-size: 0.83rem;
   font-weight: 700;
@@ -677,7 +642,6 @@ body {
   border-bottom: 1px solid var(--adm-border);
 }
 
-/* Kotak upload foto (border rounded-3 p-3 text-center) */
 .nac-admin-content .border.rounded-3.p-3.text-center {
   border-style: dashed !important;
   border-color: var(--adm-border) !important;
@@ -689,9 +653,6 @@ body {
   border-color: var(--adm-deep-aqua) !important;
 }
 
-/* ==========================================================================
-   ALERTS
-   ========================================================================== */
 .nac-admin-content .alert,
 .nac-admin-login-card .alert {
   border: none;
@@ -702,9 +663,6 @@ body {
 .alert-danger  { background: var(--adm-danger-soft); color: var(--adm-danger); }
 .alert-info    { background: var(--adm-aqua-soft); color: var(--adm-deep-aqua); }
 
-/* ==========================================================================
-   BADGE "MENUNGGU TINJAUAN" (halaman Pendaftaran)
-   ========================================================================== */
 .nac-admin-pending-badge {
   display: inline-flex;
   align-items: center;
@@ -718,9 +676,6 @@ body {
   font-weight: 700;
 }
 
-/* ==========================================================================
-   DROPDOWN AKSI CUSTOM (JS manual, bukan andalkan Bootstrap data-bs-toggle)
-   ========================================================================== */
 .nac-dropdown {
   position: relative;
   display: inline-block;
@@ -738,19 +693,11 @@ body {
   display: block;
 }
 
-/* ==========================================================================
-   SUDUT MELENGKUNG TABEL — dipasang langsung di sel pojok (bukan lewat
-   overflow:hidden di wrapper), supaya dropdown/tooltip di dalam tabel tidak
-   ikut kepotong kalau posisinya "meluber" keluar kartu.
-   ========================================================================== */
 .bg-white.border.rounded-3 > table.table thead tr:first-child th:first-child { border-top-left-radius: var(--adm-radius-lg); }
 .bg-white.border.rounded-3 > table.table thead tr:first-child th:last-child { border-top-right-radius: var(--adm-radius-lg); }
 .bg-white.border.rounded-3 > table.table tbody tr:last-child td:first-child { border-bottom-left-radius: var(--adm-radius-lg); }
 .bg-white.border.rounded-3 > table.table tbody tr:last-child td:last-child { border-bottom-right-radius: var(--adm-radius-lg); }
 
-/* ==========================================================================
-   PAGINATION
-   ========================================================================== */
 .nac-admin-content .pagination .page-link {
   border: 1px solid var(--adm-border);
   color: var(--adm-graphite);
@@ -776,9 +723,6 @@ body {
   color: #fff;
 }
 
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
 @media (max-width: 991.98px) {
   .nac-admin-shell { flex-direction: column; }
   .nac-admin-sidebar {
@@ -798,9 +742,6 @@ body {
   .nac-admin-content { padding: 1.25rem; }
 }
 
-/* ==========================================================================
-   SIDEBAR COLLAPSIBLE
-   ========================================================================== */
 .nac-admin-sidebar {
   transition: width 0.25s ease, padding 0.25s ease;
 }
@@ -858,9 +799,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   min-width: 0;
 }
 
-/* ==========================================================================
-   FORM SECTION CARD (dipakai di semua partial form: Tim, Slider, Galeri, Jadwal)
-   ========================================================================== */
 .nac-admin-form-section {
   background: var(--adm-white);
   border: 1px solid var(--adm-border);
@@ -901,9 +839,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   margin: 0.1rem 0 0;
 }
 
-/* ==========================================================================
-   DROPZONE FOTO (upload)
-   ========================================================================== */
 .nac-admin-dropzone {
   position: relative;
   border: 1.5px dashed var(--adm-border);
@@ -948,9 +883,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   padding: 0.5rem 0.75rem 0.85rem;
 }
 
-/* ==========================================================================
-   DAY PICKER (pill toggle untuk Jadwal — gantikan checkbox biasa)
-   ========================================================================== */
 .nac-day-picker {
   display: flex;
   flex-wrap: wrap;
@@ -983,7 +915,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.35);
 }
 
-/* Badge hari kecil untuk tabel index Jadwal */
 .nac-day-chip {
   display: inline-flex;
   align-items: center;
@@ -996,9 +927,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   margin: 0.1rem 0.15rem 0.1rem 0;
 }
 
-/* ==========================================================================
-   EMPTY STATE
-   ========================================================================== */
 .nac-admin-empty {
   text-align: center;
   padding: 3.5rem 1.5rem;
@@ -1027,9 +955,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   margin-bottom: 1.25rem;
 }
 
-/* ==========================================================================
-   GRID CARD (dipakai Slider & Galeri index)
-   ========================================================================== */
 .nac-admin-grid-card {
   background: var(--adm-white);
   border: 1px solid var(--adm-border);
@@ -1077,10 +1002,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   .nac-admin-sidebar-toggle { display: none; }
 }
 
-/* ==========================================================================
-   TIPOGRAFI HALAMAN (judul + deskripsi) — berlaku otomatis di semua halaman
-   tanpa perlu ubah tiap file, karena target lewat sibling selector.
-   ========================================================================== */
 .nac-admin-content h1.h4 {
   font-weight: 800;
   font-size: 1.55rem;
@@ -1095,7 +1016,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   max-width: 42rem;
 }
 
-/* Sapaan khusus dashboard ("Halo, ... ") */
 .nac-admin-greeting__title {
   font-weight: 800;
   font-size: 1.7rem;
@@ -1116,9 +1036,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   margin-bottom: 0.75rem;
 }
 
-/* ==========================================================================
-   BACK BUTTON — pengganti link "kembali" polos
-   ========================================================================== */
 .nac-admin-back-btn {
   display: inline-flex;
   align-items: center;
@@ -1155,9 +1072,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   transform: translateX(-2px);
 }
 
-/* ==========================================================================
-   MOBILE DRAWER SIDEBAR
-   ========================================================================== */
 .nac-admin-mobile-toggle {
   display: none;
 }
@@ -1201,9 +1115,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   }
   .nac-admin-nav {
     flex-direction: column;
-    /* Matikan pindah-baris dari tata letak menu horizontal di atas — kalau
-       tidak, menu yang tidak muat dilempar ke kolom kedua di kanan, bukan
-       bisa digulir. */
     flex-wrap: nowrap;
   }
   .nac-admin-nav__group {
@@ -1233,9 +1144,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   .nac-admin-content { padding: 1.1rem; }
 }
 
-/* ==========================================================================
-   KARTU MEDALI (Statistik Kejuaraan di Dashboard)
-   ========================================================================== */
 .nac-medal-card--gold .nac-admin-stat-card__icon {
   background: #FFF3D6;
   color: #B8860B;
@@ -1259,9 +1167,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   color: var(--adm-deep-aqua);
 }
 
-/* ==========================================================================
-   DAFTAR PRESTASI TERBARU
-   ========================================================================== */
 .nac-achievement-item {
   display: flex;
   align-items: center;
@@ -1293,9 +1198,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   color: var(--adm-steel);
 }
 
-/* ==========================================================================
-   KARTU ANGGOTA TIM (khusus mobile, pengganti tabel di layar <768px)
-   ========================================================================== */
 .nac-admin-member-card {
   background: var(--adm-white);
   border: 1px solid var(--adm-border);
@@ -1338,17 +1240,13 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   padding-top: 0.85rem;
   border-top: 1px solid var(--adm-mist);
 }
-/* ==========================================================================
-   STACK PREVIEW (mobile) — Slider & Galeri, meniru efek "kipas" di halaman
-   publik Our Team: 3 kartu teratas mengintip bertumpuk, tap untuk buka semua
-   ========================================================================== */
 .nac-admin-stack-deck {
   position: relative;
   max-width: 260px;
   margin: 0 auto 1.75rem;
 }
 .nac-admin-stack-deck__spacer {
-  padding-top: 62%; /* jaga tinggi kolom sesuai rasio kartu paling depan */
+  padding-top: 62%;
 }
 .nac-admin-stack-card {
   position: absolute;
@@ -1405,18 +1303,11 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
 
 .nac-admin-stack-group.is-open .nac-admin-stack-deck-wrap { display: none; }
 
-/* Dashboard: "Prestasi Terbaru" — 3 item pertama selalu tampil, sisanya
-   disembunyikan dan dibuka lewat tombol "Lihat Selengkapnya" (kartu
-   terbuka turun, tidak pindah halaman). Dipakai atribut [data-stack-group]
-   yang sama dengan pola stack mobile Slider/Galeri. */
 [data-stack-group] .nac-admin-stack-more { display: none; }
 [data-stack-group].is-open .nac-admin-stack-more { display: block !important; }
 .nac-admin-stack-group.is-open .nac-admin-stack-grid { display: block; }
 .nac-admin-stack-group.is-open .nac-admin-stack-trigger i { transform: rotate(90deg); }
 
-/* ==========================================================================
-   IKON BENDERA (flag-icons) — dipakai di daftar Prestasi
-   ========================================================================== */
 .nac-flag-icon {
   display: inline-block;
   width: 20px;
@@ -1428,11 +1319,6 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
   vertical-align: middle;
 }
 
-/* ==========================================================================
-   DROPDOWN MENU SIDEBAR (Tim > Atlet / Pelatih)
-   Tombol induk memakai class .nac-admin-nav__item, jadi gaya dasar, mode
-   sidebar diciutkan, dan tampilan HP otomatis sama dengan menu lain.
-   ========================================================================== */
 .nac-admin-nav__toggle {
   width: 100%;
   background: transparent;
@@ -1462,7 +1348,96 @@ body.nac-sidebar-collapsed .nac-admin-nav a.active::before {
 }
 .nac-admin-nav__dropdown.is-open .nac-admin-nav__sub { display: flex; }
 
-/* Sidebar diciutkan (ikon saja): tombol induk disembunyikan, ikon Atlet &
-   Pelatih langsung tampil supaya tetap bisa diklik tanpa membuka dropdown. */
 body.nac-sidebar-collapsed .nac-admin-nav__toggle { display: none; }
 body.nac-sidebar-collapsed .nac-admin-nav__sub { display: flex; padding-left: 0; margin-top: 0; }
+
+button, input, select, textarea, optgroup,
+.ql-container, .ql-editor, .ql-toolbar, .ql-snow .ql-picker,
+.swal2-popup, .tooltip, .popover, .dropdown-menu {
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+
+.nac-admin-login-card {
+  max-width: 520px;
+  padding: 3.25rem 3rem 3rem;
+}
+.nac-admin-login-card::before { height: 6px; }
+.nac-admin-login-brand { margin-bottom: 1.75rem; }
+.nac-admin-login-logo,
+.nac-admin-login-mark {
+  width: 88px;
+  height: 88px;
+}
+.nac-admin-login-mark { font-size: 1.6rem; }
+.nac-admin-login-card h1 {
+  font-size: 1.9rem;
+  margin-bottom: 0.5rem;
+}
+.nac-admin-login-card > p {
+  font-size: 1rem;
+  margin-bottom: 2.1rem;
+}
+.nac-admin-login-card .form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.nac-admin-login-card .mb-3 { margin-bottom: 1.35rem !important; }
+.nac-admin-login-input-group .form-control {
+  font-size: 1rem;
+  padding: 0.85rem 0.9rem;
+}
+.nac-admin-login-input-group .input-group-text {
+  font-size: 1.1rem;
+  padding: 0 0.95rem 0 1.1rem;
+}
+.nac-admin-login-eye {
+  font-size: 1.1rem;
+  padding: 0 1.05rem;
+}
+.nac-admin-login-card .form-check-input {
+  width: 1.15em;
+  height: 1.15em;
+  margin-top: 0.15em;
+}
+.nac-admin-login-remember { font-size: 0.95rem; }
+.nac-admin-login-card .nac-admin-btn {
+  font-size: 1.05rem;
+  padding-top: 0.9rem !important;
+  padding-bottom: 0.9rem !important;
+  border-radius: 12px;
+}
+.nac-admin-login-card .alert { font-size: 0.92rem !important; padding: 0.75rem 1rem !important; }
+.nac-admin-otp-input { font-size: 1.4rem; padding-top: 0.9rem; padding-bottom: 0.9rem; }
+.nac-admin-back-link { font-size: 0.95rem; margin-top: 2rem; }
+
+@media (max-width: 575.98px) {
+  .nac-admin-login-card { padding: 2.5rem 1.5rem 2.25rem; }
+  .nac-admin-login-logo,
+  .nac-admin-login-mark { width: 72px; height: 72px; }
+  .nac-admin-login-card h1 { font-size: 1.55rem; }
+}
+
+/* Hasil per nomor lomba (collapsible) */
+.nac-admin-result-group {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background: #fff;
+  overflow: hidden;
+}
+.nac-admin-result-group__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.nac-admin-result-group__head::-webkit-details-marker { display: none; }
+.nac-admin-result-group__head:hover { background: #f8f9fa; }
+.nac-admin-result-group[open] > .nac-admin-result-group__head { background: #f8f9fa; }
+.nac-admin-result-group__chevron { transition: transform 0.2s ease; }
+.nac-admin-result-group[open] .nac-admin-result-group__chevron { transform: rotate(180deg); }

@@ -14,7 +14,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('title');            // Judul pencapaian/penghargaan
+            $table->string('title');
             $table->string('year', 4)->nullable();
             $table->text('description')->nullable();
 

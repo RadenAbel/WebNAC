@@ -13,7 +13,6 @@
 
     @include('admin.partials.toast')
 
-    {{-- ============ FORM PROFIL ============ --}}
     <div class="bg-white border rounded-3 p-4 mb-4">
         <form action="{{ route('admin.team.update', $member) }}" method="POST" enctype="multipart/form-data">
             @method('PUT')
@@ -29,7 +28,6 @@
 
     @if ($member->role === 'atlet')
     <div class="row g-4">
-        {{-- ============ REKOR WAKTU TERBAIK ============ --}}
         <div class="col-lg-6">
             <div class="bg-white border rounded-3 p-4 h-100">
                 <h2 class="h6 fw-bold mb-3">
@@ -37,9 +35,6 @@
                 </h2>
 
                 @php
-                    // Daftar flat semua nomor renang (dari config/swim_events.php,
-                    // dikelompokkan per gaya) — dipakai untuk cek apakah event yang
-                    // tersimpan termasuk preset atau custom (ketik manual).
                     $allSwimEvents = collect(config('swim_events'))->flatten()->all();
                 @endphp
 
@@ -47,7 +42,6 @@
                     @php $isCustomEvent = !in_array($record->event, $allSwimEvents); @endphp
                     <div class="border rounded-3 p-3 mb-2" data-item style="font-size:0.85rem;">
 
-                        {{-- ---------- MODE LIHAT ---------- --}}
                         <div class="d-flex justify-content-between align-items-start" data-view-mode>
                             <div>
                                 <div class="fw-bold">{{ $record->event }} — {{ $record->time }}</div>
@@ -76,7 +70,6 @@
                             </div>
                         </div>
 
-                        {{-- ---------- MODE EDIT (tersembunyi sampai tombol pensil diklik) ---------- --}}
                         <form action="{{ route('admin.team.records.update', [$member, $record]) }}" method="POST"
                             class="d-none mt-1" data-edit-mode>
                             @csrf
@@ -215,7 +208,6 @@
             </div>
         </div>
 
-        {{-- ============ PENCAPAIAN & PENGHARGAAN ============ --}}
         <div class="col-lg-6">
             <div class="bg-white border rounded-3 p-4 h-100">
                 <h2 class="h6 fw-bold mb-3">
@@ -225,7 +217,6 @@
                 @forelse ($member->achievements as $achievement)
                     <div class="border rounded-3 p-3 mb-2" data-item style="font-size:0.85rem;">
 
-                        {{-- ---------- MODE LIHAT ---------- --}}
                         <div class="d-flex justify-content-between align-items-start" data-view-mode>
                             <div>
                                 <div class="fw-bold">
@@ -259,7 +250,6 @@
                             </div>
                         </div>
 
-                        {{-- ---------- MODE EDIT ---------- --}}
                         <form action="{{ route('admin.team.achievements.update', [$member, $achievement]) }}" method="POST"
                             class="d-none mt-1" data-edit-mode>
                             @csrf
@@ -353,7 +343,6 @@
 
     @if ($member->role === 'pelatih')
     <div class="row g-4">
-        {{-- ============ LISENSI KEPELATIHAN ============ --}}
         <div class="col-12">
             <div class="bg-white border rounded-3 p-4">
                 <h2 class="h6 fw-bold mb-3">
@@ -363,7 +352,6 @@
                 @forelse ($member->licenses as $license)
                     <div class="border rounded-3 p-3 mb-2" data-item style="font-size:0.85rem;">
 
-                        {{-- ---------- MODE LIHAT ---------- --}}
                         <div class="d-flex justify-content-between align-items-start" data-view-mode>
                             <div>
                                 <div class="fw-bold">
@@ -401,7 +389,6 @@
                             </div>
                         </div>
 
-                        {{-- ---------- MODE EDIT ---------- --}}
                         <form action="{{ route('admin.team.licenses.update', [$member, $license]) }}" method="POST"
                             enctype="multipart/form-data" class="d-none mt-1" data-edit-mode>
                             @csrf

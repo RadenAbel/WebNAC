@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Mews\Purifier\Casts\CleanHtml;
 
 class SiteSetting extends Model
 {
@@ -12,7 +13,6 @@ class SiteSetting extends Model
 
     private const CURRENT_CACHE_KEY = 'site_setting.current';
 
-    /** Hasil current() yang sudah diambil di request ini (hindari ambil ulang berkali-kali). */
     protected static ?self $currentMemo = null;
 
     protected $fillable = [
@@ -37,6 +37,9 @@ class SiteSetting extends Model
         'pool_section_photo',
         'pool_section_title',
         'pool_section_description',
+        'join_cta_photo',
+        'join_cta_title',
+        'join_cta_description',
         'gallery_header_type',
         'gallery_header_photo',
         'gallery_header_youtube_url',
@@ -49,6 +52,10 @@ class SiteSetting extends Model
         'join_header_type',
         'join_header_photo',
         'join_header_youtube_url',
+    ];
+
+    protected $casts = [
+        'about_description' => CleanHtml::class . ':rich_text',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -71,17 +78,16 @@ class SiteSetting extends Model
         return $this->pool_section_photo ? asset('storage/' . $this->pool_section_photo) : null;
     }
 
+    public function getJoinCtaPhotoUrlAttribute(): ?string
+    {
+        return $this->join_cta_photo ? asset('storage/' . $this->join_cta_photo) : null;
+    }
+
     public function getGalleryHeaderPhotoUrlAttribute(): ?string
     {
         return $this->gallery_header_photo ? asset('storage/' . $this->gallery_header_photo) : null;
     }
 
-    /**
-     * Ekstrak ID video YouTube dari link header Galeri. Ditulis manual
-     * (bukan pakai trait HasYoutubeVideo) karena nama kolomnya beda —
-     * SiteSetting punya banyak field YouTube berbeda (channel sosmed,
-     * header Galeri, dst), tidak cuma satu seperti Gallery/Slider.
-     */
     public function getGalleryHeaderYoutubeIdAttribute(): ?string
     {
         if (! $this->gallery_header_youtube_url) {
@@ -193,10 +199,6 @@ class SiteSetting extends Model
         return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1";
     }
 
-    /**
-     * Bentuk link https://wa.me/... otomatis dari nomor WA yang diinput
-     * admin (boleh diketik pakai spasi/strip/+, di sini dibersihkan dulu).
-     */
     public function getWhatsappUrlAttribute(): ?string
     {
         if (! $this->whatsapp) {
@@ -208,28 +210,12 @@ class SiteSetting extends Model
         return "https://wa.me/{$digitsOnly}";
     }
 
-    /**
-     * Ambil satu-satunya baris pengaturan situs. Kalau belum pernah diisi
-     * sama sekali (fresh install, admin belum buka menu Pengaturan),
-     * otomatis dibuatkan baris kosong dengan nilai default supaya blade
-     * view tidak error saat memanggil SiteSetting::current()->whatsapp dst.
-     */
     public static function current(): self
     {
-        // Lapis 1: sudah diambil di request yang sama (navbar, footer, dan
-        // controller memanggil ini berkali-kali per halaman) — pakai lagi.
         if (static::$currentMemo) {
             return static::$currentMemo;
         }
 
-        // Lapis 2: cache (file) — database cuma disentuh sekali sampai admin
-        // menyimpan perubahan (cache otomatis dihapus, lihat booted()).
-        //
-        // PENTING: yang disimpan ke cache cuma DATA MENTAH (array), bukan objek
-        // model. Laravel versi baru secara default menolak membaca objek PHP
-        // dari cache demi keamanan (config cache.serializable_classes = false)
-        // — objek model yang di-cache akan kembali sebagai
-        // __PHP_Incomplete_Class. Model dibangun ulang dari array di bawah.
         $attributes = Cache::get(self::CURRENT_CACHE_KEY);
 
         if (! is_array($attributes)) {
@@ -243,11 +229,6 @@ class SiteSetting extends Model
         return static::$currentMemo = (new static)->newFromBuilder($attributes);
     }
 
-    /**
-     * Hapus cache pengaturan situs. Dipanggil otomatis setiap kali data
-     * pengaturan disimpan/dihapus, jadi perubahan dari admin langsung
-     * terlihat di situs publik tanpa perlu clear cache manual.
-     */
     public static function flushCurrentCache(): void
     {
         static::$currentMemo = null;

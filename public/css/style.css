@@ -1,6 +1,3 @@
-/* ==========================================================================
-   NUGROHO AQUATIC CENTER — DESIGN TOKENS
-   ========================================================================== */
 :root {
   --nac-ink: #0A0E14;
   --nac-graphite: #1A2129;
@@ -16,9 +13,13 @@
   --nac-gradient-hero: linear-gradient(160deg, #0A0E14 0%, #0F2438 45%, #144C74 75%, #1E6FA8 100%);
   --nac-gradient-accent: linear-gradient(90deg, var(--nac-aqua) 0%, var(--nac-deep-aqua) 100%);
 
-  --nac-font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --nac-font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --nac-font-mono: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nac-font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nac-font-body: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nac-font-mono: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --bs-font-sans-serif: var(--nac-font-body);
+  --bs-font-monospace: var(--nac-font-body);
+  --bs-body-font-family: var(--nac-font-body);
 
   --nac-radius: 16px;
   --nac-shadow: 0 20px 50px -20px rgba(10, 14, 20, 0.35);
@@ -41,7 +42,6 @@
   transition: top 0.2s ease;
 }
 
-/* Baru muncul kalau elemen ini yang sedang difokus (biasanya lewat tombol Tab) */
 .nac-skip-link:focus {
   top: 1rem;
   outline: 3px solid var(--nac-aqua, #7FD8FF);
@@ -78,9 +78,6 @@ a { text-decoration: none; }
   color: transparent;
 }
 
-/* ==========================================================================
-   BUTTONS
-   ========================================================================== */
 .nac-btn {
   font-family: var(--nac-font-body);
   font-weight: 700;
@@ -114,9 +111,6 @@ a { text-decoration: none; }
   transform: translateY(-2px);
 }
 
-/* ==========================================================================
-   NAVBAR (floating pill, terlepas dari tepi layar)
-   ========================================================================== */
 .nac-navbar {
   position: fixed;
   top: 1.25rem;
@@ -150,19 +144,16 @@ a { text-decoration: none; }
   align-items: center;
   gap: 0.6rem;
   color: var(--nac-ink);
-  min-width: 0; /* wajib supaya text-overflow:ellipsis di bawah bisa bekerja di flex item */
-  margin-right: 0; /* Bootstrap kasih .navbar-brand margin-right:1rem bawaan —
-                       itu yang bikin logo kegeser dari titik tengah waktu
-                       navbar mengecil & di-center. Jarak ke teks brand cukup
-                       diatur lewat gap di atas, jadi margin ini tidak perlu. */
+  min-width: 0;
+  margin-right: 0;
 }
 .nac-brand__mark {
-    height: 40px; /* Sesuaikan tinggi logo sesuai kebutuhan */
+    height: 40px;
     width: auto;
     flex-shrink: 0;
     object-fit: contain;
-    margin-right: 8px; /* Jarak antara logo dan teks */
-    border-radius: 50%; /* selalu bulat sempurna di ukuran berapa pun (bukan 20px tetap) */
+    margin-right: 8px;
+    border-radius: 50%;
 }
 
 .nac-brand__text {
@@ -202,10 +193,10 @@ a { text-decoration: none; }
 }
 
 .navbar-nav .dropdown-toggle::after {
-  display: none; /* matikan caret bawaan Bootstrap — ketiban efek underline ::after milik nav-link, jadi tak pernah kelihatan */
+  display: none;
 }
 .nac-dropdown-caret {
-  display: inline-block; /* wajib: rotasi (transform) tidak berlaku di elemen inline */
+  display: inline-block;
   font-size: 0.7rem;
   margin-left: 0.3rem;
   transition: transform 0.2s ease;
@@ -215,21 +206,18 @@ a { text-decoration: none; }
 .nac-dropdown-toggle.show .nac-dropdown-caret {
   transform: rotate(180deg);
 }
-/* Cincin fokus biru bawaan Bootstrap di judul menu dropdown: disembunyikan
-   untuk klik/sorot mouse, tetap tampil saat berpindah pakai keyboard (Tab). */
 .navbar-nav .nac-dropdown-toggle:focus:not(:focus-visible) {
   box-shadow: none;
   outline: none;
 }
 
-/* ---------- Dropdown "Our Team" (Atlet/Pelatih) ---------- */
 .nac-navbar__dropdown {
   border: none;
   border-radius: 14px;
   box-shadow: 0 20px 40px -18px rgba(10, 14, 20, 0.25);
   padding: 0.5rem;
   margin-top: 0.5rem;
-  z-index: 2000; /* dipaksa eksplisit — jangan cuma andalkan z-index turunan dari .nac-navbar, supaya tidak ketiban section lain (mis. hero) */
+  z-index: 2000;
 }
 .nac-navbar__dropdown .dropdown-item {
   position: relative;
@@ -273,8 +261,6 @@ a { text-decoration: none; }
   color: var(--nac-white) !important;
 }
 
-/* Saat menu mobile terbuka, navbar jadi beberapa baris — radius dikecilkan
-   supaya tidak terlihat aneh (pill penuh hanya cocok untuk 1 baris) */
 @media (max-width: 991.98px) {
   .nac-navbar { border-radius: 26px; }
   .nac-brand__text {
@@ -289,20 +275,6 @@ a { text-decoration: none; }
   .nac-brand__text { font-size: 0.88rem; max-width: 42vw; }
   .nac-brand__mark { height: 32px; }
 }
-
-/* ---------- Efek "dynamic island" (mengecil jadi logo saja saat cursor
-   menjauh) SUDAH DINONAKTIFKAN — fitur ini berulang kali bentrok dengan
-   dropdown "Our Team" (dropdown jadi salah posisi / layout berantakan
-   setiap kali navbar dalam kondisi "sedang menyusut/melebar"). Navbar
-   sekarang SELALU tampil penuh (kondisi yang dulunya "hover"), stabil,
-   tidak ada lagi transisi lebar yang bisa bentrok sama dropdown. ---------- */
-
-/* ==========================================================================
-   JOIN US — halaman form pendaftaran
-   ========================================================================== */
-/* Lebarkan container khusus halaman ini biar tidak terlalu banyak ruang
-   kosong di kiri/kanan pada layar lebar (pola sama seperti kartu profil). */
-
 
 .nac-join-card {
   padding: 1rem 0;
@@ -368,7 +340,6 @@ select.nac-join-input::-ms-expand {
   position: relative;
 }
 
-/* ---------- State loading pada tombol kirim (saat form sedang diproses) ---------- */
 .nac-join-submit__loading {
   display: none;
   align-items: center;
@@ -414,7 +385,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-join-alert--success i { font-size: 1.1rem; }
 
-/* ---------- Kartu info sekolah (kelas-kelas & catatan) ---------- */
 .nac-join-info {
   background: var(--nac-white);
   border: 1px solid #e9edf0;
@@ -523,7 +493,6 @@ select.nac-join-input::-ms-expand {
 .nac-join-notes li:last-child { margin-bottom: 0; }
 .nac-join-notes li strong { color: var(--nac-ink); }
 
-/* ---------- Judul di dalam kartu formulir (lihat definisi lengkap di atas) ---------- */
 .nac-join-hint {
   display: block;
   font-size: 0.78rem;
@@ -531,7 +500,6 @@ select.nac-join-input::-ms-expand {
   margin-top: 0.5rem;
 }
 
-/* ---------- Upload pas foto (bulat, drag & drop sederhana) ---------- */
 .nac-join-photo-upload {
   position: relative;
   display: flex;
@@ -539,7 +507,7 @@ select.nac-join-input::-ms-expand {
   justify-content: center;
   width: 140px;
   height: 140px;
-  border-radius: 16px; /* kotak (sebelumnya bulat) */
+  border-radius: 16px;
   border: 2px dashed #dfe4e8;
   background: var(--nac-mist);
   overflow: hidden;
@@ -576,8 +544,6 @@ select.nac-join-input::-ms-expand {
   cursor: pointer;
 }
 
-/* Varian besar — dipakai saat foto punya kolom sendiri (layout 2 kolom
-   form + foto pada halaman Join Us yang lebih lebar). */
 .nac-join-photo-upload--lg {
   width: 240px;
   height: 240px;
@@ -593,12 +559,9 @@ select.nac-join-input::-ms-expand {
   }
 }
 
-/* ==========================================================================
-   HERO
-   ========================================================================== */
 .nac-hero {
   position: relative;
-  background: var(--nac-gradient-hero); /* fallback kalau belum ada foto slider sama sekali */
+  background: var(--nac-gradient-hero);
   color: var(--nac-white);
   overflow: hidden;
   padding-top: 3rem;
@@ -608,10 +571,9 @@ select.nac-join-input::-ms-expand {
   .nac-hero { border-radius: 0 0 1.75rem 1.75rem; }
 }
 .nac-hero--photo::before {
-  display: none; /* pola dekoratif gradasi lama tidak perlu lagi kalau backgroundnya sudah foto */
+  display: none;
 }
 
-/* ---------- Background foto hero (dari Slider admin) ---------- */
 .nac-hero__bg {
   position: absolute;
   inset: 0;
@@ -628,30 +590,24 @@ select.nac-join-input::-ms-expand {
   object-position: center;
   display: block;
 }
-/* Video YouTube sebagai background hero — teknik "oversize + center" supaya
-   videonya selalu menutupi penuh area (mirip object-fit:cover buat iframe,
-   yang aslinya tidak mendukung object-fit langsung). */
 .nac-hero__bg-video-wrap {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  pointer-events: none; /* video cuma dekorasi, tidak bisa diklik/diinteraksi pengunjung */
+  pointer-events: none;
 }
 .nac-hero__bg-video {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 177.78vh; /* rasio 16:9 dihitung dari tinggi, biar selalu penuh */
-  height: 56.25vw; /* rasio 16:9 dihitung dari lebar */
+  width: 177.78vh;
+  height: 56.25vw;
   min-width: 100%;
   min-height: 100%;
   transform: translate(-50%, -50%);
   border: none;
 }
-/* Lapisan hitam transparan di atas foto — gradasi supaya sisi kiri (tempat
-   teks) lebih gelap/kontras, sisi kanan sedikit lebih terang biar foto tetap
-   kelihatan detailnya. */
 .nac-hero__overlay {
   position: absolute;
   inset: 0;
@@ -664,8 +620,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-hero > .container { position: relative; z-index: 2; }
 
-/* Khusus tombol "Daftar Latihan" di Hero Beranda — scoped ke .nac-hero saja,
-   supaya tombol .nac-btn--primary di halaman LAIN tidak ikut berubah. */
 .nac-hero .nac-btn--primary {
   background: rgba(10, 14, 20, 0.65);
   color: var(--nac-white);
@@ -675,13 +629,11 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-white);
 }
 
-/* ---------- Strip statistik horizontal (pengganti kartu kanan lama) ---------- */
 .nac-hero-stats-strip {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
-/* Varian grid 2x2 — dipakai saat statistik ditaruh di kolom kanan hero */
 .nac-hero-stats-strip--grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -727,7 +679,7 @@ select.nac-join-input::-ms-expand {
   .nac-hero-stats-strip__item { flex: 1 1 calc(50% - 0.4rem); }
 
   .nac-hero-stats-strip--grid {
-    grid-template-columns: 1fr; /* tumpuk ke bawah, bukan 2 kolom sempit */
+    grid-template-columns: 1fr;
     gap: 0.6rem;
   }
 }
@@ -741,9 +693,6 @@ select.nac-join-input::-ms-expand {
   pointer-events: none;
 }
 
-/* ---------- Blob dekoratif organik (hero & section terang) ---------- */
-/* Bentuk "blob" dibuat dari div biasa + border-radius asimetris (bukan
-   gambar/SVG), jadi ringan dan gampang diubah warnanya lewat CSS var. */
 .nac-blob-decor {
   position: absolute;
   inset: 0;
@@ -785,20 +734,6 @@ select.nac-join-input::-ms-expand {
   .nac-blob { transform: scale(0.65); }
 }
 
-/* Pola titik-titik halus — dipakai di section berlatar terang */
-.nac-dot-pattern {
-  position: relative;
-}
-.nac-dot-pattern::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(96, 168, 219, 0.11) 5px, transparent 4px);
-  background-size: 59px 59px;
-  pointer-events: none;
-  z-index: 0;
-}
-.nac-dot-pattern > .container { position: relative; z-index: 1; }
 .nac-hero__title {
   font-family: var(--nac-font-display); font-weight: 800;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
@@ -820,9 +755,6 @@ select.nac-join-input::-ms-expand {
   fill: var(--nac-white);
 }
 
-/* ==========================================================================
-   HERO STATS CARD (glass, di kolom kanan hero)
-   ========================================================================== */
 .nac-hero-stats {
   position: relative;
   display: grid;
@@ -875,7 +807,6 @@ select.nac-join-input::-ms-expand {
   .nac-hero-stats { grid-template-columns: 1fr; }
 }
 
-/* ---------- Slider otomatis di hero (statistik + foto) ---------- */
 .nac-hero-slider { position: relative; }
 .nac-hero-slider .carousel-item { transition: opacity 0.6s ease-in-out; }
 
@@ -889,7 +820,6 @@ select.nac-join-input::-ms-expand {
   background: rgba(10, 14, 20, 0.35);
 }
 
-/* Slide statistik: grid 2x2, tinggi 100% mengisi frame */
 .nac-hero-carousel-slide--stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -901,7 +831,6 @@ select.nac-join-input::-ms-expand {
   box-shadow: none;
 }
 
-/* Slide foto */
 .nac-hero-carousel-slide--photo {
   position: relative;
 }
@@ -944,7 +873,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-hero-carousel-slide__caption i { color: var(--nac-aqua); }
 
-/* Indikator titik */
 .nac-hero-slider .carousel-indicators {
   position: static;
   margin: 1.1rem 0 0;
@@ -971,9 +899,6 @@ select.nac-join-input::-ms-expand {
   .nac-hero-carousel-slide--stats { grid-template-columns: 1fr; }
 }
 
-/* ==========================================================================
-   SECTIONS (generic)
-   ========================================================================== */
 .nac-section {
   padding: 5rem 0;
   background: var(--nac-white);
@@ -1011,9 +936,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-list-plain i { color: var(--nac-aqua); }
 
-/* ==========================================================================
-   FACILITY CARDS
-   ========================================================================== */
 .nac-facility-card {
   position: relative;
   background: var(--nac-white);
@@ -1070,9 +992,6 @@ select.nac-join-input::-ms-expand {
   margin-bottom: 0;
 }
 
-/* ==========================================================================
-   MAP FRAME
-   ========================================================================== */
 .nac-map-frame {
   border-radius: var(--nac-radius);
   overflow: hidden;
@@ -1084,14 +1003,9 @@ select.nac-join-input::-ms-expand {
   line-height: 0;
 }
 @media (max-width: 991.98px) {
-  /* Kolom Lokasi full-width di bawah lg — tinggi peta dinaikkan sedikit
-     supaya proporsinya tetap presisi (nggak keliatan gepeng/kurang tinggi). */
   .nac-footer .nac-map-frame--sm iframe { height: 200px !important; }
 }
 
-/* ==========================================================================
-   GALERI (slider kiri-kanan)
-   ========================================================================== */
 .nac-gallery__head {
   max-width: none;
   display: flex;
@@ -1105,8 +1019,6 @@ select.nac-join-input::-ms-expand {
   white-space: nowrap;
 }
 
-/* Wrapper track supaya panah bisa jadi overlay di atas slider (posisinya
-   relatif terhadap ini, bukan terhadap seluruh section). */
 .nac-gallery__track-wrap {
   position: relative;
   flex: 1 1 0%;
@@ -1150,9 +1062,6 @@ select.nac-join-input::-ms-expand {
 @media (max-width: 767.98px) {
   .nac-gallery__layout { flex-direction: column; padding-top: 1.5rem; }
 }
-/* Tablet/iPad (768-1199px): foto utama (lebar terkunci ~672px) + slider tidak
-   muat berdampingan — slider jadi terjepit. Di rentang ini disusun atas-bawah,
-   masing-masing selebar penuh. */
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .nac-gallery__layout { flex-direction: column; }
   .nac-gallery__item,
@@ -1190,11 +1099,9 @@ select.nac-join-input::-ms-expand {
   background: var(--nac-mist);
   box-shadow: 0 6px 16px -12px rgba(10,14,20,0.2);
 }
-/* Foto utama — statis, tidak ikut geser, ukurannya sendiri (banner). */
 .nac-gallery__item--featured {
   aspect-ratio: 2 / 1;
 }
-/* ---------- Kartu featured yang isinya video (klik-untuk-putar) ---------- */
 .nac-gallery__play-trigger {
   position: relative;
   display: block;
@@ -1233,7 +1140,7 @@ select.nac-join-input::-ms-expand {
   box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
   transition: transform 0.25s ease, background 0.25s ease;
 }
-.nac-gallery__play-icon i { margin-left: 4px; } /* biar ikon play kelihatan center secara optis */
+.nac-gallery__play-icon i { margin-left: 4px; }
 .nac-gallery__play-trigger:hover .nac-gallery__play-icon {
   transform: translate(-50%, -50%) scale(1.08);
   background: var(--nac-white);
@@ -1244,9 +1151,6 @@ select.nac-join-input::-ms-expand {
   border: none;
   display: block;
 }
-/* Foto-foto di dalam track slider kecil — dibuat memenuhi lebar track-nya
-   sendiri, jadi cuma SATU yang kelihatan tiap saat (masuk satu-satu lewat
-   panah/geser), tidak lagi mengintip sebagian foto berikutnya. */
 .nac-gallery__track .nac-gallery__item {
   flex: 0 0 100%;
   width: 100%;
@@ -1288,10 +1192,6 @@ select.nac-join-input::-ms-expand {
   .nac-gallery__item--featured { aspect-ratio: 2.4 / 1; }
 }
 
-/* ---------- Halaman Galeri penuh (/galeri) — grid foto & video ---------- */
-/* Masonry murni CSS (bukan Bootstrap row/col) — supaya kartu dengan tinggi
-   beda-beda (ukuran asli foto) tetap rapi tersusun, tidak ada jarak aneh di
-   bawah kartu pendek gara-gara "menunggu" kartu tertinggi di barisnya. */
 .nac-gallery-page__masonry {
   column-count: 1;
   column-gap: 1.25rem;
@@ -1304,9 +1204,9 @@ select.nac-join-input::-ms-expand {
 }
 .nac-gallery-page__item {
   position: relative;
-  display: inline-block; /* wajib untuk elemen di dalam CSS columns */
+  display: inline-block;
   width: 100%;
-  break-inside: avoid; /* jangan sampai 1 kartu terpotong ke kolom berikutnya */
+  break-inside: avoid;
   margin: 0 0 1.25rem;
   border-radius: var(--nac-radius);
   overflow: hidden;
@@ -1321,8 +1221,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-gallery-page__item:hover img { transform: scale(1.03); }
 .nac-gallery-page__photo-trigger { cursor: pointer; }
-/* Khusus item video (thumbnail YouTube) — tetap pakai rasio bawaan
-   YouTube-nya sendiri, bukan dipaksa ikut aturan di atas. */
 .nac-gallery-page__item .nac-gallery__play-trigger {
   display: block;
   position: relative;
@@ -1350,9 +1248,6 @@ select.nac-join-input::-ms-expand {
   pointer-events: none;
 }
 
-/* ==========================================================================
-   PAGE HEADER (halaman selain home)
-   ========================================================================== */
 .nac-page-header {
   position: relative;
   overflow: hidden;
@@ -1376,17 +1271,10 @@ select.nac-join-input::-ms-expand {
 }
 .nac-page-header .container { position: relative; z-index: 2; }
 
-/* Container header dilebarkan dengan skala fluid (persentase lebar layar,
-   bukan lompatan di breakpoint tertentu) — supaya terasa lega di SEMUA
-   ukuran laptop (1024px sampai 1920px+), bukan cuma di titik tertentu.
-   Mobile/tablet kecil (<768px) tidak kena aturan ini sama sekali. */
 @media (min-width: 768px) {
   .nac-page-header .container { max-width: min(94%, 1600px); }
 }
 
-/* ---------- Modifier: header dengan foto background + overlay hitam
-   transparan (khusus dipakai lewat class tambahan .nac-page-header--photo,
-   TIDAK mengubah tampilan .nac-page-header polos di halaman lain). ---------- */
 .nac-page-header--photo {
   background-size: cover;
   background-position: center;
@@ -1396,8 +1284,6 @@ select.nac-join-input::-ms-expand {
   background: rgba(10, 14, 20, 0.6);
   z-index: 1;
 }
-/* ---------- Video YouTube sebagai background header (teknik sama seperti
-   video background hero: oversize + center, biar selalu menutupi penuh). ---------- */
 .nac-page-header__bg-video-wrap {
   position: absolute;
   inset: 0;
@@ -1441,9 +1327,6 @@ select.nac-join-input::-ms-expand {
   .nac-page-header { border-radius: 0 0 1.5rem 1.5rem; }
 }
 
-/* ==========================================================================
-   TEAM FAN — preview dek kartu (tertutup) + grid premium (terbuka)
-   ========================================================================== */
 .nac-section--tint { background: var(--nac-mist); }
 
 .nac-section__head--fan {
@@ -1514,7 +1397,6 @@ select.nac-join-input::-ms-expand {
 
 .nac-fan__single { max-width: 220px; margin: 0 auto; }
 
-/* ---------- Preview: dek kartu tertutup, terbingkai & ringkas ---------- */
 .nac-fan__preview {
   display: flex;
   flex-direction: column;
@@ -1578,7 +1460,6 @@ select.nac-join-input::-ms-expand {
   }
 }
 
-/* Badge bulat jumlah total anggota, menempel di sudut dek */
 .nac-fan__count {
   position: absolute;
   top: -14px;
@@ -1606,7 +1487,6 @@ select.nac-join-input::-ms-expand {
   text-align: center;
 }
 
-/* ---------- Grid: tampil penuh & rapi saat dibuka ---------- */
 .nac-fan__grid {
   display: none;
   flex-wrap: wrap;
@@ -1626,7 +1506,6 @@ select.nac-join-input::-ms-expand {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Toggle state: kelola dari wrapper .nac-fan-group ---------- */
 .nac-fan-group.is-open .nac-fan__preview {
   display: none;
 }
@@ -1639,19 +1518,12 @@ select.nac-join-input::-ms-expand {
   .nac-fan__grid-item { flex-basis: 150px; max-width: 150px; }
 }
 
-/* ---------- Desktop/tablet (>= 768px): tampilkan grid langsung, tanpa
-   efek "kartu numpuk" (preview) dan tanpa perlu klik tombol "Lihat Semua".
-   Efek numpuk itu dipertahankan KHUSUS layar kecil (mobile) saja, karena di
-   situ ruangnya lebih terbatas. ---------- */
 @media (min-width: 768px) {
   .nac-fan__preview { display: none !important; }
   .nac-fan__trigger { display: none !important; }
   .nac-fan-group .nac-fan__grid { display: flex !important; }
 }
 
-/* ==========================================================================
-   TEAM CARD — kartu profil (klik untuk buka detail)
-   ========================================================================== */
 .nac-team-card {
   position: relative;
   display: block;
@@ -1688,10 +1560,6 @@ select.nac-join-input::-ms-expand {
   transform: scale(1.06);
   filter: brightness(0.55);
 }
-/* ==========================================================================
-   TAMBAHAN: Placeholder "No Image" di nac-team-card
-   Sisipkan blok ini di public/css/style.css, dekat rule .nac-team-card lain.
-   ========================================================================== */
 .nac-team-card__no-photo {
   position: absolute;
   inset: 0;
@@ -1714,7 +1582,6 @@ select.nac-join-input::-ms-expand {
   letter-spacing: 0.04em;
 }
 
-/* Skeleton shimmer — tampil selama foto masih dimuat (bukan saat memang tidak ada foto) */
 .nac-team-card__photo:not(.is-loaded):not(.is-empty)::before {
   content: "";
   position: absolute;
@@ -1724,13 +1591,11 @@ select.nac-join-input::-ms-expand {
   animation: nac-shimmer 1.4s ease-in-out infinite;
 }
 
-
 @keyframes nac-shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Placeholder — dipakai saat member belum punya foto sama sekali */
 .nac-photo-placeholder {
   position: absolute;
   inset: 0;
@@ -1753,7 +1618,6 @@ select.nac-join-input::-ms-expand {
   opacity: 0.75;
 }
 
-/* Efek kilau halus saat hover — sentuhan premium */
 .nac-team-card__shine {
   position: absolute;
   inset: 0;
@@ -1767,7 +1631,6 @@ select.nac-join-input::-ms-expand {
   transition: transform 0.85s ease;
 }
 
-/* Label nama, tampil default (saat tidak hover) */
 .nac-team-card__label {
   position: absolute;
   left: 0;
@@ -1792,7 +1655,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-team-card:hover .nac-team-card__label { opacity: 0; }
 
-/* Overlay detail, muncul saat hover — background gelap transparan */
 .nac-team-card__overlay {
   position: absolute;
   inset: 0;
@@ -1868,12 +1730,6 @@ select.nac-join-input::-ms-expand {
   border-color: transparent;
 }
 
-/* Touch devices: :focus-within sudah cukup untuk keyboard nav; sentuhan layar
-   biasanya tetap memicu :hover di browser modern. */
-
-/* ==========================================================================
-   TENTANG KAMI
-   ========================================================================== */
 .nac-about-photo {
   position: relative;
   border-radius: var(--nac-radius);
@@ -1888,13 +1744,10 @@ select.nac-join-input::-ms-expand {
   display: block;
 }
 
-/* ---------- Highlight Kolam Latihan — Everglade Aquatic Center
-   (halaman Tentang Kami): kartu foto full-bleed + overlay gelap, TANPA
-   tombol, cuma judul + deskripsi + caption foto. ---------- */
 .nac-pool-highlight {
   position: relative;
   min-height: 460px;
-  border-radius: 28px;
+  border-radius: 14px;
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -1933,9 +1786,6 @@ select.nac-join-input::-ms-expand {
   .nac-pool-highlight__content { padding: 2rem 1.5rem; max-width: 100%; }
 }
 
-/* ---------- Statistik Profil Klub (halaman Tentang Kami): angka yang
-   animasi hitung naik saat pertama kali kelihatan di layar (lihat app.js,
-   dipicu lewat [data-counter]). ---------- */
 .nac-about-stats {
   display: flex;
   flex-wrap: wrap;
@@ -2004,9 +1854,6 @@ select.nac-join-input::-ms-expand {
   }
 }
 
-/* ==========================================================================
-   TIM MANAJEMEN (halaman Tentang Kami) — kartu + modal detail
-   ========================================================================== */
 .nac-mgmt-list {
   display: flex;
   flex-direction: column;
@@ -2018,7 +1865,7 @@ select.nac-join-input::-ms-expand {
   border: 1px solid rgba(10, 14, 20, 0.08);
   border-radius: 10px;
   background: var(--nac-white);
-  overflow: hidden; /* biar foto ikut ke-crop sudut lengkung kartu */
+  overflow: hidden;
 }
 .nac-mgmt-card__photo {
   flex: 0 0 340px;
@@ -2082,7 +1929,6 @@ select.nac-join-input::-ms-expand {
   .nac-mgmt-card__body { padding: 1.5rem; }
 }
 
-/* ---------- Modal detail Tim Manajemen ---------- */
 .nac-mgmt-modal .modal-dialog { max-width: 880px; }
 .nac-mgmt-modal .modal-content {
   border: none;
@@ -2117,7 +1963,7 @@ select.nac-join-input::-ms-expand {
 .nac-mgmt-modal__photo {
   flex: 0 0 380px;
   max-width: 380px;
-  align-self: stretch; /* foto ikut setinggi modal, TIDAK ikut scroll */
+  align-self: stretch;
 }
 .nac-mgmt-modal__photo img {
   width: 100%;
@@ -2145,8 +1991,6 @@ select.nac-join-input::-ms-expand {
   font-size: 0.9rem;
   margin-bottom: 1.25rem;
 }
-/* INI kunci "cuma tulisan yang gerak" — cuma area ini yang overflow:auto,
-   foto & judul di luar area ini jadi tetap diam waktu di-scroll. */
 .nac-mgmt-modal__scroll {
   overflow-y: auto;
   flex: 1;
@@ -2208,7 +2052,6 @@ select.nac-join-input::-ms-expand {
   font-size: 1.3rem;
 }
 
-/* ---------- Layout foto + kartu bertumpuk ---------- */
 .nac-about-overlap {
   position: relative;
   display: flex;
@@ -2257,8 +2100,6 @@ select.nac-join-input::-ms-expand {
     margin-top: -2.5rem;
     width: 92%;
   }
-  /* Kartu teks naik menimpa bagian bawah foto (margin-top negatif di atas),
-     jadi badge "Sejak" dipindah ke kanan atas supaya tidak tertutup. */
   .nac-about-overlap__badge {
     top: 1.25rem;
     right: 1.25rem;
@@ -2271,14 +2112,6 @@ select.nac-join-input::-ms-expand {
   .nac-about-overlap__photo { min-height: 260px; }
 }
 
-/* ==========================================================================
-   CLASS DARI QUILL (rich text editor admin) — WAJIB didefinisikan ulang di
-   sini. Di admin, class ini ditampilkan berkat quill.snow.css yang cuma
-   di-load di halaman admin. Konten HTML hasil Quill (mis. about_description)
-   dirender juga di halaman PUBLIK (Beranda, Tentang Kami) yang TIDAK memuat
-   quill.snow.css — tanpa aturan di bawah ini, perataan/format dari editor
-   akan hilang begitu tampil di halaman publik walau tersimpan benar di DB.
-   ========================================================================== */
 .ql-align-center { text-align: center; }
 .ql-align-right { text-align: right; }
 .ql-align-justify { text-align: justify; }
@@ -2299,9 +2132,6 @@ select.nac-join-input::-ms-expand {
   max-width: 32rem;
 }
 .nac-lead--light { color: rgba(255, 255, 255, 0.8); }
-/* Potong visual jadi 3 baris teks — bukan hitung jumlah paragraf, jadi
-   tetap konsisten berapa pun banyaknya paragraf di kontennya. Bekerja di
-   semua browser modern (Chrome, Safari, Firefox terbaru, Edge). */
 .nac-lead--clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -2338,9 +2168,6 @@ select.nac-join-input::-ms-expand {
   font-size: 0.85rem;
 }
 
-/* ==========================================================================
-   BIAYA PENDAFTARAN (pricing card)
-   ========================================================================== */
 .nac-price-card {
   position: relative;
   height: 100%;
@@ -2459,10 +2286,6 @@ select.nac-join-input::-ms-expand {
   border-radius: 999px;
 }
 
-/* ==========================================================================
-   FADE-IN sederhana (murni CSS, jalan otomatis saat halaman dimuat —
-   dipakai untuk elemen yang sebelumnya bermasalah dengan AOS scroll-trigger)
-   ========================================================================== */
 @keyframes nacFadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -2514,7 +2337,6 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-white);
 }
 
-/* Varian terang, dipakai saat section Jadwal berlatar putih */
 .nac-schedule--light {
   border: 1px solid #e9edf0;
 }
@@ -2537,25 +2359,21 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-ink);
 }
 
-/* ==========================================================================
-   SECTION DENGAN BACKGROUND FOTO + EFEK PARALLAX
-   ========================================================================== */
 .nac-section--photo-bg {
   position: relative;
   color: var(--nac-white);
   background-image:
     linear-gradient(180deg, rgba(10, 14, 20, 0.82), rgba(10, 14, 20, 0.88)),
-    url('https://picsum.photos/seed/nac-pool-bg/1920/1080'); /* 🔧 GANTI dengan foto kolam asli NAC */
+    url('https://picsum.photos/seed/nac-pool-bg/1920/1080');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* ini kuncinya — bikin fotonya "diam" pas discroll */
+  background-attachment: fixed;
 }
-/* iOS Safari tidak mendukung background-attachment:fixed dengan baik (sering
-   nge-lag/patah-patah) — otomatis fallback ke scroll biasa khusus di situ,
-   tetap aman & enak dilihat, cuma tanpa efek parallax-nya. */
 @supports (-webkit-touch-callout: none) {
   .nac-section--photo-bg { background-attachment: scroll; }
 }
+/* foto latar biasa (tanpa efek parallax) */
+.nac-section--photo-bg.nac-section--static-bg { background-attachment: scroll; }
 .nac-section--photo-bg .nac-eyebrow { color: var(--nac-aqua); }
 .nac-section--photo-bg .nac-section__title { color: var(--nac-white); }
 .nac-section--photo-bg .nac-lead { color: rgba(255, 255, 255, 0.75); }
@@ -2563,10 +2381,6 @@ select.nac-join-input::-ms-expand {
   box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.55);
 }
 
-/* ---------- Kelas & Catatan NAC Swim School (halaman Tentang Kami) di atas
-   foto gelap — .nac-join-info__title/__lead pakai nama class BEDA dari
-   .nac-section__title/.nac-lead di atas, jadi butuh override sendiri
-   supaya ikut jadi putih/terang, bukan warna gelap bawaannya. ---------- */
 .nac-section--photo-bg .nac-join-info__title { color: var(--nac-white); }
 .nac-section--photo-bg .nac-join-info__lead { color: rgba(255, 255, 255, 0.78); }
 .nac-section--photo-bg .nac-join-info__lead strong { color: var(--nac-white); }
@@ -2585,7 +2399,6 @@ select.nac-join-input::-ms-expand {
 .nac-section--photo-bg .nac-join-notes li { color: rgba(255, 255, 255, 0.75); }
 .nac-section--photo-bg .nac-join-notes li strong { color: var(--nac-white); }
 
-/* ---------- Jadwal: tabel modern (card putih membungkus tabel) ---------- */
 .nac-schedule-table-wrap {
   background: var(--nac-white);
   border: 1px solid #e9edf0;
@@ -2671,9 +2484,6 @@ select.nac-join-input::-ms-expand {
 .nac-schedule-table__time i { color: var(--nac-deep-aqua); }
 
 @media (max-width: 767.98px) {
-  /* Di layar HP, tabel dibongkar total jadi tumpukan card — bukan lagi
-     discroll ke samping (yang bikin kepotong/kepencet). Markup <table>-nya
-     tetap sama persis, cuma "dipaksa" render sebagai block lewat CSS. */
   .nac-schedule-table-wrap { background: transparent; border: none; box-shadow: none; overflow: visible; }
   .nac-schedule-table-wrap .table-responsive { overflow-x: visible; }
   .nac-schedule-table thead { display: none; }
@@ -2714,15 +2524,11 @@ select.nac-join-input::-ms-expand {
     color: var(--nac-steel);
     flex-shrink: 0;
   }
-  /* Kolom Kategori jadi "header" card-nya sendiri — rata kiri, tanpa label */
   .nac-schedule-table td[data-label="Kategori"] { justify-content: flex-start; }
   .nac-schedule-table td[data-label="Kategori"]::before { content: none; }
   .nac-schedule-table td[data-label="Hari"] .nac-schedule-table__days { justify-content: flex-end; }
 }
 
-/* ==========================================================================
-   FOOTER MAP (dipindahkan dari section Lokasi)
-   ========================================================================== */
 .nac-footer__map-wrap {
   padding-bottom: 3rem;
   margin-bottom: 2.5rem;
@@ -2766,7 +2572,6 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-white);
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
-/* Hover putih transparan — kontras jelas di atas latar footer yang hitam. */
 .nac-footer__social a:hover {
   background: rgba(255, 255, 255, 0.18);
   color: var(--nac-white);
@@ -2805,9 +2610,6 @@ select.nac-join-input::-ms-expand {
   text-align: center;
 }
 
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
 @media (max-width: 991.98px) {
   .navbar-collapse {
     background: var(--nac-white);
@@ -2820,9 +2622,6 @@ select.nac-join-input::-ms-expand {
   .nac-hero { padding-top: 4rem; }
 }
 
-/* ==========================================================================
-   HALAMAN DETAIL PROFIL (team/show.blade.php)
-   ========================================================================== */
 .nac-profile-hero {
   position: relative;
   background: var(--nac-gradient-hero);
@@ -2923,7 +2722,6 @@ select.nac-join-input::-ms-expand {
   .nac-profile-stats__item { min-width: 0; width: 100%; }
 }
 
-/* ---------- Data Diri (tab Profil) — tempat/tanggal lahir, bergabung, gaya spesialis ---------- */
 .nac-profile-info-list {
   display: flex;
   flex-direction: column;
@@ -3044,7 +2842,6 @@ select.nac-join-input::-ms-expand {
   color: rgba(255, 255, 255, 0.55);
 }
 
-/* ---------- Strip CTA penutup ---------- */
 .nac-cta-band {
   background: var(--nac-gradient-hero);
   color: var(--nac-white);
@@ -3072,22 +2869,16 @@ select.nac-join-input::-ms-expand {
   .nac-profile-hero .nac-eyebrow--light { display: block; text-align: center; }
   .nac-profile-stats { justify-content: center; text-align: left; }
   .nac-profile-actions { justify-content: center; }
-  /* Ikon sosial media di kartu profil (baru) tetap rata kiri, tidak ikut center */
   .nac-profile-detail-item .nac-profile-actions { justify-content: flex-start; }
   .nac-breadcrumb { justify-content: center; text-align: center; }
 }
 
 @media (max-width: 575.98px) {
-  /* Ringkas jadi "‹ {Role}  /  {Nama}" saja di layar kecil */
   .nac-breadcrumb a:first-of-type,
   .nac-breadcrumb i:first-of-type {
     display: none;
   }
 }
-/* ==========================================================================
-   PROFIL ATLET/PELATIH — GAYA "ATHLETE PROFILE CARD"
-   (topbar gelap + kartu terang mengambang + tab Rekor/Prestasi/Profil)
-   ========================================================================== */
 :root {
   --nac-bronze: #C68A45;
 }
@@ -3104,7 +2895,6 @@ select.nac-join-input::-ms-expand {
 .nac-profile-topbar .nac-breadcrumb i { font-size: 0.6rem; color: rgba(255, 255, 255, 0.35); }
 .nac-profile-topbar .nac-breadcrumb [aria-current="page"] { color: var(--nac-white); }
 
-/* ---------- Kartu profil terang, mengambang di atas topbar ---------- */
 .nac-profile-card-wrap {
   margin-top: -3.25rem;
   position: relative;
@@ -3120,8 +2910,6 @@ select.nac-join-input::-ms-expand {
   overflow: hidden;
 }
 
-/* ---------- Kartu profil v2: foto di kiri (mengambang, overflow dikit ke
-   atas & bawah kartu), 2 kolom info label/value di kanan — persis referensi ---------- */
 .nac-profile-card--v2 { overflow: visible; }
 .nac-profile-card__row {
   display: flex;
@@ -3132,7 +2920,7 @@ select.nac-join-input::-ms-expand {
 .nac-profile-card__photo-side {
   flex-shrink: 0;
   display: flex;
-  margin: -1.5rem 0 0; /* cuma "nembus" ke atas; bawah tidak negatif, jadi kartu ikut memanjang mengikuti tinggi foto */
+  margin: -1.5rem 0 0;
 }
 .nac-profile-card__photo-side-frame {
   position: relative;
@@ -3176,10 +2964,6 @@ select.nac-join-input::-ms-expand {
 }
 .nac-profile-card__photo-side-frame .nac-photo-placeholder i { font-size: 1.75rem; }
 
-/* ---------- Foto cutout (background transparan) — gaya "3D" mengambang,
-   benar-benar keluar dari batas kartu, mengikuti siluet aslinya (bukan
-   dikotakin). Butuh .nac-profile-card--v2 { overflow: visible; } yang
-   sudah ada supaya tidak kepotong. ---------- */
 .nac-profile-card__photo-cutout {
   position: relative;
   flex-shrink: 0;
@@ -3246,17 +3030,12 @@ select.nac-join-input::-ms-expand {
   padding: 0.3rem 0.8rem;
   border-radius: 999px;
 }
-/* Laptop kecil / iPad Pro landscape (992-1199px): masih berdampingan,
-   tapi foto & jarak dikecilkan supaya 2 kolom info tidak terjepit. */
 @media (min-width: 992px) and (max-width: 1199.98px) {
   .nac-profile-card { padding-left: 2.5rem; padding-right: 2.5rem; }
   .nac-profile-card__row { gap: 1.75rem; }
   .nac-profile-card__photo-side-frame { width: 240px; height: 340px; }
   .nac-profile-card__photo-cutout { width: 240px; }
 }
-/* Tablet & HP (<992px): foto di atas (tengah), 2 kolom info di bawahnya —
-   di tablet tetap berdampingan 2 kolom, di HP kecil turun jadi 1 kolom
-   (otomatis lewat flex-basis, lihat .nac-profile-card__col di bawah). */
 @media (max-width: 991.98px) {
   .nac-profile-card { padding-left: 2rem; padding-right: 2rem; }
   .nac-profile-card__row { flex-wrap: wrap; gap: 1.75rem 2rem; }
@@ -3341,7 +3120,6 @@ select.nac-join-input::-ms-expand {
   margin: 0 auto;
   justify-self: center;
 }
-/* Bayangan lembut di "lantai" bawah foto — bikin ilusi foto melayang di atasnya */
 .nac-profile-card__photo::after {
   content: "";
   position: absolute;
@@ -3478,7 +3256,6 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-steel);
 }
 
-/* ---------- Tab navigasi (Rekor / Prestasi / Profil) ---------- */
 .nac-profile-tabs {
   border-top: 1px solid rgba(10, 14, 20, 0.08);
   gap: 2rem;
@@ -3505,9 +3282,6 @@ select.nac-join-input::-ms-expand {
   background: none;
 }
 
-.nac-section--tint { background: var(--nac-mist); }
-
-/* ---------- Tabel "Rekor Waktu Terbaik" ---------- */
 .nac-rekor-table-wrap {
   background: var(--nac-white);
   border-radius: var(--nac-radius);
@@ -3585,7 +3359,6 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-deep-aqua);
 }
 
-/* ---------- Tabel "Pencapaian & Penghargaan" (pengganti kartu prestasi) ---------- */
 .nac-achievement-table-wrap {
   background: var(--nac-white);
   border-radius: var(--nac-radius);
@@ -3678,12 +3451,6 @@ select.nac-join-input::-ms-expand {
 }
 
 @media (max-width: 767.98px) {
-  /* Di HP, kedua tabel (Rekor & Prestasi) dibongkar total jadi tumpukan
-     card — bukan lagi discroll ke samping. Markup <table>-nya tetap sama
-     persis, cuma "dipaksa" render sebagai block lewat CSS, memakai
-     data-label di tiap <td> sebagai label barisnya. */
-
-  /* ---------- Rekor Waktu Terbaik ---------- */
   .nac-rekor-table-wrap { background: transparent; box-shadow: none; padding: 0; overflow-x: visible; }
   .nac-rekor-table { min-width: 0; }
   .nac-rekor-table thead { display: none; }
@@ -3725,7 +3492,6 @@ select.nac-join-input::-ms-expand {
     text-align: left;
     flex-shrink: 0;
   }
-  /* Nomor lomba jadi "judul" card-nya sendiri — rata kiri, tanpa label */
   .nac-rekor-table td[data-label="Nomor"] {
     justify-content: flex-start;
     font-weight: 700;
@@ -3735,7 +3501,6 @@ select.nac-join-input::-ms-expand {
   .nac-rekor-table td[data-label="Nomor"]::before { content: none; }
   .nac-rekor-table__note { padding: 0.75rem 0.25rem 0; }
 
-  /* ---------- Pencapaian & Penghargaan ---------- */
   .nac-achievement-table-wrap { background: transparent; box-shadow: none; padding: 0; overflow-x: visible; }
   .nac-achievement-table thead { display: none; }
   .nac-achievement-table,
@@ -3759,7 +3524,6 @@ select.nac-join-input::-ms-expand {
     padding: 0 !important;
     border-bottom: none;
   }
-  /* Nomor urut nggak perlu — card sudah otomatis berurutan dari atas ke bawah */
   .nac-achievement-table td[data-label="No"] { display: none; }
   .nac-achievement-table td[data-label="Prestasi"] { margin-bottom: 0.75rem; }
   .nac-achievement-table td[data-label="Tanggal"],
@@ -3793,7 +3557,6 @@ select.nac-join-input::-ms-expand {
   }
 }
 
-/* ---------- Kartu prestasi versi terang (dipakai di tab Prestasi) ---------- */
 .nac-achievement-card--light {
   background: var(--nac-white);
   border-color: rgba(10, 14, 20, 0.08);
@@ -3804,7 +3567,6 @@ select.nac-join-input::-ms-expand {
 .nac-achievement-card--light .nac-achievement-card__year { color: var(--nac-steel); }
 .nac-achievement-card--light:hover { background: var(--nac-white); }
 
-/* ---------- Statistik & aksi versi terang (dipakai di tab Profil) ---------- */
 .nac-profile-stats--light {
   border-bottom-color: rgba(10, 14, 20, 0.1);
 }
@@ -3817,7 +3579,6 @@ select.nac-join-input::-ms-expand {
 
 .nac-profile-actions--light { margin-bottom: 0; }
 
-/* ---------- Footer kartu profil: tombol "Lihat Deskripsi" + kontak/sosial ---------- */
 .nac-profile-card__footer {
   display: flex;
   align-items: center;
@@ -3852,7 +3613,6 @@ select.nac-join-input::-ms-expand {
   border-color: var(--nac-ink);
 }
 
-/* ---------- Panel geser deskripsi (Bootstrap Offcanvas, dari kiri) ---------- */
 .nac-desc-offcanvas {
   width: 420px;
   max-width: 92vw;
@@ -3880,7 +3640,6 @@ select.nac-join-input::-ms-expand {
   margin-top: 1.25rem;
 }
 
-/* ---------- Responsif ---------- */
 @media (max-width: 991.98px) {
   .nac-profile-topbar { padding: 6.75rem 0 4rem; }
   .nac-profile-card__top { grid-template-columns: 1fr; text-align: center; padding-left: 0; justify-items: center; }
@@ -3897,10 +3656,6 @@ select.nac-join-input::-ms-expand {
   .nac-rekor-table-wrap { padding: 0.5rem 0.25rem 1rem; }
 }
 
-/* ==========================================================================
-   TAMBAHAN: Card Acara publik (mirip nac-team-card + tombol View Detail)
-   Sisipkan blok ini ke public/css/style.css, dekat rule .nac-team-card.
-   ========================================================================== */
 .nac-event-card {
   display: flex;
   flex-direction: column;
@@ -3951,7 +3706,6 @@ select.nac-join-input::-ms-expand {
   letter-spacing: 0.04em;
 }
 
-/* Overlay gelap saat hover — sama seperti card atlet/pelatih */
 .nac-event-card__overlay {
   position: absolute;
   inset: 0;
@@ -3985,10 +3739,6 @@ select.nac-join-input::-ms-expand {
   color: var(--nac-aqua, #7FD8FF);
 }
 
-/* Footer kartu — selalu tampil, berisi judul singkat + tombol View Detail */
-/* ==========================================================================
-   EVENT LIST — dikelompokkan per bulan, tiap event jadi baris horizontal
-   ========================================================================== */
 .nac-event-list {
   display: flex;
   flex-direction: column;
@@ -4034,8 +3784,6 @@ select.nac-join-input::-ms-expand {
   border-color: #dde3e7;
   color: inherit;
 }
-/* Baris tanpa PDF: tidak bisa dibuka, jadi tidak diberi efek "terangkat"
-   saat disorot (efek itu memberi kesan bisa diklik). */
 .nac-event-row--static:hover {
   transform: none;
   box-shadow: none;
@@ -4160,9 +3908,6 @@ select.nac-join-input::-ms-expand {
   .nac-event-row__body { flex: 1 1 100%; order: 3; }
 }
 
-/* ==========================================================================
-   LIGHTBOX — preview foto penuh, dipakai bareng oleh semua baris event
-   ========================================================================== */
 .nac-lightbox {
   position: fixed;
   inset: 0;
@@ -4278,9 +4023,6 @@ select.nac-join-input::-ms-expand {
   border-color: transparent;
 }
 
-/* ==========================================================================
-   HALAMAN DETAIL ACARA
-   ========================================================================== */
 .nac-event-detail-photo {
   border-radius: var(--nac-radius);
   overflow: hidden;
@@ -4314,14 +4056,6 @@ select.nac-join-input::-ms-expand {
   .nac-event-pdf-frame iframe { height: 420px; }
 }
 
-/* ==========================================================================
-   TENTANG KAMI — halaman "About Us"
-   ========================================================================== */
-
-/* Section "Kelas & Catatan" di halaman About Us dibuat polos tanpa kartu
-   (background/border/shadow/padding-nya dilepas), biar konsisten sama
-   section "Profil Kami" di atasnya yang juga tanpa kartu. Kartu putihnya
-   tetap dipakai apa adanya di halaman Join Us. */
 .nac-about-classes-section .nac-join-info {
   background: none;
   border: none;
@@ -4333,13 +4067,6 @@ select.nac-join-input::-ms-expand {
   .nac-about-classes-section .nac-join-info { padding: 0; }
 }
 
-/* ==========================================================================
-   FASILITAS (halaman Tentang Kami) — satu kartu putih menyatu:
-   daftar fasilitas (thumbnail + nama) di kiri, foto besar full-bleed di
-   tengah, penjelasan di kanan. Klik item di kiri untuk berganti.
-   Di tablet/HP: daftar jadi deretan kartu kecil yang bisa digeser ke
-   samping, foto di atas, teks di bawah.
-   ========================================================================== */
 .nac-facility-showcase {
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
@@ -4350,7 +4077,6 @@ select.nac-join-input::-ms-expand {
   overflow: hidden;
 }
 
-/* ---- Kiri: daftar fasilitas ---- */
 .nac-facility-showcase__list {
   display: flex;
   flex-direction: column;
@@ -4411,7 +4137,6 @@ select.nac-join-input::-ms-expand {
   line-height: 1.3;
 }
 
-/* ---- Tengah + kanan: foto & penjelasan ---- */
 .nac-facility-showcase__stage {
   min-height: 0;
   height: 100%;
@@ -4450,20 +4175,31 @@ select.nac-join-input::-ms-expand {
 .nac-facility-showcase__photo-empty i { font-size: 2rem; }
 
 .nac-facility-showcase__info {
-  padding: 1.75rem 1.75rem 1.75rem 1.5rem;
-  overflow-y: auto; /* deskripsi panjang tetap bisa dibaca tanpa merusak kartu */
+  padding: 2rem 2rem 2rem 1.75rem;
+  overflow-y: auto;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* tetap bisa di-scroll bila teks panjang, tapi scrollbar disembunyikan */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.nac-facility-showcase__info::-webkit-scrollbar { display: none; }
+/* auto margins center content vertically without clipping when it overflows */
+.nac-facility-showcase__info > :first-child { margin-top: auto; }
+.nac-facility-showcase__info > :last-child { margin-bottom: auto; }
 .nac-facility-showcase__name {
   font-family: var(--nac-font-display); font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  line-height: 1.2;
   color: var(--nac-ink);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 .nac-facility-showcase__desc {
   color: var(--nac-steel);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 1.75rem;
 }
 .nac-facility-showcase__points {
   list-style: none;
@@ -4471,32 +4207,39 @@ select.nac-join-input::-ms-expand {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.6rem;
 }
 .nac-facility-showcase__points li {
   display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  color: var(--nac-graphite);
-  font-weight: 600;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  align-items: center;
+  gap: 1.1rem;
 }
-.nac-facility-showcase__points i {
+.nac-facility-showcase__point-icon {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: var(--nac-aqua-soft);
   color: var(--nac-deep-aqua);
-  font-size: 0.85rem;
-  margin-top: -0.1rem;
+  font-size: 1.15rem;
+}
+.nac-facility-showcase__point-title {
+  font-family: var(--nac-font-display); font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--nac-ink);
+  margin: 0 0 0.3rem;
+}
+.nac-facility-showcase__point-text {
+  color: var(--nac-steel);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
-/* Tablet & HP */
 @media (max-width: 991.98px) {
   .nac-facility-showcase {
     grid-template-columns: minmax(0, 1fr);
@@ -4519,7 +4262,9 @@ select.nac-join-input::-ms-expand {
   .nac-facility-showcase__panel.is-active { grid-template-columns: minmax(0, 1fr); }
   .nac-facility-showcase__photo { aspect-ratio: 16 / 10; height: auto; }
   .nac-facility-showcase__info { padding: 1.5rem 1.25rem; overflow: visible; }
-  .nac-facility-showcase__name { font-size: 1.3rem; }
+  .nac-facility-showcase__name { font-size: 1.6rem; }
+  .nac-facility-showcase__point-icon { width: 42px; height: 42px; font-size: 1rem; }
+  .nac-facility-showcase__point-title { font-size: 1.08rem; }
 }
 @media (max-width: 575.98px) {
   .nac-facility-showcase__tab { width: 128px; flex-basis: 128px; }
@@ -4528,11 +4273,6 @@ select.nac-join-input::-ms-expand {
   .nac-facility-showcase__panel.is-active { animation: none; }
 }
 
-/* ==========================================================================
-   KELAS NAC SWIM SCHOOL (halaman Tentang Kami) — gaya "Shared Care" eys.care:
-   judul & pengantar di kiri tetap diam saat digulir, kartu kelas di kanan
-   menumpuk satu per satu. Kartu terakhir = Catatan Penting.
-   ========================================================================== */
 .nac-classes-stack {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -4564,8 +4304,6 @@ select.nac-join-input::-ms-expand {
   line-height: 1;
   color: rgba(10, 14, 20, 0.18);
 }
-/* Badge di dalam kartu putih: warna disesuaikan (aturan lama untuk section
-   berfoto membuat badge transparan putih — tidak terbaca di atas kartu putih). */
 .nac-section--photo-bg .nac-classes-stack__card .nac-join-class__badge {
   background: rgba(127, 216, 255, 0.18);
   color: var(--nac-deep-aqua);
@@ -4583,7 +4321,6 @@ select.nac-join-input::-ms-expand {
   margin-bottom: 0;
 }
 
-/* Kartu Catatan Penting */
 .nac-classes-stack__card--notes {
   border-left: 5px solid var(--nac-gold);
 }
@@ -4609,31 +4346,23 @@ select.nac-join-input::-ms-expand {
 }
 .nac-classes-stack__notes li + li { margin-top: 0.5rem; }
 
-/* Desktop: efek sticky & tumpukan kartu */
 @media (min-width: 992px) {
   .nac-classes-stack__intro {
     position: sticky;
-    top: 7rem; /* di bawah navbar yang melayang */
+    top: 7rem;
   }
   .nac-classes-stack__card {
     position: sticky;
-    /* tiap kartu berhenti sedikit lebih bawah dari kartu sebelumnya,
-       sehingga tepi atas kartu-kartu sebelumnya tetap terlihat bertumpuk */
     top: calc(7rem + var(--stack-index, 0) * 1.25rem);
   }
 }
 
-/* Tablet & HP: satu kolom biasa, tanpa efek sticky */
 @media (max-width: 991.98px) {
   .nac-classes-stack { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .nac-classes-stack__card { padding: 1.6rem 1.4rem 1.7rem; }
   .nac-classes-stack__title { font-size: 1.2rem; }
 }
 
-/* ==========================================================================
-   BIAYA PENDAFTARAN (Beranda) — tampil sebagai teks biasa, bukan kartu.
-   Tiap paket dipisah garis tipis: garis kiri di desktop, garis atas di HP.
-   ========================================================================== */
 .nac-price-text {
   height: 100%;
   display: flex;
@@ -4675,9 +4404,6 @@ select.nac-join-input::-ms-expand {
   }
 }
 
-/* Tombol "Kirim Pendaftaran" (form Join Us) — awalnya putih (dengan
-   garis tepi supaya tetap terlihat di atas latar terang), berubah biru
-   saat disorot. */
 .nac-join-submit.nac-btn--primary {
   background: var(--nac-white);
   color: var(--nac-ink);
@@ -4690,3 +4416,665 @@ select.nac-join-input::-ms-expand {
   border-color: var(--nac-deep-aqua);
   box-shadow: 0 12px 24px -10px rgba(30, 111, 168, 0.55);
 }
+
+.nac-join-cta { min-height: 400px; }
+.nac-join-cta .nac-pool-highlight__desc { margin-bottom: 1.75rem; }
+.nac-join-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(10, 14, 20, 0.65) !important;
+  color: var(--nac-white) !important;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.nac-join-cta__btn:hover,
+.nac-join-cta__btn:focus-visible {
+  background: rgba(10, 14, 20, 0.8) !important;
+  color: var(--nac-white) !important;
+}
+.nac-join-cta__btn i { transition: transform 0.2s ease; }
+.nac-join-cta__btn:hover i { transform: translateX(3px); }
+@media (max-width: 767.98px) {
+  .nac-join-cta { min-height: 360px; }
+}
+
+.nac-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.nac-status-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.nac-status-badge--active {
+  background: #DCFCE7;
+  color: #15803D;
+}
+.nac-status-badge--inactive {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+:is(.nac-section--tint, .nac-join-section) .nac-join-input { border-color: #C9D1D9; }
+:is(.nac-section--tint, .nac-join-section) .nac-join-input:focus { border-color: var(--nac-deep-aqua); }
+:is(.nac-section--tint, .nac-join-section) .nac-join-input.is-invalid { border-color: #EF5350; }
+:is(.nac-section--tint, .nac-join-section) .nac-join-photo-upload {
+  background: var(--nac-white);
+  border-color: #BCC6D0;
+}
+:is(.nac-section--tint, .nac-join-section) .nac-join-photo-upload:hover { border-color: var(--nac-deep-aqua); }
+:is(.nac-section--tint, .nac-join-section) .nac-join-submit.nac-btn--primary { border-color: #C9D1D9; }
+@media (min-width: 992px) {
+  .nac-section--tint .nac-price-text-col + .nac-price-text-col .nac-price-text { border-left-color: rgba(10, 14, 20, 0.18); }
+}
+
+.nac-result-date {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+  color: var(--nac-white);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+}
+.nac-result-date i { font-size: 0.9em; }
+
+.nac-result-desc {
+  color: var(--nac-steel);
+  max-width: 48rem;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+.nac-result-filter {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.nac-result-filter__field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.nac-result-filter__field--full { grid-column: 1 / -1; }
+.nac-result-filter label,
+.nac-result-filter__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--nac-steel);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.nac-result-filter select,
+.nac-result-filter input[type="search"] {
+  width: 100%;
+  border: 1.5px solid #dfe4e8;
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--nac-graphite);
+  background-color: var(--nac-white);
+}
+.nac-result-filter select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7A8A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  background-size: 12px 8px;
+  cursor: pointer;
+}
+.nac-result-filter select:focus,
+.nac-result-filter input[type="search"]:focus {
+  outline: none;
+  border-color: var(--nac-deep-aqua);
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.25);
+}
+.nac-result-filter__search { position: relative; }
+.nac-result-filter__search i {
+  position: absolute; left: 0.85rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nac-steel); font-size: 0.85rem;
+}
+.nac-result-filter__search input { padding-left: 2.2rem !important; }
+
+.nac-result-gender { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.nac-result-gender button {
+  border: 1.5px solid #dfe4e8;
+  background: var(--nac-white);
+  color: var(--nac-graphite);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.nac-result-gender button:hover { border-color: var(--nac-deep-aqua); }
+.nac-result-gender button.is-active {
+  background: var(--nac-ink);
+  border-color: var(--nac-ink);
+  color: var(--nac-white);
+}
+
+.nac-result-count { font-size: 0.82rem; color: var(--nac-steel); margin: 0 0 1.25rem; min-height: 1.2em; }
+
+.nac-result-groups { display: flex; flex-direction: column; gap: 1.25rem; }
+.nac-result-group {
+  background: var(--nac-white);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px -18px rgba(10, 14, 20, 0.25);
+  overflow: hidden;
+}
+.nac-result-group__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eef1f3;
+}
+.nac-result-group__title { font-size: 1.05rem; font-weight: 800; color: var(--nac-ink); margin: 0; }
+.nac-result-group__tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.nac-result-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: var(--nac-mist);
+  color: var(--nac-graphite);
+}
+.nac-result-tag--putra    { background: #DBEEFB; color: #1E6FA8; }
+.nac-result-tag--putri    { background: #FCE7F3; color: #BE185D; }
+.nac-result-tag--campuran { background: #EDE9FE; color: #6D28D9; }
+
+.nac-result-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.nac-result-table th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nac-steel);
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  background: #fafbfc;
+  white-space: nowrap;
+}
+.nac-result-table td {
+  padding: 0.8rem 1.5rem;
+  border-top: 1px solid #f0f2f5;
+  color: var(--nac-graphite);
+  white-space: nowrap;
+}
+.nac-result-table tr.is-nac td { background: rgba(127, 216, 255, 0.07); }
+.nac-result-table__rank { width: 80px; }
+.nac-result-table__time { text-align: right !important; font-weight: 700; color: var(--nac-ink) !important; font-variant-numeric: tabular-nums; }
+.nac-result-table__athlete { font-weight: 600; color: var(--nac-ink) !important; }
+.nac-result-table__athlete a,
+.nac-result-table__athlete a:hover {
+  color: var(--nac-ink);
+  text-decoration: none;
+}
+
+.nac-rank-medal,
+.nac-rank-plain {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.nac-rank-plain,
+.nac-rank-medal {
+  background: none;
+  color: var(--nac-ink);
+}
+.nac-result-note {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.nac-result-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--nac-steel);
+}
+.nac-result-empty i { font-size: 2rem; margin-bottom: 0.75rem; color: #b6c0ca; }
+.nac-result-empty p { margin: 0; }
+
+@media (max-width: 991.98px) {
+  .nac-result-filter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767.98px) {
+  .nac-result-filter { grid-template-columns: 1fr; }
+  .nac-result-group__head { padding: 0.9rem 1rem; }
+  .nac-result-table th,
+  .nac-result-table td { padding: 0.7rem 0.9rem; }
+}
+
+.nac-about-card { min-height: 480px; }
+.nac-about-card__content { max-width: 640px; }
+.nac-about-card__eyebrow { color: var(--nac-aqua); }
+.nac-about-card .nac-pool-highlight__title { margin-bottom: 0.25rem; }
+.nac-about-card__lead {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: none;
+  margin: 1rem 0 1.5rem;
+}
+.nac-about-card__lead strong,
+.nac-about-card__lead b { color: var(--nac-white); }
+.nac-about-card__list li { color: rgba(255, 255, 255, 0.92); }
+.nac-about-card__list i {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--nac-aqua);
+}
+.nac-about-card__list { margin-bottom: 1.75rem; }
+.nac-about-card__badge {
+  top: 1.5rem;
+  right: 1.5rem;
+  bottom: auto;
+  z-index: 2;
+}
+@media (max-width: 767.98px) {
+  .nac-about-card { min-height: 0; align-items: flex-end; }
+  .nac-about-card__content { padding-top: 6rem; }
+  .nac-about-card__badge { top: 1rem; right: 1rem; }
+}
+
+.nac-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3.25rem 2.25rem;
+  margin-top: 2.5rem;
+}
+.nac-board-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.nac-board-card__photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--nac-mist);
+  margin-bottom: 1.35rem;
+}
+.nac-board-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.nac-board-photo-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b6c0ca;
+  font-size: 2.5rem;
+}
+.nac-board-card__name {
+  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
+  font-weight: 500;
+  color: var(--nac-ink);
+  line-height: 1.25;
+  margin: 0 0 0.4rem;
+}
+.nac-board-card__position {
+  font-size: 1.05rem;
+  color: #7a8591;
+  line-height: 1.55;
+  margin: 0 0 1.1rem;
+}
+.nac-board-card__excerpt {
+  font-size: 1rem;
+  color: var(--nac-graphite);
+  line-height: 1.75;
+  margin: 0 0 1.25rem;
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nac-board-card__more {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0 0 0.2rem;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--nac-deep-aqua);
+  cursor: pointer;
+  background-image: linear-gradient(90deg, var(--nac-deep-aqua), rgba(30, 111, 168, 0));
+  background-size: 100% 1.5px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.25s ease, color 0.2s ease;
+}
+.nac-board-card__more:hover { color: var(--nac-ink); background-size: 60% 1.5px; }
+.nac-board-card__more:focus-visible { outline: 2px solid var(--nac-aqua); outline-offset: 3px; }
+
+.nac-board-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  background: rgba(10, 14, 20, 0.25);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nac-board-backdrop.is-open { opacity: 1; }
+.nac-board-backdrop[hidden],
+.nac-board-drawer[hidden] { display: none; }
+
+.nac-board-drawer {
+  position: fixed;
+  z-index: 1090;
+  top: 50%;
+  left: 50%;
+  width: min(560px, calc(100vw - 2rem));
+  height: min(880px, calc(100vh - 2rem));
+  box-sizing: border-box;
+  background: #EDEEF0;
+  border: 1px solid rgba(10, 14, 20, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 30px 60px -20px rgba(10, 14, 20, 0.45);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1.25rem 1.5rem 2rem;
+  opacity: 0;
+  transform: translate(-50%, -48%) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+}
+.nac-board-drawer::-webkit-scrollbar { display: none; }
+.nac-board-drawer.is-open {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.nac-board-drawer__head {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) auto;
+  gap: 1.1rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+  padding-top: 2.5rem;
+  position: relative;
+}
+.nac-board-drawer__photo {
+  width: 160px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--nac-white);
+}
+.nac-board-drawer__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nac-board-drawer__photo .nac-board-photo-empty { font-size: 1.6rem; }
+.nac-board-drawer__name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--nac-ink);
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nac-board-drawer__heading {
+  min-width: 0;
+}
+.nac-board-drawer__position {
+  font-size: 0.98rem;
+  color: #7a8591;
+  line-height: 1.5;
+  margin: 0;
+}
+.nac-board-drawer__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid var(--nac-ink);
+  background: transparent;
+  color: var(--nac-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nac-board-drawer__close:hover { background: var(--nac-ink); color: var(--nac-white); }
+.nac-board-drawer__bio {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--nac-ink);
+}
+.nac-board-drawer__bio p { margin-bottom: 1.25rem; }
+.nac-board-drawer__bio p:last-child { margin-bottom: 0; }
+
+@media (max-width: 991.98px) {
+  .nac-board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1.5rem; }
+}
+@media (max-width: 767.98px) {
+  .nac-board { grid-template-columns: 1fr; gap: 2.5rem; }
+  .nac-board-card__excerpt { -webkit-line-clamp: 6; }
+  .nac-board-drawer { height: calc(100vh - 2rem); padding: 1rem 1.25rem 1.75rem; }
+  .nac-board-drawer__head { grid-template-columns: 104px minmax(0, 1fr); }
+  .nac-board-drawer__photo { width: 104px; }
+  .nac-board-drawer__name { font-size: 1.25rem; }
+  .nac-board-drawer__position { font-size: 0.92rem; }
+}
+
+.nac-result-table__gap {
+  text-align: right !important;
+  color: var(--nac-steel) !important;
+  font-variant-numeric: tabular-nums;
+  width: 110px;
+}
+
+.nac-event-filter {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  margin-bottom: 1.5rem;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+.nac-event-table tbody tr[data-event-row] { cursor: pointer; transition: background 0.15s ease; }
+.nac-event-table tbody tr[data-event-row]:hover td { background: #f6f9fc; }
+.nac-event-table td { vertical-align: middle; }
+.nac-event-table__no { color: var(--nac-steel); font-weight: 600; }
+.nac-event-table__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--nac-ink);
+  font-weight: 700;
+  white-space: normal;
+}
+.nac-event-table__title:hover { color: var(--nac-ink); }
+.nac-event-table__thumb {
+  width: 56px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--nac-mist);
+}
+.nac-event-table__thumb--empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #b6c0ca;
+}
+.nac-event-table__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nac-steel);
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+.nac-event-table tbody tr:hover .nac-event-table__cta { color: var(--nac-deep-aqua); gap: 0.65rem; }
+@media (max-width: 767.98px) {
+  .nac-event-filter { grid-template-columns: 1fr; padding: 0; }
+  .nac-event-table__thumb { display: none; }
+}
+
+.nac-result-table__school {
+  color: var(--nac-steel) !important;
+  white-space: normal !important;
+  min-width: 160px;
+}
+
+button, input, select, textarea, optgroup,
+.swal2-popup, .dropdown-menu {
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (min-width: 1400px) {
+  html { font-size: 17px; }
+  .container { max-width: 1360px; }
+  .nac-navbar { max-width: 1360px; }
+}
+@media (min-width: 1600px) {
+  html { font-size: 18px; }
+  .container { max-width: 1480px; }
+  .nac-navbar { max-width: 1480px; }
+}
+@media (min-width: 1850px) {
+  html { font-size: 19px; }
+  .container { max-width: 1600px; }
+  .nac-navbar { max-width: 1600px; }
+}
+@media (min-width: 2200px) {
+  html { font-size: 21px; }
+  .container { max-width: 1840px; }
+  .nac-navbar { max-width: 1840px; }
+}
+
+@media (min-width: 1200px) {
+  .nac-gallery__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2.4fr) minmax(0, 1.5fr);
+    align-items: stretch;
+  }
+  .nac-gallery__item--featured {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2.4 / 1;
+  }
+  .nac-gallery__item--featured { align-self: start; }
+  .nac-gallery__track-wrap { position: relative; min-height: 0; }
+  .nac-gallery__track {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    padding-bottom: 0;
+  }
+  .nac-gallery__track .nac-gallery__item { height: 100%; }
+}
+
+.nac-about-stats__icon {
+  width: 72px;
+  height: 72px;
+  font-size: 1.9rem;
+  margin-bottom: 1.1rem;
+}
+@media (max-width: 575.98px) {
+  .nac-about-stats__icon { width: 58px; height: 58px; font-size: 1.5rem; }
+}
+
+button.nac-result-group__head {
+  width: 100%;
+  border: none;
+  background: var(--nac-white);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  padding: 1.1rem 1.5rem;
+  transition: background 0.2s ease;
+}
+button.nac-result-group__head:hover { background: #fafbfc; }
+button.nac-result-group__head:focus-visible { outline: 3px solid var(--nac-aqua); outline-offset: -3px; }
+.nac-result-group.is-open > button.nac-result-group__head { border-bottom-color: #eef1f3; }
+.nac-result-group__tags { align-items: center; }
+.nac-result-group__count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--nac-steel);
+  margin-left: 0.35rem;
+}
+.nac-result-group__chevron {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nac-mist);
+  color: var(--nac-ink);
+  font-size: 0.75rem;
+  margin-left: 0.4rem;
+  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+}
+.nac-result-group.is-open .nac-result-group__chevron {
+  transform: rotate(180deg);
+  background: var(--nac-ink);
+  color: var(--nac-white);
+}
+.nac-result-group__body:not([hidden]) { animation: nacResultOpen 0.25s ease; }
+@keyframes nacResultOpen {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.nac-result-groups { gap: 0.9rem; }
+
+.nac-result-table--fixed { table-layout: fixed; min-width: 900px; }
+.nac-result-table--fixed td { overflow: hidden; text-overflow: ellipsis; }
+.nac-result-table--fixed .nac-result-table__rank,
+.nac-result-table--fixed .nac-result-table__time,
+.nac-result-table--fixed .nac-result-table__gap,
+.nac-result-table--fixed .nac-result-table__num {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  text-overflow: clip;
+}
+.nac-result-table--fixed .nac-result-table__time { padding-right: 1rem; }
+.nac-result-table--fixed .nac-result-table__gap { padding-right: 1.5rem; }
+.nac-result-table__rank,
+.nac-result-table__num { text-align: center !important; font-variant-numeric: tabular-nums; }.nac-result-table th.nac-result-table__time,
+.nac-result-table th.nac-result-table__gap { color: var(--nac-steel) !important; font-weight: 700; }

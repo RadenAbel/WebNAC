@@ -122,7 +122,6 @@
         @endif
     </div>
 
-    {{-- ============ VERSI KARTU (khusus mobile, < 768px) ============ --}}
     <div class="d-md-none">
         @if ($joinRequests->isEmpty())
             <div class="bg-white border rounded-3">

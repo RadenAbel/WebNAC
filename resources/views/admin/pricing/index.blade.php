@@ -89,7 +89,6 @@
         @endif
     </div>
 
-    {{-- ============ VERSI KARTU (mobile) ============ --}}
     <div class="d-md-none">
         @if ($plans->isEmpty())
             <div class="bg-white border rounded-3">

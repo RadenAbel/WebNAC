@@ -4,11 +4,13 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "build:assets": "esbuild public/css/style.css public/css/admin.css public/js/app.js public/js/admin.js --minify --outdir=public --outbase=public --out-extension:.css=.min.css --out-extension:.js=.min.js --log-level=warning"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "concurrently": "^10.0.3",
+        "esbuild": "^0.28.2",
         "laravel-vite-plugin": "^3.1",
         "tailwindcss": "^4.0.0",
         "vite": "^8.0.0"

@@ -44,10 +44,6 @@ class PricingPlan extends Model
         return (bool) $this->discount_percent && $this->discount_percent > 0;
     }
 
-    /**
-     * Harga setelah dipotong diskon — dibulatkan ke ratusan terdekat biar
-     * angkanya tidak aneh (mis. Rp414.000 bukan Rp414.500 dari 460000 * 0.9).
-     */
     public function getDiscountedPriceAttribute(): int
     {
         if (! $this->has_discount) {
@@ -69,10 +65,6 @@ class PricingPlan extends Model
         return 'Rp' . number_format($this->discounted_price, 0, ',', '.');
     }
 
-    /**
-     * Daftar fitur sebagai array — disimpan 1 baris per fitur di kolom
-     * `features` (textarea di form admin), dipecah di sini pas ditampilkan.
-     */
     public function getFeatureListAttribute(): array
     {
         if (! $this->features) {

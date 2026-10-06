@@ -11,15 +11,8 @@ use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA;
 use Throwable;
 
-/**
- * Verifikasi dua langkah (2FA) berbasis aplikasi authenticator
- * (Google Authenticator, Microsoft Authenticator, dll) — kode 6 digit yang
- * berganti setiap 30 detik. Butuh paket:
- *   composer require pragmarx/google2fa bacon/bacon-qr-code
- */
 class TwoFactor
 {
-    /** Toleransi selisih jam HP vs server: ±1 periode (30 detik). */
     private const WINDOW = 1;
 
     public static function generateSecret(): string
@@ -27,7 +20,6 @@ class TwoFactor
         return (new Google2FA())->generateSecretKey(32);
     }
 
-    /** QR code (SVG) untuk dipindai aplikasi authenticator. */
     public static function qrCodeSvg(User $user, string $secret): string
     {
         $url = (new Google2FA())->getQRCodeUrl(
@@ -41,7 +33,6 @@ class TwoFactor
         return $writer->writeString($url);
     }
 
-    /** Cek kode untuk rahasia yang BELUM disimpan (saat proses aktivasi). */
     public static function verifySecret(string $secret, string $code): bool
     {
         try {
@@ -51,10 +42,6 @@ class TwoFactor
         }
     }
 
-    /**
-     * Cek kode milik akun yang 2FA-nya sudah aktif. Kode yang sama tidak
-     * bisa dipakai dua kali (misalnya kalau sempat diintip orang lain).
-     */
     public static function verify(User $user, string $code): bool
     {
         if (! $user->two_factor_secret) {
@@ -81,7 +68,6 @@ class TwoFactor
         return true;
     }
 
-    /** 8 kode pemulihan, masing-masing hanya bisa dipakai sekali. */
     public static function generateRecoveryCodes(): array
     {
         return collect(range(1, 8))
@@ -89,7 +75,6 @@ class TwoFactor
             ->all();
     }
 
-    /** Pakai satu kode pemulihan; kode yang sudah dipakai langsung dihapus. */
     public static function useRecoveryCode(User $user, string $code): bool
     {
         $code = Str::upper(trim($code));

@@ -26,11 +26,6 @@ class Gallery extends Model
         'sort_order' => 'integer',
     ];
 
-    /**
-     * Kalau type = photo, pakai foto yang diupload admin. Kalau type = video,
-     * otomatis pakai thumbnail YouTube-nya (admin tidak perlu upload gambar
-     * terpisah untuk item video).
-     */
     public function getImageUrlAttribute(): ?string
     {
         if ($this->type === 'video') {

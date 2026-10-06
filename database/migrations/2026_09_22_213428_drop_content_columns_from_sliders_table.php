@@ -4,10 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/**
- * Slider sekarang murni dipakai sebagai background hero section (foto/video)
- * tanpa teks apa pun di atasnya — kolom konten slide tidak dipakai lagi.
- */
 return new class extends Migration
 {
     private array $columns = ['title', 'subtitle', 'button_text', 'button_url'];

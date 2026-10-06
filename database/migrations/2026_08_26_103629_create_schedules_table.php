@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('category');  // Junior, Senior, Swim Class A, dst — teks bebas
-            $table->json('days');        // ["Selasa","Kamis"]
+            $table->string('category');
+            $table->json('days');
             $table->time('time_start');
             $table->time('time_end');
             $table->unsignedInteger('sort_order')->default(0);

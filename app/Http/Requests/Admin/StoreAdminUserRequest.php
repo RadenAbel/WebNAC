@@ -9,9 +9,6 @@ class StoreAdminUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // Pengecekan utama (siapa yang boleh sampai ke sini) sudah
-        // dilakukan middleware EnsureSuperAdmin di route — ini cuma
-        // lapisan jaga-jaga tambahan.
         return $this->user()?->isSuperAdmin() ?? false;
     }
 

@@ -8,8 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Hapus dari team_members kalau migration sebelumnya sempat dijalankan
-        // (pakai hasColumn supaya tetap aman walau belum sempat di-migrate).
         if (Schema::hasColumn('team_members', 'total_gold')) {
             Schema::table('team_members', function (Blueprint $table) {
                 $table->dropColumn(['total_gold', 'total_silver', 'total_bronze']);

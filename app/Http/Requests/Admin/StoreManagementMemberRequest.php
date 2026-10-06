@@ -16,9 +16,7 @@ class StoreManagementMemberRequest extends FormRequest
         return [
             'name'       => ['required', 'string', 'max:150'],
             'position'   => ['required', 'string', 'max:150'],
-            // Wajib saat tambah baru; di UpdateManagementMemberRequest
-            // di-override jadi 'nullable' (foto lama boleh dipertahankan).
-            'photo'      => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'photo'      => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'short_bio'  => ['nullable', 'string', 'max:500'],
             'full_bio'   => ['nullable', 'string', 'max:20000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

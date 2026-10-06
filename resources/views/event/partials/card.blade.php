@@ -1,11 +1,8 @@
 @php
-    // Hasil pertandingan tidak punya halaman detail sendiri — yang bisa
-    // dibuka hanya laporan PDF-nya. Tanpa PDF, baris tampil sebagai
-    // informasi saja (tidak bisa diklik, tanpa tombol "View Results").
-    $hasPdf = !empty($event->pdf_url);
+    $detailUrl = route('event.show', $event->slug);
 @endphp
 
-<div class="nac-event-row @unless($hasPdf) nac-event-row--static @endunless">
+<div class="nac-event-row">
 
     @if ($event->photo_url)
         <button type="button" class="nac-event-row__photo"
@@ -23,31 +20,20 @@
         </div>
     @endif
 
-    @if ($hasPdf)
-        <a href="{{ $event->pdf_url }}" target="_blank" rel="noopener"
-           class="nac-event-row__link" aria-label="Lihat hasil {{ $event->title }} (PDF)">
-    @else
-        <div class="nac-event-row__link">
-    @endif
-            <div class="nac-event-row__date">
-                {{ $event->event_date_label ?? '-' }}
-            </div>
-
-            <div class="nac-event-row__body">
-                <h3 class="nac-event-row__title">{{ $event->title }}</h3>
-                @if (!empty($event->description))
-                    <p class="nac-event-row__desc">{{ Str::limit($event->description, 100) }}</p>
-                @endif
-            </div>
-
-            @if ($hasPdf)
-                <span class="nac-event-row__cta">
-                    View Results <i class="fa-solid fa-arrow-right"></i>
-                </span>
-            @endif
-    @if ($hasPdf)
-        </a>
-    @else
+    <a href="{{ $detailUrl }}" class="nac-event-row__link" aria-label="Lihat hasil {{ $event->title }}">
+        <div class="nac-event-row__date">
+            {{ $event->event_date_label ?? '-' }}
         </div>
-    @endif
+
+        <div class="nac-event-row__body">
+            <h3 class="nac-event-row__title">{{ $event->title }}</h3>
+            @if (!empty($event->description))
+                <p class="nac-event-row__desc">{{ Str::limit($event->description, 100) }}</p>
+            @endif
+        </div>
+
+        <span class="nac-event-row__cta">
+            Lihat Hasil <i class="fa-solid fa-arrow-right"></i>
+        </span>
+    </a>
 </div>

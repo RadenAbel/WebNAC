@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class SiteSettingController extends Controller
 {
-    /**
-     * Tampilkan form pengaturan. Tidak ada index/create/destroy karena
-     * tabel ini didesain cuma punya 1 baris data (lihat SiteSetting::current()).
-     */
     public function edit()
     {
         $setting = SiteSetting::current();
@@ -57,6 +53,13 @@ class SiteSettingController extends Controller
                 Storage::disk('public')->delete($setting->pool_section_photo);
             }
             $data['pool_section_photo'] = ImageOptimizer::store($request->file('pool_section_photo'), 'settings');
+        }
+
+        if ($request->hasFile('join_cta_photo')) {
+            if ($setting->join_cta_photo) {
+                Storage::disk('public')->delete($setting->join_cta_photo);
+            }
+            $data['join_cta_photo'] = ImageOptimizer::store($request->file('join_cta_photo'), 'settings');
         }
 
         if ($data['gallery_header_type'] === 'video') {

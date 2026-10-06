@@ -13,13 +13,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('nickname')->nullable();
             $table->date('birth_date');
-            $table->string('whatsapp'); // disimpan APA ADANYA sesuai input (mis. "081234567890")
+            $table->string('whatsapp');
             $table->string('category');
-            $table->string('photo')->nullable(); // path di storage/app/public — disimpan permanen (dulu cuma file temp buat lampiran email)
+            $table->string('photo')->nullable();
 
-            // pending -> belum ditinjau admin
-            // accepted -> diterima
-            // rejected -> ditolak
             $table->string('status')->default('pending');
             $table->timestamp('responded_at')->nullable();
 

@@ -5,8 +5,6 @@
     $description  = $description ?? null;
     $icon         = $icon ?? 'fa-users';
 
-    // Hanya 3 kartu teratas yang "mengintip" di preview — sisanya disembunyikan
-    // biar tetap rapi dan tidak melebar berlebihan.
     $preview      = $collection->take(3)->values();
 @endphp
 
@@ -44,23 +42,21 @@
 
     @elseif($total === 1)
 
-        {{-- Satu anggota saja: tampilkan sebagai kartu tunggal, tanpa efek kipas --}}
         <div class="nac-fan__single mt-4" data-aos="fade-up">
             @include('team.partials.card', ['member' => $collection->first()])
         </div>
 
     @else
 
-        {{-- ============ PREVIEW: dek kartu tertutup, ringkas & terbingkai ============ --}}
         <div class="nac-fan__preview mt-4" data-fan-preview>
             <div class="nac-fan__deck">
                 <div class="nac-fan__stack">
                     @foreach($preview as $i => $member)
                         @php
-                            $y      = $i * -16;                   // px, tiap lapis "menumpuk" lurus ke atas (tanpa geser kiri/kanan)
-                            $scale  = round(1 - $i * 0.07, 2);    // lapis belakang sedikit mengecil
-                            $z      = 30 - $i * 10;                // lapis depan paling atas
-                            $bright = round(1 - $i * 0.15, 2);    // lapis belakang sedikit meredup
+                            $y      = $i * -16;
+                            $scale  = round(1 - $i * 0.07, 2);
+                            $z      = 30 - $i * 10;
+                            $bright = round(1 - $i * 0.15, 2);
                         @endphp
                         <div class="nac-fan__stack-card"
                              style="--y: {{ $y }}px; --scale: {{ $scale }}; --z: {{ $z }}; --bright: {{ $bright }}; --d: {{ $i * 100 }}ms;">
@@ -77,7 +73,6 @@
             <p class="nac-fan__hint">{{ $hintText }}</p>
         </div>
 
-        {{-- ============ GRID: tampil penuh saat dibuka ============ --}}
         <div class="nac-fan__grid" id="{{ $gridId }}" data-fan-grid>
             @foreach($collection as $i => $member)
                 <div class="nac-fan__grid-item" style="--d: {{ $i * 60 }}ms;">
@@ -88,4 +83,4 @@
 
     @endif
 
-</div>{{-- .nac-fan-group --}}
+</div>

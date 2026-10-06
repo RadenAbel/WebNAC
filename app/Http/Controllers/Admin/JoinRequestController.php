@@ -21,6 +21,16 @@ class JoinRequestController extends Controller
         return view('admin.join-requests.show', compact('joinRequest'));
     }
 
+    public function photo(JoinRequest $joinRequest)
+    {
+        abort_unless($joinRequest->photo && Storage::disk('local')->exists($joinRequest->photo), 404);
+
+        return Storage::disk('local')->response($joinRequest->photo, null, [
+            'Cache-Control'          => 'private, max-age=3600',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
+
     public function accept(JoinRequest $joinRequest)
     {
         $joinRequest->update([
@@ -70,7 +80,7 @@ class JoinRequestController extends Controller
     public function destroy(JoinRequest $joinRequest)
     {
         if ($joinRequest->photo) {
-            Storage::disk('public')->delete($joinRequest->photo);
+            Storage::disk('local')->delete($joinRequest->photo);
         }
 
         $name = $joinRequest->name;

@@ -17,7 +17,7 @@ class StoreFacilityRequest extends FormRequest
             'name'        => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:1500'],
             'highlights'  => ['nullable', 'string', 'max:1500'],
-            'photo'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'photo'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
             'is_active'   => ['nullable', 'boolean'],
         ];

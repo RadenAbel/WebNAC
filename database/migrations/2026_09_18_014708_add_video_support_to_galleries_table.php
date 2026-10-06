@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('galleries', function (Blueprint $table) {
-            $table->string('type')->default('photo')->after('image'); // photo | video
+            $table->string('type')->default('photo')->after('image');
             $table->string('youtube_url')->nullable()->after('type');
-            $table->string('image')->nullable()->change(); // opsional kalau type = video
+            $table->string('image')->nullable()->change();
         });
     }
 

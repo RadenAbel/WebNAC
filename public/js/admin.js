@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
 
-    // ============ Sidebar collapse (desktop) ============
     var toggle = document.getElementById('sidebarToggle');
     var STORAGE_KEY = 'nac_admin_sidebar_collapsed';
 
@@ -14,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ============ Sidebar drawer (mobile) ============
     var mobileToggle = document.getElementById('mobileSidebarToggle');
     var backdrop = document.getElementById('sidebarBackdrop');
 
@@ -30,16 +28,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (backdrop) {
         backdrop.addEventListener('click', closeMobileNav);
     }
-    // Tutup drawer otomatis begitu salah satu menu diklik (biar tidak nutup manual)
     document.querySelectorAll('.nac-admin-nav a').forEach(function (link) {
         link.addEventListener('click', closeMobileNav);
     });
-    // Tutup drawer kalau layar di-resize balik ke ukuran desktop
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 992) closeMobileNav();
     });
 
-    // ============ Preview foto saat upload (dropzone) ============
     document.querySelectorAll('[data-photo-input]').forEach(function (input) {
         input.addEventListener('change', function () {
             var previewId = input.getAttribute('data-photo-input');
@@ -51,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Stack preview (mobile) — Slider & Galeri ============
     document.querySelectorAll('[data-stack-trigger]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var group = btn.closest('[data-stack-group]');
@@ -69,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Umur otomatis dari Tanggal Lahir (form Tim) ============
     document.querySelectorAll('[data-birthdate-input]').forEach(function (input) {
         var ageOutput = document.getElementById(input.getAttribute('data-birthdate-input'));
         if (!ageOutput) return;
@@ -90,12 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         input.addEventListener('change', calcAge);
-        // Langsung hitung begitu halaman dimuat, kalau tanggal lahir sudah
-        // terisi sebelumnya (mis. waktu buka halaman Edit).
         calcAge();
     });
 
-    // ============ Usia saat rekor dicetak — dari Tanggal Lahir member + Tanggal Rekor ============
     function calcAgeBetween(birthDateStr, targetDateStr) {
         if (!birthDateStr || !targetDateStr) return '';
         var birth = new Date(birthDateStr);
@@ -109,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-record-date-input]').forEach(function (input) {
         var birthDate = input.getAttribute('data-birthdate');
         var ageTarget = document.getElementById(input.getAttribute('data-age-target'));
-        if (!ageTarget || !birthDate) return; // kalau member belum punya tanggal lahir, biarkan diisi manual
+        if (!ageTarget || !birthDate) return;
 
         input.addEventListener('change', function () {
             var calculated = calcAgeBetween(birthDate, input.value);
@@ -117,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Dropdown Nomor Rekor + opsi "Lainnya (ketik manual)" ============
     document.querySelectorAll('[data-event-select]').forEach(function (select) {
         var customInput = document.getElementById(select.getAttribute('data-event-custom'));
         if (!customInput) return;
@@ -137,10 +126,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         select.addEventListener('change', sync);
-        sync(); // set state awal (penting buat mode edit yang sudah pre-filled)
+        sync();
     });
 
-    // ============ Toggle tampilan Edit <-> Lihat untuk item Rekor & Pencapaian ============
     document.querySelectorAll('[data-toggle-edit]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var item = btn.closest('[data-item]');
@@ -158,10 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ============ Dropdown aksi tabel (mis. "..." di halaman Pendaftaran) ============
-    // Dibuat manual (bukan andalkan data-bs-toggle="dropdown" bawaan
-    // Bootstrap) — supaya perilakunya pasti bisa diandalkan sendiri tanpa
-    // bergantung ke inisialisasi JS Bootstrap.
     document.querySelectorAll('[data-dropdown-toggle]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.stopPropagation();
@@ -170,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var willOpen = !menu.classList.contains('is-open');
 
-            // Tutup dulu semua dropdown lain yang mungkin lagi kebuka
             document.querySelectorAll('.nac-dropdown-menu.is-open').forEach(function (m) {
                 m.classList.remove('is-open');
             });
@@ -178,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (willOpen) menu.classList.add('is-open');
         });
     });
-    // Klik di luar dropdown mana pun otomatis menutup semuanya
     document.addEventListener('click', function () {
         document.querySelectorAll('.nac-dropdown-menu.is-open').forEach(function (m) {
             m.classList.remove('is-open');
@@ -186,10 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// ============ Ikon mata di input password (semua halaman admin) ============
-// Tombol dengan atribut data-toggle-password="id-input" menampilkan /
-// menyembunyikan isi input password. Pakai event delegation supaya
-// otomatis berlaku juga untuk input yang ditambahkan belakangan.
 document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-toggle-password]');
     if (!btn) return;

@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('admin_title', 'Dashboard') — Admin Nugroho Aquatic Club</title>
-    <link rel="icon" href="{{ asset('img/Logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/favicon-32.png') }}" type="image/png" sizes="32x32">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ \App\Support\Asset::url('css/admin.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body class="nac-admin-body">
@@ -186,10 +186,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ \App\Support\Asset::url('js/admin.js') }}"></script>
     <script>
-        // Konfirmasi hapus (SweetAlert2) — berlaku untuk semua form dengan class "nac-confirm-delete-form"
-        // di seluruh halaman admin, cukup didefinisikan sekali di layout ini.
         document.addEventListener('submit', function (e) {
             const form = e.target.closest('.nac-confirm-delete-form');
             if (!form) return;
@@ -216,11 +214,6 @@
     </script>
     @if(session('whatsapp_redirect'))
         <script>
-            // PENTING: window.open() otomatis saat halaman dimuat (tanpa klik
-            // pengguna) hampir pasti diblokir oleh pop-up blocker browser.
-            // Makanya di sini dibungkus jadi tombol konfirmasi (SweetAlert2)
-            // dulu — window.open() dipanggil DI DALAM handler klik tombolnya,
-            // supaya dianggap browser sebagai aksi asli pengguna, bukan popup liar.
             Swal.fire({
                 title: 'Siap kirim pesan WhatsApp?',
                 text: 'Pesan sudah disiapkan otomatis sesuai status pendaftaran ini.',
@@ -248,7 +241,6 @@
         </script>
     @endif
     <script>
-        // Buka/tutup menu dropdown di sidebar (mis. Tim > Atlet / Pelatih)
         document.querySelectorAll('[data-nav-dropdown-toggle]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 var box = btn.closest('[data-nav-dropdown]');

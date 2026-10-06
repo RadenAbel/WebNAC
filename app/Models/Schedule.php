@@ -21,22 +21,16 @@ class Schedule extends Model
     ];
 
     protected $casts = [
-        'days'       => 'array', // disimpan JSON, otomatis jadi array PHP
+        'days'       => 'array',
         'is_active'  => 'boolean',
         'sort_order' => 'integer',
     ];
 
-    /**
-     * Gabungkan array hari jadi teks siap tampil, mis. "Selasa, Kamis".
-     */
     public function getDaysLabelAttribute(): string
     {
         return implode(', ', $this->days ?? []);
     }
 
-    /**
-     * Format jam siap tampil, mis. "15.00 – 16.30".
-     */
     public function getTimeLabelAttribute(): string
     {
         $start = $this->time_start ? substr($this->time_start, 0, 5) : '';

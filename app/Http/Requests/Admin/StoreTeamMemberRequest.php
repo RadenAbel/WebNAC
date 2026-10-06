@@ -8,9 +8,6 @@ class StoreTeamMemberRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // Semua yang sampai sini sudah lolos middleware 'auth' di route,
-        // jadi otomatis diizinkan (tidak perlu pengecekan role tambahan
-        // karena sistem ini cuma punya 1 level admin).
         return true;
     }
 
@@ -18,11 +15,11 @@ class StoreTeamMemberRequest extends FormRequest
     {
         return [
             'name'   => ['required', 'string', 'max:255'],
-            'photo'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'], // maks 8MB (otomatis dikompres)
+            'photo'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'photo_is_cutout' => ['nullable', 'boolean'],
             'role'   => ['required', 'in:pelatih,atlet'],
             'category' => ['nullable', 'string', 'in:Novato,Avance,Campeón'],
-            'school_name' => ['nullable', 'string', 'max:150'], // khusus atlet
+            'school_name' => ['nullable', 'string', 'max:150'],
             'swim_style'   => ['nullable', 'array'],
             'swim_style.*' => ['string', 'in:Gaya Bebas,Gaya Dada,Gaya Punggung,Gaya Kupu-Kupu,Gaya Ganti (Individual Medley),Serba Bisa (All-Round)'],
             'age'    => ['nullable', 'integer', 'min:1', 'max:100'],
@@ -45,6 +42,7 @@ class StoreTeamMemberRequest extends FormRequest
             'bio'        => ['nullable', 'string', 'max:2000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active'  => ['nullable', 'boolean'],
+            'member_status' => ['required', 'in:aktif,tidak_aktif'],
         ];
     }
 

@@ -13,7 +13,6 @@
 
     @include('admin.partials.toast')
 
-    {{-- ============ KODE PEMULIHAN (hanya tampil SEKALI setelah dibuat) ============ --}}
     @if (session('recovery_codes'))
         <div class="bg-white border rounded-3 p-4 mb-4" style="border-color:#F0B429 !important;">
             <p class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> Simpan kode pemulihan ini sekarang</p>
@@ -21,7 +20,7 @@
                 Kode ini <strong>hanya ditampilkan sekali</strong>. Pakai salah satunya untuk login kalau HP Anda hilang atau rusak.
                 Setiap kode hanya bisa dipakai sekali. Simpan di tempat aman (misalnya dicetak atau dicatat), jangan di HP yang sama.
             </p>
-            <div class="row g-2 mb-3" style="font-family:'Poppins', sans-serif;">
+            <div class="row g-2 mb-3" style="font-family:'Montserrat', sans-serif;">
                 @foreach (session('recovery_codes') as $code)
                     <div class="col-6 col-md-3">
                         <div class="border rounded-2 text-center py-2" style="background:#fafbfc; font-size:0.9rem;">{{ $code }}</div>
@@ -35,7 +34,6 @@
     @endif
 
     @if ($enabled)
-        {{-- ============ SUDAH AKTIF ============ --}}
         <div class="bg-white border rounded-3 p-4 mb-4">
             <div class="d-flex align-items-center gap-2 mb-2">
                 <span class="badge bg-success"><i class="bi bi-shield-check"></i> Aktif</span>
@@ -96,7 +94,6 @@
             </div>
         </div>
     @else
-        {{-- ============ BELUM AKTIF: panduan aktivasi ============ --}}
         <div class="bg-white border rounded-3 p-4">
             <div class="row g-4 align-items-start">
                 <div class="col-lg-5">
@@ -122,7 +119,7 @@
                         <div class="mb-3" style="max-width:260px;">
                             <input type="text" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7"
                                 class="form-control form-control-lg text-center @error('code') is-invalid @enderror"
-                                style="letter-spacing:0.3em; font-family:'Poppins', sans-serif;" placeholder="000000" required>
+                                style="letter-spacing:0.3em; font-family:'Montserrat', sans-serif;" placeholder="000000" required>
                             @error('code') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <button type="submit" class="btn nac-admin-btn"><i class="bi bi-shield-check"></i> Aktifkan</button>

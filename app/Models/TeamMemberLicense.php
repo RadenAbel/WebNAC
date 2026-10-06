@@ -47,9 +47,6 @@ class TeamMemberLicense extends Model
         return $this->expiry_date ? $this->expiry_date->translatedFormat('d F Y') : null;
     }
 
-    /**
-     * Dipakai buat kasih tanda visual di admin/publik kalau lisensi sudah lewat masa berlaku.
-     */
     public function getIsExpiredAttribute(): bool
     {
         return $this->expiry_date !== null && $this->expiry_date->isPast();

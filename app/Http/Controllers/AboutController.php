@@ -12,9 +12,6 @@ use App\Models\TeamMember;
 
 class AboutController extends Controller
 {
-    /**
-     * Halaman "Tentang Kami".
-     */
     public function index()
     {
         $setting = SiteSetting::current();
@@ -27,9 +24,6 @@ class AboutController extends Controller
         $totalAthletes = $totals['athletes'];
         $totalCoaches  = $totals['coaches'];
 
-        // Total medali sekarang murni dari kolom `total_medals` yang diisi
-        // manual per anggota tim (Rekor Waktu & Pencapaian sudah tidak
-        // mencatat medali lagi, jadi tidak perlu dihitung dari situ).
         $totalMedals = $totals['medals'];
 
         $aboutStats = [
@@ -38,17 +32,10 @@ class AboutController extends Controller
             ['num' => $totalMedals, 'label' => 'Total Medali', 'icon' => 'fa-medal'],
         ];
 
-        // Tim Manajemen — kalau admin belum isi data sama sekali (fresh
-        // install), kirim null biar blade otomatis pakai dummy fallback-nya
-        // sendiri ($managementTeam ?? [dummy]).
-        $managementMembers = PublicCache::models('about.management', ManagementMember::class, fn () => ManagementMember::active()->get());
-        $managementTeam = $managementMembers->isNotEmpty() ? $managementMembers : null;
+        $managementTeam = PublicCache::models('about.management', ManagementMember::class, fn () => ManagementMember::active()->get());
 
-        // Fasilitas (dikelola di Admin → Fasilitas). Bagian Fasilitas di
-        // halaman hanya muncul kalau ada minimal satu fasilitas aktif.
         $facilities = PublicCache::models('about.facilities', Facility::class, fn () => Facility::active()->ordered()->get());
 
-        // Biaya pendaftaran & jadwal latihan (dipindah dari Beranda)
         $pricingPlans = PublicCache::models('about.pricing', PricingPlan::class, fn () => PricingPlan::active()->ordered()->get());
         $schedules    = PublicCache::models('about.schedules', Schedule::class, fn () => Schedule::active()->get());
 

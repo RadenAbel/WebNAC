@@ -32,7 +32,6 @@
         <div class="row justify-content-center">
             <div class="col-12">
 
-                {{-- ============ FORM PENDAFTARAN ============ --}}
                 @if (session('status'))
                     <div class="nac-join-alert nac-join-alert--success" data-aos="fade-up">
                         <i class="fa-solid fa-circle-check"></i>
@@ -47,11 +46,6 @@
                     <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data" novalidate class="mt-4" id="joinForm">
                         @csrf
 
-                        {{-- Honeypot anti-bot — SENGAJA disembunyikan lewat CSS (bukan
-                             type="hidden"), supaya bot spam yang cuma cek atribut type
-                             tetap "tertipu" dan mengisinya. Manusia normal tidak akan
-                             pernah melihat/mengisi field ini. Kalau terisi, validasi di
-                             StoreJoinRequest (rule 'prohibited') otomatis menolaknya. --}}
                         <div style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true" tabindex="-1">
                             <label for="website">Jangan isi kolom ini</label>
                             <input type="text" name="website" id="website" autocomplete="off" tabindex="-1">
@@ -59,7 +53,6 @@
 
                         <div class="row g-5">
 
-                            {{-- ---- Kolom foto ---- --}}
                             <div class="col-lg-4 text-center nac-join-photo-col">
                                 <label class="nac-join-label d-block">Pas Foto Murid</label>
                                 <div class="nac-join-photo-upload nac-join-photo-upload--lg" id="joinPhotoDrop">
@@ -76,7 +69,6 @@
                                 @error('photo') <div class="nac-join-error">{{ $message }}</div> @enderror
                             </div>
 
-                            {{-- ---- Kolom field ---- --}}
                             <div class="col-lg-8">
                                 <div class="row g-4">
 

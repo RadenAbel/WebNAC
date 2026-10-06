@@ -15,10 +15,10 @@ class StoreEventRequest extends FormRequest
     {
         return [
             'title'       => ['required', 'string', 'max:200'],
-            'photo'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'photo'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192', 'dimensions:max_width=6000,max_height=6000'],
             'event_date'  => ['required', 'date'],
             'description' => ['nullable', 'string', 'max:2000'],
-            'pdf_report'  => ['required', 'file', 'mimes:pdf', 'max:10240'], // maks 10MB
+            'location'    => ['nullable', 'string', 'max:150'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
             'is_active'   => ['nullable', 'boolean'],
         ];
@@ -27,14 +27,11 @@ class StoreEventRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required'      => 'Nama acara wajib diisi.',
+            'title.required'      => 'Nama kejuaraan wajib diisi.',
             'photo.required'      => 'Foto acara wajib diupload.',
             'photo.mimes'         => 'Format foto harus JPG, PNG, atau WEBP.',
             'photo.max'           => 'Ukuran foto maksimal 8MB.',
             'event_date.required' => 'Tanggal acara wajib diisi.',
-            'pdf_report.required' => 'Laporan PDF wajib diupload.',
-            'pdf_report.mimes'    => 'Laporan harus berformat PDF.',
-            'pdf_report.max'      => 'Ukuran laporan PDF maksimal 10MB.',
         ];
     }
 }

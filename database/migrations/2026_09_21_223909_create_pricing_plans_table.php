@@ -12,10 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->unsignedInteger('price'); // harga asli, dalam Rupiah (mis. 460000)
-            $table->unsignedTinyInteger('discount_percent')->nullable(); // 1-100, null = tidak ada diskon
-            $table->text('features')->nullable(); // 1 baris = 1 poin fitur, dipecah pakai explode("\n", ...)
-            $table->boolean('is_highlighted')->default(false); // badge "Paling Diminati"
+            $table->unsignedInteger('price');
+            $table->unsignedTinyInteger('discount_percent')->nullable();
+            $table->text('features')->nullable();
+            $table->boolean('is_highlighted')->default(false);
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();

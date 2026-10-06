@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('site_settings', function (Blueprint $table) {
-            $table->string('join_header_type')->default('photo')->after('team_header_youtube_url'); // photo | video
+            $table->string('join_header_type')->default('photo')->after('team_header_youtube_url');
             $table->string('join_header_photo')->nullable()->after('join_header_type');
             $table->string('join_header_youtube_url')->nullable()->after('join_header_photo');
         });

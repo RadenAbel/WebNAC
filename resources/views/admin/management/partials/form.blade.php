@@ -38,6 +38,7 @@
                     value="{{ old('position', $member->position) }}" placeholder="Ketua Umum & Pendiri" required>
                 @error('position') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
+
             <div class="col-12">
                 <label class="form-label">
                     Ringkasan Singkat
@@ -47,14 +48,13 @@
                     placeholder="1-2 kalimat ringkas, tampil di kartu daftar.">{{ old('short_bio', $member->short_bio) }}</textarea>
                 @error('short_bio') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
+
             <div class="col-12">
                 <label class="form-label">
                     Bio Lengkap
                     <i class="bi bi-info-circle text-secondary" title="Tampil di modal 'Learn more'. Bisa diformat: bold, italic, list, dst."></i>
                 </label>
                 <div id="fullBioEditor" style="height:260px; background:#fff;" class="@error('full_bio') is-invalid @enderror"></div>
-                {{-- Textarea asli disembunyikan — dipakai buat nyimpen hasil HTML dari
-                     editor, ini yang beneran dikirim ke server saat form disubmit. --}}
                 <textarea name="full_bio" id="fullBioInput" class="d-none">{{ old('full_bio', $member->full_bio) }}</textarea>
                 @error('full_bio') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                 <small class="text-secondary">Pakai toolbar di atas buat bold, italic, list, dst. Tekan Enter untuk paragraf baru.</small>
@@ -85,14 +85,14 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script>
-        (function () {
-            var editorEl = document.getElementById('fullBioEditor');
-            var hiddenInput = document.getElementById('fullBioInput');
+        function nacSetupBioEditor(editorId, inputId, placeholder) {
+            var editorEl = document.getElementById(editorId);
+            var hiddenInput = document.getElementById(inputId);
             if (!editorEl || !hiddenInput) return;
 
             var quill = new Quill(editorEl, {
                 theme: 'snow',
-                placeholder: 'Tulis bio lengkap di sini...',
+                placeholder: placeholder,
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
@@ -103,21 +103,18 @@
                 },
             });
 
-            // Mode edit: isi editor dengan HTML yang sudah tersimpan sebelumnya
             if (hiddenInput.value.trim() !== '') {
                 quill.clipboard.dangerouslyPasteHTML(hiddenInput.value);
             }
 
-            // Begitu form mau dikirim, salin HTML dari editor ke textarea
-            // tersembunyi dulu — supaya yang benar-benar terkirim ke server
-            // adalah hasil format lengkapnya (bold/italic/list/dst), bukan
-            // textarea yang kosong.
             var form = hiddenInput.closest('form');
             if (form) {
                 form.addEventListener('submit', function () {
-                    hiddenInput.value = quill.root.innerHTML;
+                    hiddenInput.value = quill.getText().trim() === '' ? '' : quill.root.innerHTML;
                 });
             }
-        })();
+        }
+
+        nacSetupBioEditor('fullBioEditor', 'fullBioInput', 'Tulis bio lengkap di sini...');
     </script>
 @endpush

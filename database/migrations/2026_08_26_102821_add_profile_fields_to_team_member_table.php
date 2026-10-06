@@ -9,17 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('team_members', function (Blueprint $table) {
-            // Kontak & sosial media pribadi
             $table->string('whatsapp')->nullable()->after('photo');
             $table->string('instagram_url')->nullable()->after('whatsapp');
             $table->string('facebook_url')->nullable()->after('instagram_url');
             $table->string('tiktok_url')->nullable()->after('facebook_url');
 
-            // Profil tambahan
-            $table->string('origin_city')->nullable()->after('category'); // Asal (kota)
-            $table->unsignedTinyInteger('years_experience')->nullable()->after('origin_city'); // Lama pengalaman (tahun)
+            $table->string('origin_city')->nullable()->after('category');
+            $table->unsignedTinyInteger('years_experience')->nullable()->after('origin_city');
 
-            // Ringkasan angka (ditampilkan di card/profil, diisi manual oleh admin)
             $table->unsignedInteger('total_medals')->default(0)->after('years_experience');
             $table->unsignedInteger('total_achievements')->default(0)->after('total_medals');
         });

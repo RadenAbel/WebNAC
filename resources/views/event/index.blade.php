@@ -20,119 +20,119 @@
     @endif
 
     <div class="container text-center" data-aos="fade-up">
-        <h1 class="nac-page-header__title">Acara &amp; Kegiatan Kami.</h1>
+        <h1 class="nac-page-header__title">Hasil Pertandingan.</h1>
         <p class="nac-page-header__desc">
-            Dokumentasi kegiatan dan hasil dari kegiatan yang pernah diikuti Nugroho Aquatic Club.
+            Dokumentasi hasil pertandingan yang pernah diikuti.
         </p>
     </div>
 </section>
 
-<section class="nac-section nac-section--decorated nac-dot-pattern">
+<section class="nac-section nac-section--decorated nac-section--tint">
     <div class="container">
         @if ($events->isEmpty())
-            <p class="text-center nac-muted">Belum ada kegiatan yang ditampilkan.</p>
+            <p class="text-center nac-muted">Belum ada hasil pertandingan yang ditampilkan.</p>
         @else
             @php
-                // Pengelompokan per bulan ini mengasumsikan setiap event punya
-                // kolom tanggal asli bernama `event_date` (Carbon/date), di samping
-                // `event_date_label` yang sudah ada untuk teks tampilan. Kalau nama
-                // kolomnya beda, ganti `event_date` di baris groupBy() bawah ini.
-                $groupedEvents = $events->groupBy(function ($event) {
-                    return optional($event->event_date)->format('Y-m') ?? 'lainnya';
-                });
+                $eventYears = $events->map(fn ($e) => optional($e->event_date)->format('Y'))->filter()->unique()->sortDesc()->values();
             @endphp
 
-            <div class="nac-event-list">
-                @foreach ($groupedEvents as $monthEvents)
-                    @php $firstDate = $monthEvents->first()->event_date ?? null; @endphp
-
-                    <div class="nac-event-month" data-aos="fade-up">
-                        <h2 class="nac-event-month__label">
-                            @if ($firstDate)
-                                {{ $firstDate->translatedFormat('F') }} <span>{{ $firstDate->format('Y') }}</span>
-                            @else
-                                Lainnya
-                            @endif
-                        </h2>
-
-                        <div class="nac-event-month__rows">
-                            @foreach ($monthEvents as $i => $event)
-                                <div data-aos="fade-up" data-aos-delay="{{ ($i % 5) * 60 }}">
-                                    @include('event.partials.card', ['event' => $event])
-                                </div>
-                            @endforeach
-                        </div>
+            <div class="nac-result-filter nac-event-filter" data-aos="fade-up">
+                <div class="nac-result-filter__field nac-result-filter__field--search">
+                    <label for="eventSearch">Cari Kejuaraan</label>
+                    <div class="nac-result-filter__search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" id="eventSearch" placeholder="Ketik nama kejuaraan..." data-event-search autocomplete="off">
                     </div>
-                @endforeach
+                </div>
+                <div class="nac-result-filter__field">
+                    <label for="eventYear">Tahun</label>
+                    <select id="eventYear" data-event-year>
+                        <option value="">Semua Tahun</option>
+                        @foreach ($eventYears as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="nac-result-group nac-event-table-wrap" data-aos="fade-up">
+                <div class="table-responsive">
+                    <table class="nac-result-table nac-event-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">No</th>
+                                <th>Nama Kejuaraan</th>
+                                <th>Tanggal</th>
+                                <th>Lokasi</th>
+                                <th class="text-end">Hasil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($events as $i => $event)
+                                <tr data-event-row
+                                    data-name="{{ \Illuminate\Support\Str::lower($event->title) }}"
+                                    data-year="{{ optional($event->event_date)->format('Y') }}"
+                                    data-href="{{ route('event.show', $event->slug) }}">
+                                    <td class="nac-event-table__no" data-event-no>{{ $i + 1 }}</td>
+                                    <td>
+                                        <a href="{{ route('event.show', $event->slug) }}" class="nac-event-table__title">
+                                            @if ($event->photo_url)
+                                                <img src="{{ $event->photo_url }}" alt="" class="nac-event-table__thumb" loading="lazy">
+                                            @else
+                                                <span class="nac-event-table__thumb nac-event-table__thumb--empty"><i class="fa-solid fa-trophy"></i></span>
+                                            @endif
+                                            <span>{{ $event->title }}</span>
+                                        </a>
+                                    </td>
+                                    <td>{{ $event->event_date_label ?? '-' }}</td>
+                                    <td>{{ $event->location ?: '-' }}</td>
+                                    <td class="text-end">
+                                        <a href="{{ route('event.show', $event->slug) }}" class="nac-event-table__cta">
+                                            Lihat Hasil <i class="fa-solid fa-arrow-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="nac-result-empty d-none" data-event-empty>
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                    <p>Tidak ada kejuaraan yang cocok dengan filter ini.</p>
+                </div>
             </div>
         @endif
     </div>
 </section>
 
-{{-- ============ LIGHTBOX PREVIEW FOTO (dipakai bareng semua baris) ============ --}}
-<div class="nac-lightbox" id="nacLightbox" aria-hidden="true">
-    <button type="button" class="nac-lightbox__close" id="nacLightboxClose" aria-label="Tutup preview foto">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-    <div class="nac-lightbox__inner">
-        <img src="" alt="" id="nacLightboxImg" class="nac-lightbox__img">
-        <div class="nac-lightbox__caption" id="nacLightboxCaption">
-            <h4 id="nacLightboxTitle"></h4>
-            <p id="nacLightboxDesc"></p>
-        </div>
-    </div>
-</div>
-
+@if ($events->isNotEmpty())
 <script>
 (function () {
-    var lightbox   = document.getElementById('nacLightbox');
-    var img        = document.getElementById('nacLightboxImg');
-    var titleEl    = document.getElementById('nacLightboxTitle');
-    var descEl     = document.getElementById('nacLightboxDesc');
-    var captionEl  = document.getElementById('nacLightboxCaption');
-    var closeBtn   = document.getElementById('nacLightboxClose');
-    if (!lightbox || !img) return;
+    var search = document.querySelector('[data-event-search]');
+    var year   = document.querySelector('[data-event-year]');
+    var rows   = document.querySelectorAll('[data-event-row]');
+    var empty  = document.querySelector('[data-event-empty]');
 
-    function openLightbox(trigger) {
-        var src   = trigger.getAttribute('data-lightbox-src');
-        var alt   = trigger.getAttribute('data-lightbox-alt') || '';
-        var title = trigger.getAttribute('data-lightbox-title') || '';
-        var desc  = trigger.getAttribute('data-lightbox-desc') || '';
-
-        img.src = src;
-        img.alt = alt;
-        titleEl.textContent = title;
-        descEl.textContent = desc;
-        captionEl.style.display = (title || desc) ? 'block' : 'none';
-
-        lightbox.classList.add('is-open');
-        lightbox.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
+    function apply() {
+        var q = search.value.trim().toLowerCase(), y = year.value, n = 0;
+        rows.forEach(function (r) {
+            var ok = (!q || r.dataset.name.indexOf(q) !== -1) && (!y || r.dataset.year === y);
+            r.classList.toggle('d-none', !ok);
+            if (ok) { n++; r.querySelector('[data-event-no]').textContent = n; }
+        });
+        empty.classList.toggle('d-none', n > 0);
     }
+    search.addEventListener('input', apply);
+    year.addEventListener('change', apply);
 
-    function closeLightbox() {
-        lightbox.classList.remove('is-open');
-        lightbox.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        img.src = '';
-    }
-
-    document.addEventListener('click', function (e) {
-        var trigger = e.target.closest('[data-lightbox-src]');
-        if (trigger) {
-            e.preventDefault();
-            openLightbox(trigger);
-        }
-    });
-
-    closeBtn.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function (e) {
-        if (e.target === lightbox) closeLightbox();
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
+    rows.forEach(function (r) {
+        r.addEventListener('click', function (e) {
+            if (e.target.closest('a')) return;
+            window.location.href = r.dataset.href;
+        });
     });
 })();
 </script>
+@endif
 
 @endsection

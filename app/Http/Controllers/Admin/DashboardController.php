@@ -21,9 +21,6 @@ class DashboardController extends Controller
             'totalGalleries' => Gallery::count(),
             'totalSchedules' => Schedule::count(),
 
-            // 10 pencapaian/penghargaan terbaru — 3 tampil langsung, sisanya
-            // disembunyikan dan dibuka lewat tombol "Lihat Selengkapnya"
-            // (kartu terbuka turun, tidak pindah halaman).
             'recentAchievements' => TeamMemberAchievement::with('teamMember')
                                     ->latest('year')
                                     ->latest('id')

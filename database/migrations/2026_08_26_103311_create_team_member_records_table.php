@@ -14,14 +14,14 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('event');          // Nomor, mis. "50m Gaya Bebas"
-            $table->string('time');           // Waktu, mis. "24.50"
-            $table->string('medal')->nullable();          // Medali: Emas/Perak/Perunggu/-
-            $table->unsignedSmallInteger('pool_length')->nullable(); // Panjang kolam (25/50 m)
-            $table->unsignedTinyInteger('age_at_record')->nullable(); // Usia saat rekor dicetak
-            $table->string('competition')->nullable();    // Nama kompetisi
-            $table->string('country')->nullable();        // Negara
-            $table->date('record_date')->nullable();      // Tanggal
+            $table->string('event');
+            $table->string('time');
+            $table->string('medal')->nullable();
+            $table->unsignedSmallInteger('pool_length')->nullable();
+            $table->unsignedTinyInteger('age_at_record')->nullable();
+            $table->string('competition')->nullable();
+            $table->string('country')->nullable();
+            $table->date('record_date')->nullable();
 
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();

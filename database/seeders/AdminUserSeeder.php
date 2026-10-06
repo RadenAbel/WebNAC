@@ -26,7 +26,7 @@ class AdminUserSeeder extends Seeder
                 'name'              => 'Admin Nugroho Aquatic Center',
                 'password'          => Hash::make($password),
                 'email_verified_at' => now(),
-                'role'              => 'super_admin', // akun pertama otomatis Super Admin
+                'role'              => 'super_admin',
             ]
         );
 

@@ -82,7 +82,6 @@
         @endif
     </div>
 
-    {{-- ============ VERSI KARTU (khusus mobile, < 768px) ============ --}}
     <div class="d-md-none">
         @if ($managementMembers->isEmpty())
             <div class="bg-white border rounded-3">

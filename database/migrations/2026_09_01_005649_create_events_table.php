@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->date('event_date')->nullable();
             $table->text('description')->nullable();
-            $table->string('pdf_report')->nullable(); // laporan kegiatan (PDF)
+            $table->string('pdf_report')->nullable();
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
         <div>
             <h1 class="h4 mb-1">Hasil Pertandingan / Kegiatan</h1>
-            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola acara beserta laporan PDF-nya.</p>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">Kelola kejuaraan beserta hasil per nomor lombanya.</p>
         </div>
         <a href="{{ route('admin.events.create') }}" class="btn nac-admin-btn">
             <i class="bi bi-plus-lg"></i> Tambah Hasil Pertandingan
@@ -22,7 +22,7 @@
             <div class="nac-admin-empty">
                 <div class="nac-admin-empty__icon"><i class="bi bi-calendar-event"></i></div>
                 <p class="nac-admin-empty__title">Belum ada acara</p>
-                <p class="nac-admin-empty__desc">Tambahkan acara pertama lengkap dengan laporan PDF-nya.</p>
+                <p class="nac-admin-empty__desc">Tambahkan kejuaraan pertama, lalu isi hasil per nomor lombanya.</p>
                 <a href="{{ route('admin.events.create') }}" class="btn nac-admin-btn">
                     <i class="bi bi-plus-lg"></i> Tambah Hasil Pertandingan
                 </a>
@@ -31,7 +31,6 @@
 
     @else
 
-        {{-- ============ DESKTOP: tabel (>= 768px) ============ --}}
         <div class="bg-white border rounded-3 overflow-hidden d-none d-md-block">
             <table class="table align-middle mb-0">
                 <thead>
@@ -62,17 +61,12 @@
                                 @endif
                             </td>
                             <td class="text-end">
-                                @if ($event->pdf_url)
-                                    <a href="{{ $event->pdf_url }}" target="_blank" class="btn btn-sm btn-outline-secondary" title="Lihat PDF">
-                                        <i class="bi bi-file-earmark-pdf"></i>
-                                    </a>
-                                @endif
                                 <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline nac-confirm-delete-form"
-                                    data-confirm-title="Hapus acara ini?"
-                                    data-confirm-text="Hasil Pertandingan beserta laporan PDF-nya akan terhapus secara permanen.">
+                                    data-confirm-title="Hapus Hasil Pertandingan ini?"
+                                    data-confirm-text="Kejuaraan beserta seluruh hasil per nomor lombanya akan terhapus secara permanen.">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
@@ -84,7 +78,6 @@
             </table>
         </div>
 
-        {{-- ============ MOBILE: tumpukan kartu (< 768px) ============ --}}
         <div class="d-md-none nac-admin-stack-group" data-stack-group>
 
             <div class="nac-admin-stack-deck-wrap">

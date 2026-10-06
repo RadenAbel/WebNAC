@@ -12,9 +12,6 @@ class AuthController extends Controller
 {
     private const TWO_FACTOR_KEY = 'login.two_factor';
 
-    /**
-     * Tampilkan form login admin.
-     */
     public function showLoginForm()
     {
         if (Auth::check()) {
@@ -24,9 +21,6 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
 
-    /**
-     * Proses login admin.
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -36,8 +30,6 @@ class AuthController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // Cek email & password TANPA langsung login — akun yang memakai
-        // verifikasi dua langkah masih harus memasukkan kode dari aplikasinya.
         if (! Auth::validate($credentials)) {
             return back()
                 ->withErrors(['email' => 'Email atau password salah.'])
@@ -59,9 +51,6 @@ class AuthController extends Controller
         return $this->completeLogin($request, $user, $remember);
     }
 
-    /**
-     * Langkah kedua login: form kode 6 digit (atau kode pemulihan).
-     */
     public function showTwoFactorChallenge(Request $request)
     {
         if (! $this->pendingTwoFactorUser($request)) {
@@ -108,14 +97,11 @@ class AuthController extends Controller
     {
         Auth::login($user, $remember);
 
-        // Regenerate session ID setelah login berhasil — mencegah
-        // session fixation attack (praktik keamanan standar Laravel).
         $request->session()->regenerate();
 
         return redirect()->intended(route('admin.dashboard'));
     }
 
-    /** Akun yang sudah lolos email & password, sedang menunggu kode 2FA (maks 5 menit). */
     private function pendingTwoFactorUser(Request $request): ?User
     {
         $pending = $request->session()->get(self::TWO_FACTOR_KEY);
@@ -131,9 +117,6 @@ class AuthController extends Controller
         return $user && $user->hasTwoFactorEnabled() ? $user : null;
     }
 
-    /**
-     * Logout admin.
-     */
     public function logout(Request $request)
     {
         Auth::logout();

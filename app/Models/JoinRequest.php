@@ -25,7 +25,7 @@ class JoinRequest extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo ? asset('storage/' . $this->photo) : null;
+        return $this->photo ? route('admin.join-requests.photo', $this) : null;
     }
 
     public function getBirthDateLabelAttribute(): ?string
@@ -33,13 +33,6 @@ class JoinRequest extends Model
         return $this->birth_date ? $this->birth_date->translatedFormat('d F Y') : null;
     }
 
-    /**
-     * Normalisasi nomor WhatsApp ke format internasional TANPA "+" (syarat
-     * link wa.me) — terima input umum orang Indonesia: "08...", "8...",
-     * "+62...", "62...". Kalau setelah dibersihkan formatnya masih tidak
-     * masuk akal (kurang dari 9 digit), return null — biar wa.me link
-     * tidak pernah dibuat dari nomor yang jelas-jelas rusak.
-     */
     public function getWhatsappNormalizedAttribute(): ?string
     {
         $digits = preg_replace('/\D/', '', (string) $this->whatsapp);
@@ -57,11 +50,6 @@ class JoinRequest extends Model
         return strlen($digits) >= 10 ? $digits : null;
     }
 
-    /**
-     * Link wa.me siap pakai, dengan pesan sudah ke-URL-encode. $message
-     * WAJIB dikirim dari luar (bukan hardcode di sini) — supaya isi pesan
-     * penerimaan/penolakan gampang diubah tanpa sentuh model ini.
-     */
     public function whatsappLink(string $message): ?string
     {
         $number = $this->whatsapp_normalized;

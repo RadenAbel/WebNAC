@@ -4,13 +4,6 @@ namespace App\Support;
 
 use App\Models\SiteSetting;
 
-/**
- * Data terstruktur (schema.org JSON-LD) untuk Google.
- *
- * Dibuat di PHP (bukan ditulis langsung di Blade) karena JSON-LD penuh tanda
- * "@" ("@context", "@type") yang di Blade bisa disangka directive dan bikin
- * ParseError. Di sini cukup array biasa lalu di-json_encode.
- */
 class Seo
 {
     public static function clubSchema(SiteSetting $setting): string
@@ -38,8 +31,6 @@ class Seo
             'telephone'     => $setting->phone,
             'email'         => $setting->email,
             'address'       => $address,
-            // Kolam tempat latihan — membantu Google menghubungkan klub ini
-            // dengan pencarian "Everglade Aquatic Center".
             'location'      => [
                 '@type'   => 'SportsActivityLocation',
                 'name'    => config('seo.venue_name'),
@@ -54,12 +45,9 @@ class Seo
             ])),
         ]);
 
-        // JSON_HEX_TAG: cegah teks dari admin (mis. alamat) bisa "menutup"
-        // tag <script> lebih awal.
         return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
-    /** Buang isian kosong — Google menganggap kolom kosong sebagai data tidak valid. */
     private static function clean(array $data): array
     {
         return array_filter($data, fn ($value) => $value !== null && $value !== '' && $value !== []);

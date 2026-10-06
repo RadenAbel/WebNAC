@@ -30,18 +30,11 @@ class TeamMemberAchievement extends Model
         return $this->belongsTo(TeamMember::class);
     }
 
-    /**
-     * Tanggal pertandingan siap tampil, mis. "17 Agustus 2024".
-     */
     public function getEventDateLabelAttribute(): ?string
     {
         return $this->event_date ? $this->event_date->translatedFormat('d F Y') : null;
     }
 
-    /**
-     * Nama negara lengkap dari kode ISO alpha-2, mis. "ID" -> "Indonesia".
-     * Diambil dari config/countries.php.
-     */
     public function getCountryNameAttribute(): ?string
     {
         if (! $this->country) {
@@ -51,12 +44,6 @@ class TeamMemberAchievement extends Model
         return config('countries.' . strtoupper($this->country), $this->country);
     }
 
-    /**
-     * Konversi kode negara ISO alpha-2 jadi emoji bendera, mis. "ID" -> 🇮🇩.
-     * Caranya: tiap huruf digeser ke "Regional Indicator Symbol" di Unicode
-     * (offset 127397 dari kode ASCII huruf kapital) — teknik standar untuk
-     * menampilkan bendera tanpa perlu file gambar/ikon terpisah.
-     */
     public function getFlagEmojiAttribute(): ?string
     {
         if (! $this->country || strlen($this->country) !== 2) {

@@ -27,7 +27,7 @@
     </div>
 </section>
 
-<section class="nac-section nac-section--decorated nac-dot-pattern" id="pelatih">
+<section class="nac-section nac-section--decorated nac-section--tint" id="pelatih">
     <div class="container">
         @include('team.partials.fan', [
             'members'      => $coaches,

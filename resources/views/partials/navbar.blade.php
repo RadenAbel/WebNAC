@@ -16,22 +16,22 @@
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#tentang">Siapa Kami</a>
+                    <a class="nav-link" href="{{ route('about.index') }}">Siapa Kami</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle nac-dropdown-toggle {{ request()->routeIs('gallery.*', 'event.*') ? 'active' : '' }}" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Galeri <i class="bi bi-chevron-down nac-dropdown-caret"></i>
+                        Galeri <i class="fa-solid fa-chevron-down nac-dropdown-caret"></i>
                     </a>
                     <ul class="dropdown-menu nac-navbar__dropdown">
                         <li>
                             <a class="dropdown-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}" href="{{ route('gallery.index') }}">
-                                <i class="bi bi-images me-2"></i>Foto &amp; Video
+                                <i class="fa-solid fa-images me-2"></i>Foto & Video
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item {{ request()->routeIs('event.*') ? 'active' : '' }}" href="{{ route('event.index') }}">
-                                <i class="bi bi-trophy me-2"></i>Hasil Pertandingan
+                                <i class="fa-solid fa-trophy me-2"></i>Hasil Pertandingan
                             </a>
                         </li>
                     </ul>
@@ -39,17 +39,17 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle nac-dropdown-toggle {{ request()->routeIs('team.*') ? 'active' : '' }}" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Our Team <i class="bi bi-chevron-down nac-dropdown-caret"></i>
+                        Our Team <i class="fa-solid fa-chevron-down nac-dropdown-caret"></i>
                     </a>
                     <ul class="dropdown-menu nac-navbar__dropdown">
                         <li>
                             <a class="dropdown-item {{ request()->routeIs('team.athletes') ? 'active' : '' }}" href="{{ route('team.athletes') }}">
-                                <i class="bi bi-award me-2"></i>Atlet
+                                <i class="fa-solid fa-award me-2"></i>Atlet
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item {{ request()->routeIs('team.coaches') ? 'active' : '' }}" href="{{ route('team.coaches') }}">
-                                <i class="bi bi-person-badge me-2"></i>Pelatih
+                                <i class="fa-solid fa-id-badge me-2"></i>Pelatih
                             </a>
                         </li>
                     </ul>

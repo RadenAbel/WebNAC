@@ -9,11 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Daftar section yang boleh diakses akun ber-role 'admin', mis.
-            // ["sliders","galleries","team"]. Diabaikan sepenuhnya untuk
-            // 'super_admin' (selalu akses semua, lihat User::canAccess()).
-            // Default NULL supaya akun lama (dibuat sebelum fitur ini ada)
-            // otomatis dianggap "akses semua section" — lihat User::canAccess().
             $table->json('permissions')->nullable()->after('role');
         });
     }
